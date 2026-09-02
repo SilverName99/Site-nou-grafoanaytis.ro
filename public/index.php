@@ -305,6 +305,7 @@ $router->post('/admin/pages/{id}/delete', [AdminController::class, 'deletePage']
 $router->post('/admin/pages/{id}/restore', [AdminController::class, 'restorePage']);
 $router->post('/admin/pages/{id}/force-delete', [AdminController::class, 'forceDeletePage']);
 $router->get('/admin/pages/gdpr-agreements', [AdminController::class, 'gdprAgreements']);
+$router->post('/admin/pages/gdpr-agreements/settings', [AdminController::class, 'gdprAgreementsSettingsSave']);
 $router->get('/admin/pages/gdpr-agreements/export', [AdminController::class, 'gdprAgreementsExport']);
 $router->get('/admin/gallery', [AdminController::class, 'gallery']);
 $router->post('/admin/gallery/folders', [AdminController::class, 'createGalleryFolder']);

@@ -3751,18 +3751,35 @@ final class SiteController
         };
         $today = date('Y-m-d');
 
-        // TODO(grafoanaytis): datele operatorului sunt marcaje de completat.
-        // Modulul a fost preluat din alt proiect; textul juridic al firmei
-        // precedente a fost eliminat intentionat. Completati-le sau eliminati
-        // complet modulul de acorduri GDPR daca nu este folosit.
-        $numeEveniment = '[DENUMIRE EVENIMENT]';
-        $operatorNume = '[DENUMIRE SOCIETATE]';
-        $operatorSediu = '[ADRESA SEDIU SOCIAL]';
-        $operatorTelefon = '[TELEFON]';
-        $operatorRegCom = '[NR. REGISTRUL COMERTULUI]';
-        $operatorCui = '[CUI / COD TVA]';
-        $operatorMarca = 'Grafoanaytis';
-        $operatorReprezentant = '[REPREZENTANT LEGAL]';
+        /*
+         * Datele operatorului de date cu caracter personal vin din setări
+         * (Admin → Pagini → Acorduri GDPR), nu din cod. Modulul a fost preluat
+         * dintr-un proiect anterior, unde deservea evenimentul altei firme, iar
+         * datele acelei firme au fost eliminate.
+         *
+         * Un câmp necompletat se arată ca spațiu punctat, nu ca text inventat:
+         * un acord care circulă cu datele greșite ale operatorului nu are
+         * valoare juridică, așa că lipsa trebuie să sară în ochi.
+         */
+        $setariGdpr = Settings::all($this->db());
+        $dateOperator = static function (string $cheie) use ($setariGdpr): string {
+            $valoare = trim((string) ($setariGdpr[$cheie] ?? ''));
+            return $valoare !== ''
+                ? htmlspecialchars($valoare, ENT_QUOTES)
+                : '<span class="de-completat">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>';
+        };
+
+        $numeEveniment = $dateOperator('gdpr_scop');
+        $operatorNume = $dateOperator('gdpr_operator_nume');
+        $operatorSediu = $dateOperator('gdpr_operator_sediu');
+        $operatorTelefon = $dateOperator('gdpr_operator_telefon');
+        $operatorRegCom = $dateOperator('gdpr_operator_regcom');
+        $operatorCui = $dateOperator('gdpr_operator_cui');
+        $operatorMarca = $dateOperator('gdpr_operator_marca');
+        $operatorReprezentant = $dateOperator('gdpr_operator_reprezentant');
+        $operatorEmail = trim((string) ($setariGdpr['gdpr_operator_email'] ?? '')) !== ''
+            ? htmlspecialchars((string) $setariGdpr['gdpr_operator_email'], ENT_QUOTES)
+            : 'gdpr@grafoanaytis.ro';
         $subiectNumeComplet = htmlspecialchars($old($oldInput, 'subiect_nume_complet'), ENT_QUOTES);
         $ciSerie = htmlspecialchars($old($oldInput, 'ci_serie'), ENT_QUOTES);
         $ciNumar = htmlspecialchars($old($oldInput, 'ci_numar'), ENT_QUOTES);
@@ -3809,6 +3826,8 @@ final class SiteController
         .gdpr-agreement canvas{width:100%;height:180px;background:#fff;border:1px solid #cbd5e1;border-radius:8px;touch-action:none;display:block}
         .gdpr-agreement .signature-actions{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:8px;flex-wrap:wrap}
         .gdpr-agreement .muted{color:#64748b;font-size:13px}
+        /* Spatiu de completat pentru o data a operatorului care lipseste din setari. */
+        .gdpr-agreement .de-completat{display:inline-block;min-width:150px;border-bottom:1px dashed #94a3b8;vertical-align:baseline}
         .gdpr-agreement .form-actions{margin-top:18px;display:flex;justify-content:flex-end}
         .gdpr-agreement .bullet-list{margin:0 0 12px 18px}
         .gdpr-agreement .bullet-list li{margin-bottom:6px}
@@ -3841,7 +3860,7 @@ final class SiteController
             <span class="line-input"><input type="text" name="ci_emitent" value="{$ciEmitent}"></span>
             la data de
             <span class="line-input"><input type="date" name="ci_data_eliberare" value="{$ciDataEliberare}"></span>,
-            denumit în continuare <strong>subiect</strong>, îmi exprim acordul cu privire la utilizarea datelor cu caracter personal pentru înscrierea mea la evenimentul medical
+            denumit în continuare <strong>subiect</strong>, îmi exprim acordul cu privire la prelucrarea datelor mele cu caracter personal în scopul
             <strong>{$numeEveniment}</strong>,
             de către operatorul de date cu caracter personal <strong>{$operatorNume}</strong>, persoană juridică română, cu sediul în {$operatorSediu}, telefon {$operatorTelefon}, înregistrată la Registrul Comerțului sub nr. {$operatorRegCom}, cod unic de înregistrare/cod TVA {$operatorCui}, identificată în acest document prin marca <strong>„{$operatorMarca}”</strong>, reprezentată legal prin {$operatorReprezentant}, în calitate de <strong>beneficiar</strong>, cunoscând următoarele:
         </p>
@@ -3852,21 +3871,21 @@ final class SiteController
             <tr><th>NUME</th><td><input type="text" name="nume" value="{$nume}"></td></tr>
             <tr><th>PRENUME</th><td><input type="text" name="prenume" value="{$prenume}"></td></tr>
             <tr><th>CNP</th><td><input type="text" name="cnp" inputmode="numeric" maxlength="13" value="{$cnp}"></td></tr>
-            <tr><th>CUIM</th><td><input type="text" name="cuim" value="{$cuim}"></td></tr>
+            <tr><th>CUI</th><td><input type="text" name="cuim" value="{$cuim}"></td></tr>
             <tr><th>TELEFON</th><td><input type="text" name="telefon" value="{$telefon}"></td></tr>
             <tr><th>EMAIL</th><td><input type="email" name="email" value="{$email}"></td></tr>
             <tr><th>ADRESĂ DE CORESPONDENȚĂ</th><td><textarea name="adresa_corespondenta">{$adresaCorespondenta}</textarea></td></tr>
-            <tr><th>DENUMIRE INSTITUȚIE MEDICALĂ<br><small>DESFĂȘURARE ACTIVITATE</small></th><td><textarea name="institutie_medicala">{$institutieMedicala}</textarea></td></tr>
-            <tr><th>ADRESĂ INSTITUȚIE MEDICALĂ<br><small>DESFĂȘURARE ACTIVITATE</small></th><td><textarea name="institutie_adresa">{$institutieAdresa}</textarea></td></tr>
-            <tr><th>DESFĂȘURARE ACTIVITATE (INSTITUȚIE)</th><td><input type="text" name="institutie_activitate" value="{$institutieActivitate}"></td></tr>
+            <tr><th>DENUMIRE COMPANIE<br><small>DESFĂȘURARE ACTIVITATE</small></th><td><textarea name="institutie_medicala">{$institutieMedicala}</textarea></td></tr>
+            <tr><th>ADRESĂ COMPANIE<br><small>DESFĂȘURARE ACTIVITATE</small></th><td><textarea name="institutie_adresa">{$institutieAdresa}</textarea></td></tr>
+            <tr><th>DESFĂȘURARE ACTIVITATE (COMPANIE)</th><td><input type="text" name="institutie_activitate" value="{$institutieActivitate}"></td></tr>
             <tr><th>DESFĂȘURARE ACTIVITATE (ADRESĂ)</th><td><input type="text" name="institutie_activitate_adresa" value="{$institutieActivitateAdresa}"></td></tr>
-            <tr><th>TIP MEDIC (primar, specialist, rezident)</th><td><input type="text" name="tip_medic" value="{$tipMedic}"></td></tr>
-            <tr><th>SPECIALIZARE</th><td><input type="text" name="specializare" value="{$specializare}"></td></tr>
+            <tr><th>FUNCȚIE</th><td><input type="text" name="tip_medic" value="{$tipMedic}"></td></tr>
+            <tr><th>DOMENIU DE ACTIVITATE</th><td><input type="text" name="specializare" value="{$specializare}"></td></tr>
             </tbody>
         </table>
 
         <h3>II. Scopul în care va fi utilizat consimțământul</h3>
-        <p>Datele cu caracter personal vor fi utilizate strict pentru înscrierea la evenimentul medical menționat.</p>
+        <p>Datele cu caracter personal vor fi utilizate strict în scopul menționat.</p>
 
         <h3>III. Drepturile subiectului</h3>
         <p>Subiectul este protejat de către Regulamentul nr. 679/2016 privind protecția persoanelor fizice în ceea ce privește prelucrarea datelor cu caracter personal și privind libera circulație a acestor date și de abrogare a Directivei 95/46/CE (Regulament General privind protecția datelor) și are dreptul de a solicita în orice moment:</p>
@@ -3878,7 +3897,7 @@ final class SiteController
         </ul>
 
         <h3>IV. Valabilitate</h3>
-        <p>Prezentul consimțământ este valabil până la retragerea expresă a acestuia, în formă scrisă prin utilizarea serviciilor poștale la {$operatorNume} - {$operatorSediu} sau prin utilizarea serviciilor de poștă electronică la adresa <a href="mailto:gdpr@grafoanaytis.ro">gdpr@grafoanaytis.ro</a>.</p>
+        <p>Prezentul consimțământ este valabil până la retragerea expresă a acestuia, în formă scrisă prin utilizarea serviciilor poștale la {$operatorNume} - {$operatorSediu} sau prin utilizarea serviciilor de poștă electronică la adresa <a href="mailto:{$operatorEmail}">{$operatorEmail}</a>.</p>
 
         <h3>V. Declarație</h3>
         <p>Subiectul își exprimă consimțământul în favoarea beneficiarului cu privire la utilizarea neremunerată a datelor cu caracter personal descrise mai sus. Utilizarea datelor cu caracter personal, al imaginilor fotografice, înregistrărilor audio și video în alte scopuri decât cele descrise mai sus sau pentru comercializarea prin transferul datelor cu caracter personal, al imaginilor către alți terți decât cei menționați este strict interzisă.</p>

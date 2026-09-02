@@ -10,6 +10,24 @@ final class Settings
 {
     private const DEFAULTS = [
         'contact_form_recipients' => 'contact@grafoanaytis.ro',
+
+        /*
+         * Datele operatorului de date cu caracter personal, folosite în
+         * formularul de acorduri GDPR. Se completează din
+         * Admin → Pagini → Acorduri GDPR.
+         *
+         * Câmpurile juridice rămân goale intenționat: se afișează ca spații de
+         * completat, ca formularul să nu plece cu date inventate.
+         */
+        'gdpr_operator_nume' => '',
+        'gdpr_operator_sediu' => 'Str. Văleni nr. 141 (incinta Romfarmachim), Ploiești, România',
+        'gdpr_operator_telefon' => '0244 510 507',
+        'gdpr_operator_email' => 'grafoanaytis@yahoo.com',
+        'gdpr_operator_regcom' => '',
+        'gdpr_operator_cui' => '',
+        'gdpr_operator_marca' => 'Grafoanaytis',
+        'gdpr_operator_reprezentant' => '',
+        'gdpr_scop' => 'primirii de oferte și comunicări comerciale',
         'shipping_include_coupons' => '1',
         'shipping_fixed_enabled' => '0',
         'shipping_fixed_base' => '0',

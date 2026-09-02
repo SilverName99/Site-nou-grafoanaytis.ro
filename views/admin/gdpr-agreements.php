@@ -33,6 +33,56 @@ $paginationStart = max(1, $page - 2);
 $paginationEnd = min($totalPages, $page + 2);
 ?>
 
+<?php
+/*
+ * Datele operatorului de date cu caracter personal. Textul consimțământului
+ * le folosește direct; câmpurile lăsate goale apar în formularul public ca
+ * spații punctate de completat.
+ */
+$setari = is_array($setari ?? null) ? $setari : [];
+$val = static fn (string $cheie): string => htmlspecialchars((string) ($setari[$cheie] ?? ''), ENT_QUOTES);
+$campuriOperator = [
+    ['gdpr_operator_nume', 'Denumire societate', 'ex: SC Grafoanaytis SRL', true],
+    ['gdpr_operator_reprezentant', 'Reprezentant legal', 'ex: Administrator Nume Prenume', true],
+    ['gdpr_operator_regcom', 'Nr. Registrul Comerțului', 'ex: J29/123/2004', true],
+    ['gdpr_operator_cui', 'CUI / Cod TVA', 'ex: RO12345678', true],
+    ['gdpr_operator_sediu', 'Sediu social', 'Strada, număr, oraș, țară', false],
+    ['gdpr_operator_telefon', 'Telefon', '', false],
+    ['gdpr_operator_email', 'Email pentru retragerea acordului', '', false],
+    ['gdpr_operator_marca', 'Marca sub care este cunoscută firma', '', false],
+];
+?>
+<section class="panel" style="margin-bottom:18px;">
+    <div class="section-head">
+        <h2 style="margin:0;">Datele operatorului</h2>
+        <p style="margin:6px 0 0;color:#64748b;">
+            Apar în textul acordului semnat de vizitatori. Câmpurile marcate cu * sunt
+            date juridice: cât timp lipsesc, formularul le arată ca spații de completat.
+        </p>
+    </div>
+
+    <form method="post" action="/admin/pages/gdpr-agreements/settings" class="form-grid" style="margin-top:14px;">
+        <div class="field" style="grid-column:1/-1;">
+            <label>Scopul prelucrării</label>
+            <input type="text" name="gdpr_scop" value="<?= $val('gdpr_scop') ?>"
+                   placeholder="ex: primirii de oferte și comunicări comerciale">
+            <small style="color:#64748b;">Completează fraza „îmi exprim acordul … în scopul <em>…</em>".</small>
+        </div>
+
+        <?php foreach ($campuriOperator as [$cheie, $eticheta, $exemplu, $obligatoriu]): ?>
+            <div class="field">
+                <label><?= htmlspecialchars($eticheta, ENT_QUOTES) ?><?= $obligatoriu ? ' *' : '' ?></label>
+                <input type="text" name="<?= $cheie ?>" value="<?= $val($cheie) ?>"
+                       placeholder="<?= htmlspecialchars($exemplu, ENT_QUOTES) ?>">
+            </div>
+        <?php endforeach; ?>
+
+        <div style="grid-column:1/-1;display:flex;justify-content:flex-end;">
+            <button class="btn" type="submit">Salvează datele operatorului</button>
+        </div>
+    </form>
+</section>
+
 <section class="panel">
     <div class="section-head" style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px;flex-wrap:wrap;">
         <div>
@@ -74,7 +124,15 @@ $paginationEnd = min($totalPages, $page + 2);
             <th style="width:180px;">Subsemnatul</th>
             <th style="width:170px;">Date personale</th>
             <th style="width:220px;">Contact</th>
-            <th>Instituție / Medic</th>
+            <?php
+            /*
+             * Coloanele din baza de date păstrează numele din proiectul
+             * anterior (institutie_medicala, tip_medic, specializare), fiindcă
+             * redenumirea lor ar cere o migrare de schemă fără câștig real.
+             * Etichetele afișate sunt însă cele potrivite unei tipografii.
+             */
+            ?>
+            <th>Companie / Funcție</th>
             <th style="width:130px;">Data</th>
             <th style="width:140px;">Semnătură</th>
         </tr>
@@ -99,7 +157,7 @@ $paginationEnd = min($totalPages, $page + 2);
                     <td>
                         <strong><?= htmlspecialchars((string) ($item['nume'] ?? ''), ENT_QUOTES) ?> <?= htmlspecialchars((string) ($item['prenume'] ?? ''), ENT_QUOTES) ?></strong><br>
                         <small>CNP: <?= htmlspecialchars((string) ($item['cnp'] ?? ''), ENT_QUOTES) ?></small><br>
-                        <small>CUIM: <?= htmlspecialchars((string) ($item['cuim'] ?? ''), ENT_QUOTES) ?></small>
+                        <small>CUI: <?= htmlspecialchars((string) ($item['cuim'] ?? ''), ENT_QUOTES) ?></small>
                     </td>
                     <td>
                         <strong><?= htmlspecialchars((string) ($item['telefon'] ?? ''), ENT_QUOTES) ?></strong><br>

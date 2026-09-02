@@ -3103,6 +3103,7 @@ final class AdminController
 
         View::render('admin/gdpr-agreements', [
             'title' => 'Acorduri GDPR',
+            'setari' => Settings::all($db),
             'items' => $items,
             'search' => $search,
             'page' => $page,
@@ -3112,6 +3113,61 @@ final class AdminController
             'totalPages' => $totalPages,
         ], 'admin/layout');
     }
+
+    /**
+     * Salvează datele operatorului de date cu caracter personal.
+     *
+     * Formularul de acorduri GDPR le folosește în textul consimțământului.
+     * Stau în setări, nu în cod, fiindcă sunt date juridice ale firmei, care
+     * se schimbă independent de aplicație (sediu, reprezentant legal).
+     */
+    public function gdprAgreementsSettingsSave(): void
+    {
+        if (!$this->guard()) {
+            return;
+        }
+
+        $db = $this->db();
+        if (!$db instanceof PDO) {
+            Flash::set('error', 'Conexiunea DB nu este disponibilă.');
+            header('Location: /admin/pages/gdpr-agreements');
+            return;
+        }
+
+        $chei = [
+            'gdpr_operator_nume',
+            'gdpr_operator_sediu',
+            'gdpr_operator_telefon',
+            'gdpr_operator_email',
+            'gdpr_operator_regcom',
+            'gdpr_operator_cui',
+            'gdpr_operator_marca',
+            'gdpr_operator_reprezentant',
+            'gdpr_scop',
+        ];
+
+        $valori = [];
+        foreach ($chei as $cheie) {
+            $valori[$cheie] = trim((string) ($_POST[$cheie] ?? ''));
+        }
+
+        Settings::save($db, $valori);
+
+        $lipsa = array_keys(array_filter(
+            array_intersect_key($valori, array_flip(['gdpr_operator_nume', 'gdpr_operator_regcom', 'gdpr_operator_cui', 'gdpr_operator_reprezentant'])),
+            static fn (string $v): bool => $v === ''
+        ));
+
+        if ($lipsa !== []) {
+            Flash::set('error', 'Datele au fost salvate, dar ' . count($lipsa)
+                . ' câmpuri juridice sunt încă goale. Formularul le va afișa ca spații de completat.');
+        } else {
+            Flash::set('success', 'Datele operatorului au fost salvate.');
+        }
+
+        header('Location: /admin/pages/gdpr-agreements');
+    }
+
 
     public function gdprAgreementsExport(): void
     {
@@ -3309,16 +3365,16 @@ final class AdminController
             ['key' => 'nume', 'label' => 'Nume', 'width' => 18.0],
             ['key' => 'prenume', 'label' => 'Prenume', 'width' => 18.0],
             ['key' => 'cnp', 'label' => 'CNP', 'width' => 18.0],
-            ['key' => 'cuim', 'label' => 'CUIM', 'width' => 16.0],
+            ['key' => 'cuim', 'label' => 'CUI', 'width' => 16.0],
             ['key' => 'telefon', 'label' => 'Telefon', 'width' => 16.0],
             ['key' => 'email', 'label' => 'Email', 'width' => 24.0],
             ['key' => 'adresa_corespondenta', 'label' => 'Adresa corespondenta', 'width' => 26.0],
-            ['key' => 'institutie_medicala', 'label' => 'Denumire institutie medicala', 'width' => 26.0],
+            ['key' => 'institutie_medicala', 'label' => 'Denumire companie', 'width' => 26.0],
             ['key' => 'institutie_activitate', 'label' => 'Desfasurare activitate (institutie)', 'width' => 27.0],
-            ['key' => 'institutie_adresa', 'label' => 'Adresa institutie medicala', 'width' => 28.0],
+            ['key' => 'institutie_adresa', 'label' => 'Adresa companie', 'width' => 28.0],
             ['key' => 'institutie_activitate_adresa', 'label' => 'Desfasurare activitate (adresa)', 'width' => 27.0],
-            ['key' => 'tip_medic', 'label' => 'Tip medic', 'width' => 16.0],
-            ['key' => 'specializare', 'label' => 'Specializare', 'width' => 18.0],
+            ['key' => 'tip_medic', 'label' => 'Functie', 'width' => 16.0],
+            ['key' => 'specializare', 'label' => 'Domeniu de activitate', 'width' => 18.0],
             ['key' => 'data_semnare', 'label' => 'Data', 'width' => 14.0],
             ['key' => 'nume_semnatura', 'label' => 'Nume semnatura', 'width' => 24.0],
             ['key' => '__signature_image', 'label' => 'Semnatura (imagine)', 'width' => 34.0],
@@ -16128,7 +16184,7 @@ HTML;
             <tr><th style="border:1px solid #9aa6b2;padding:8px;text-align:left;width:32%;background:#f8fafc;">NUME</th><td style="border:1px solid #9aa6b2;padding:8px;"><input type="text" placeholder="Nume" disabled></td></tr>
             <tr><th style="border:1px solid #9aa6b2;padding:8px;text-align:left;background:#f8fafc;">PRENUME</th><td style="border:1px solid #9aa6b2;padding:8px;"><input type="text" placeholder="Prenume" disabled></td></tr>
             <tr><th style="border:1px solid #9aa6b2;padding:8px;text-align:left;background:#f8fafc;">CNP</th><td style="border:1px solid #9aa6b2;padding:8px;"><input type="text" placeholder="CNP" disabled></td></tr>
-            <tr><th style="border:1px solid #9aa6b2;padding:8px;text-align:left;background:#f8fafc;">CUIM</th><td style="border:1px solid #9aa6b2;padding:8px;"><input type="text" placeholder="CUIM" disabled></td></tr>
+            <tr><th style="border:1px solid #9aa6b2;padding:8px;text-align:left;background:#f8fafc;">CUI</th><td style="border:1px solid #9aa6b2;padding:8px;"><input type="text" placeholder="CUI" disabled></td></tr>
             <tr><th style="border:1px solid #9aa6b2;padding:8px;text-align:left;background:#f8fafc;">TELEFON</th><td style="border:1px solid #9aa6b2;padding:8px;"><input type="text" placeholder="Telefon" disabled></td></tr>
             <tr><th style="border:1px solid #9aa6b2;padding:8px;text-align:left;background:#f8fafc;">EMAIL</th><td style="border:1px solid #9aa6b2;padding:8px;"><input type="text" placeholder="Email" disabled></td></tr>
         </tbody>
