@@ -1,0 +1,29 @@
+/* Pagina de start. Culorile vin din tokens.css; aici doar layout. */
+
+#hero { min-height: 68vh; display: flex; align-items: center; }
+#hero .hero-media { position: absolute; inset: 0; }
+#hero .hero-media img { width: 100%; height: 100%; object-fit: cover; }
+/*
+ * Voal peste imagine: titlul hero este alb, iar fără el contrastul depinde de
+ * ce se nimerește în fotografie. Voalul îl face previzibil.
+ */
+#hero .hero-media::after {
+  content: ""; position: absolute; inset: 0;
+  background: linear-gradient(180deg, rgba(0,0,0,.55), rgba(0,0,0,.35));
+}
+#hero .hero-continut { padding-block: clamp(3rem, 10vw, 7rem); }
+
+#hero .btn-outline-light:hover { color: var(--ink); }
+
+.categorie { transition: transform .18s ease, box-shadow .18s ease; color: var(--ink); }
+.categorie:hover, .categorie:focus-visible { transform: translateY(-4px); }
+.categorie .card-body { border-top: 3px solid var(--fill-brand); }
+
+/* Logourile de certificare: gri în repaus, culoare la interacțiune. */
+.certificare { max-height: 88px; width: auto; filter: grayscale(1); opacity: .75; transition: filter .18s ease, opacity .18s ease; }
+.certificare:hover { filter: none; opacity: 1; }
+
+@media (prefers-reduced-motion: reduce) {
+  .categorie, .certificare { transition: none; }
+  .categorie:hover { transform: none; }
+}

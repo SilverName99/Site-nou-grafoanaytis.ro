@@ -307,9 +307,15 @@ if (trim($designHeaderOutput) !== '' && preg_match($mobileMenuTokenPattern, $des
     $tokensVersion = @filemtime(__DIR__ . '/../public/assets/css/tokens.css') ?: time();
     ?>
     <link rel="stylesheet" href="/assets/vendor/bootstrap/css/bootstrap.min.css?v=<?= $bootstrapVersion ?>">
-    <link rel="stylesheet" href="/assets/css/app.css?v=<?= $cssVersion ?><?= $assetVersionQuery ?>">
-    <?php /* Tokenii vin ultimii: suprascriu atât Bootstrap, cât și app.css. */ ?>
     <link rel="stylesheet" href="/assets/css/tokens.css?v=<?= $tokensVersion ?>">
+    <?php
+    /*
+     * app.css este foaia de stil a proiectului anterior: turcoaz #0f766e ca
+     * primară și reguli directe pe .btn. Pe partea publică nu se mai încarcă,
+     * fiindcă se bătea cu tema nouă și colora butoanele în turcoaz în loc de
+     * portocaliu. Adminul o folosește în continuare, din propriul lui layout.
+     */
+    ?>
     <?php
     $designCss = trim(implode("\n", array_filter([
         $designHeaderCss,

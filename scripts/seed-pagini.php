@@ -28,12 +28,26 @@ if (!$db instanceof PDO) {
     exit("Conexiunea la baza de date nu este disponibilă.\n");
 }
 
-/** Slug => titlul afișat în dashboard și în meniu. */
+/**
+ * Numele fisierului => titlul afisat in dashboard si in meniu.
+ *
+ * Slug-ul se obtine din numele fisierului inlocuind „__" cu „/", fiindca un
+ * slug poate contine cale (ruta publica /{slug*} accepta si bara oblica), dar
+ * un nume de fisier nu.
+ */
 const PAGINI = [
     'acasa' => 'Acasă',
     'despre-noi' => 'Despre noi',
     'servicii' => 'Servicii',
-    'produse' => 'Produse',
+    'servicii__tipar-offset' => 'Tipar offset',
+    'servicii__tipar-digital' => 'Tipar digital',
+    'servicii__ambalaje' => 'Ambalaje',
+    'servicii__creatie-si-design' => 'Creație și design',
+    'servicii__separatie-de-culoare-pe-placi-offset-kodak' => 'Separație de culoare pe plăci offset (Kodak)',
+    'servicii__servicii-de-stantare' => 'Ștanțare',
+    'servicii__inscriptionare-folio-emboss' => 'Inscripționare Folio / Emboss',
+    'servicii__gravura-laser' => 'Gravură laser',
+    'servicii__asistenta' => 'Asistență',
     'utilaje' => 'Utilaje',
     'certificari' => 'Certificări',
     'contact' => 'Contact',
@@ -52,19 +66,20 @@ $adaugate = 0;
 $actualizate = 0;
 $sarite = 0;
 
-foreach (PAGINI as $slug => $titlu) {
-    if ($doar !== '' && $doar !== $slug) {
+foreach (PAGINI as $fisier => $titlu) {
+    $slug = str_replace('__', '/', $fisier);
+    if ($doar !== '' && $doar !== $slug && $doar !== $fisier) {
         continue;
     }
 
-    $caleHtml = $dir . '/' . $slug . '.html';
+    $caleHtml = $dir . '/' . $fisier . '.html';
     if (!is_file($caleHtml)) {
         continue;
     }
 
     $html = (string) file_get_contents($caleHtml);
-    $css = is_file($dir . '/' . $slug . '.css') ? (string) file_get_contents($dir . '/' . $slug . '.css') : null;
-    $js = is_file($dir . '/' . $slug . '.js') ? (string) file_get_contents($dir . '/' . $slug . '.js') : null;
+    $css = is_file($dir . '/' . $fisier . '.css') ? (string) file_get_contents($dir . '/' . $fisier . '.css') : null;
+    $js = is_file($dir . '/' . $fisier . '.js') ? (string) file_get_contents($dir . '/' . $fisier . '.js') : null;
 
     $stmt = $db->prepare('SELECT id FROM pages WHERE slug = ? LIMIT 1');
     $stmt->execute([$slug]);

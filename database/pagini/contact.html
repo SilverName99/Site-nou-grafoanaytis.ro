@@ -1,0 +1,77 @@
+<section class="py-5 bg-body-tertiary">
+  <div class="container">
+    <h1 class="display-5 fw-normal mb-2">Contact</h1>
+    <p class="lead mb-0">Specialiștii noștri vă oferă soluțiile cele mai eficiente de promovare,
+    pentru un produs de calitate ireproșabilă, la costuri scăzute și în cel mai scurt timp.</p>
+  </div>
+</section>
+
+<section class="py-5">
+  <div class="container">
+    <div class="row g-5">
+      <div class="col-12 col-lg-5">
+        <h2 class="h4 mb-3">Date de contact</h2>
+
+        <p class="mb-1"><strong>Adresă</strong></p>
+        <p class="mb-3">Str. Văleni nr. 141 (incinta Romfarmachim)<br>Ploiești, România</p>
+
+        <p class="mb-1"><strong>Telefon</strong></p>
+        <p class="mb-3">
+          <a href="tel:0244510507">0244 510 507</a><br>
+          <!-- Numerele de mobil există pe site-ul actual, dar fără să indice persoana.
+               De asociat înainte de lansare: 0722 374 275, 0723 256 946, 0746 244 067
+               (Cornel Moise, Sorin Dumitrașcu, Cristina Moise). -->
+        </p>
+
+        <p class="mb-1"><strong>Email</strong></p>
+        <p class="mb-3"><a href="mailto:grafoanaytis@yahoo.com">grafoanaytis@yahoo.com</a></p>
+
+        <p class="mb-1"><strong>Program</strong></p>
+        <p class="mb-0">Luni – Vineri, 08:00 – 16:00</p>
+      </div>
+
+      <div class="col-12 col-lg-7">
+        <h2 class="h4 mb-3">Scrie-ne direct</h2>
+        <form id="formular-contact" novalidate>
+          <div class="row g-3">
+            <div class="col-12 col-md-6">
+              <label class="form-label" for="cf-nume">Nume <span aria-hidden="true">*</span></label>
+              <input class="form-control" id="cf-nume" name="name" required autocomplete="name">
+            </div>
+            <div class="col-12 col-md-6">
+              <label class="form-label" for="cf-email">Email <span aria-hidden="true">*</span></label>
+              <input class="form-control" id="cf-email" name="email" type="email" required autocomplete="email">
+            </div>
+            <div class="col-12 col-md-6">
+              <label class="form-label" for="cf-telefon">Telefon</label>
+              <input class="form-control" id="cf-telefon" name="phone" type="tel" autocomplete="tel">
+            </div>
+            <div class="col-12 col-md-6">
+              <label class="form-label" for="cf-serviciu">Serviciu <span aria-hidden="true">*</span></label>
+              <select class="form-select" id="cf-serviciu" name="subject" required>
+                <option value="">Alege un serviciu</option>
+                <option>Tipar offset</option>
+                <option>Tipar digital</option>
+                <option>Ambalaje</option>
+                <option>Creație și design</option>
+                <option>Separație de culoare (Kodak)</option>
+                <option>Ștanțare</option>
+                <option>Inscripționare Folio / Emboss</option>
+                <option>Gravură laser</option>
+                <option>Asistență</option>
+              </select>
+            </div>
+            <div class="col-12">
+              <label class="form-label" for="cf-mesaj">Mesaj <span aria-hidden="true">*</span></label>
+              <textarea class="form-control" id="cf-mesaj" name="message" rows="5" required></textarea>
+            </div>
+            <div class="col-12">
+              <button class="btn btn-primary fw-semibold px-4" type="submit">Trimite mesajul</button>
+            </div>
+          </div>
+          <p id="cf-raspuns" class="mt-3 mb-0" role="status" aria-live="polite"></p>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
