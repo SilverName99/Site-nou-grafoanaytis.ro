@@ -942,16 +942,24 @@ if (trim($designHeaderOutput) !== '' && preg_match($mobileMenuTokenPattern, $des
     </aside>
     <?php endif; ?>
 
-    <main class="container site-container">
+    <?php
+    /*
+     * <main> ocupă toată lățimea, fără clasa .container. Secțiunile paginilor
+     * își pun singure containerul înăuntru, ca benzile colorate și imaginile
+     * hero să se lipească de marginile ecranului, ca în modelul exonia.ro.
+     * Mesajele flash primesc propriul container, altfel ar atinge marginile.
+     */
+    ?>
+    <main class="site-container">
         <?php if (($message = \App\Support\Flash::get('success')) !== null): ?>
-            <section class="panel" style="border-color:#34d399;background:#ecfdf5;color:#065f46;">
-                <?= htmlspecialchars($message, ENT_QUOTES) ?>
-            </section>
+            <div class="container mt-3">
+                <div class="alert alert-success mb-0"><?= htmlspecialchars($message, ENT_QUOTES) ?></div>
+            </div>
         <?php endif; ?>
         <?php if (($message = \App\Support\Flash::get('error')) !== null): ?>
-            <section class="panel" style="border-color:#fca5a5;background:#fef2f2;color:#991b1b;">
-                <?= htmlspecialchars($message, ENT_QUOTES) ?>
-            </section>
+            <div class="container mt-3">
+                <div class="alert alert-danger mb-0"><?= htmlspecialchars($message, ENT_QUOTES) ?></div>
+            </div>
         <?php endif; ?>
         <?= $content ?>
     </main>

@@ -203,6 +203,45 @@ $currentGalleryBackUrl = $currentGalleryUrl . ($currentGalleryQuery !== '' ? ('?
             <h3>Adaugă media</h3>
             <button type="button" class="icon-btn" id="close-gallery-modal">✕</button>
         </div>
+        <form method="post" action="/admin/gallery/bulk-upload" class="form-grid"
+              enctype="multipart/form-data" id="gallery-bulk-form" style="margin-bottom:22px;">
+            <div class="field" style="grid-column:1/-1;">
+                <label class="upload-dropzone" for="gallery-bulk-files" id="gallery-bulk-dropzone">
+                    <input type="file" id="gallery-bulk-files" name="image_files[]"
+                           accept="image/*,video/mp4" multiple hidden>
+                    <span class="icon">⤴⤴</span>
+                    <strong>Încarcă mai multe fișiere odată</strong>
+                    <small>Selectează mai multe cu Ctrl / Shift, sau trage-le aici</small>
+                    <em id="gallery-bulk-count">Niciun fișier selectat</em>
+                </label>
+            </div>
+            <div class="field">
+                <label>Folder pentru toate</label>
+                <select name="folder_id">
+                    <option value="">Fără folder</option>
+                    <?php foreach ($folders as $folder): ?>
+                        <option value="<?= (int) $folder['id'] ?>"><?= htmlspecialchars((string) $folder['name'], ENT_QUOTES) ?></option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+            <div class="field">
+                <label style="display:flex;align-items:center;gap:8px;margin-top:26px;">
+                    <input type="checkbox" name="is_active" value="1" checked>
+                    Activează-le pe toate
+                </label>
+            </div>
+            <div style="grid-column:1/-1;display:flex;justify-content:space-between;align-items:center;gap:12px;">
+                <small style="color:#64748b;">
+                    Titlul fiecărei imagini se ia din numele fișierului. Le poți redenumi după încărcare.
+                </small>
+                <button class="btn" type="submit" id="gallery-bulk-submit" disabled>Încarcă toate</button>
+            </div>
+        </form>
+
+        <p style="margin:0 0 14px;color:#64748b;font-size:13px;">
+            Sau adaugă un singur fișier, cu titlu și alt text scrise de tine:
+        </p>
+
         <form method="post" action="/admin/gallery" class="form-grid" enctype="multipart/form-data" id="gallery-form">
             <div class="field" style="grid-column:1/-1;">
                 <label>Titlu *</label>
@@ -433,6 +472,54 @@ $currentGalleryBackUrl = $currentGalleryUrl . ($currentGalleryQuery !== '' ? ('?
         const selectedFile = e.dataTransfer.files[0];
         fileName.textContent = selectedFile.name;
         syncTitleFromFile(selectedFile);
+    });
+
+    /* Incarcare multipla: numara fisierele alese si activeaza butonul. */
+    const bulkInput = document.getElementById('gallery-bulk-files');
+    const bulkCount = document.getElementById('gallery-bulk-count');
+    const bulkZone = document.getElementById('gallery-bulk-dropzone');
+    const bulkSubmit = document.getElementById('gallery-bulk-submit');
+    const bulkForm = document.getElementById('gallery-bulk-form');
+
+    function arataNumarFisiere(fisiere) {
+        const n = fisiere ? fisiere.length : 0;
+        if (bulkCount) {
+            bulkCount.textContent = n === 0
+                ? 'Niciun fișier selectat'
+                : (n === 1 ? '1 fișier selectat' : n + ' fișiere selectate');
+        }
+        if (bulkSubmit) {
+            bulkSubmit.disabled = n === 0;
+            bulkSubmit.textContent = n > 1 ? ('Încarcă toate (' + n + ')') : 'Încarcă';
+        }
+    }
+
+    bulkInput?.addEventListener('change', () => arataNumarFisiere(bulkInput.files));
+
+    ['dragenter', 'dragover'].forEach((ev) => {
+        bulkZone?.addEventListener(ev, (e) => {
+            e.preventDefault();
+            bulkZone.classList.add('drag-over');
+        });
+    });
+    ['dragleave', 'drop'].forEach((ev) => {
+        bulkZone?.addEventListener(ev, (e) => {
+            e.preventDefault();
+            bulkZone.classList.remove('drag-over');
+        });
+    });
+    bulkZone?.addEventListener('drop', (e) => {
+        if (!e.dataTransfer?.files?.length) return;
+        bulkInput.files = e.dataTransfer.files;
+        arataNumarFisiere(bulkInput.files);
+    });
+
+    /* Incarcarea mai multor fisiere dureaza; fara semnal, utilizatorul da click iar. */
+    bulkForm?.addEventListener('submit', () => {
+        if (bulkSubmit) {
+            bulkSubmit.disabled = true;
+            bulkSubmit.textContent = 'Se încarcă…';
+        }
     });
 
     form?.addEventListener('submit', () => {

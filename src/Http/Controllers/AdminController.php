@@ -11755,6 +11755,122 @@ final class AdminController
         header('Location: /admin/gallery');
     }
 
+    /**
+     * Încarcă mai multe fișiere odată în galerie.
+     *
+     * Titlul fiecărei intrări se deduce din numele fișierului, fiindcă la o
+     * încărcare în masă nu are cine să scrie titluri unul câte unul.
+     *
+     * PHP limitează numărul de fișiere pe cerere prin max_file_uploads (de
+     * regulă 20) și dimensiunea totală prin post_max_size. Ce nu încape este
+     * raportat, ca să nu pară că s-au încărcat toate.
+     */
+    public function galleryBulkUpload(): void
+    {
+        if (!$this->guard()) {
+            return;
+        }
+
+        $db = $this->db();
+        if (!$db instanceof PDO) {
+            Flash::set('error', 'Conexiunea DB nu este disponibilă.');
+            header('Location: /admin/gallery');
+            return;
+        }
+        $this->ensureOptionalSchema($db);
+
+        $fisiere = $this->normalizeUploadedFiles($_FILES['image_files'] ?? null);
+        if ($fisiere === []) {
+            Flash::set('error', 'Nu a fost selectat niciun fișier.');
+            header('Location: /admin/gallery');
+            return;
+        }
+
+        $folderId = (int) ($_POST['folder_id'] ?? 0);
+        $isActive = isset($_POST['is_active']) ? 1 : 0;
+
+        $stmt = $db->prepare(
+            'INSERT INTO gallery_images (title, media_type, image_url, folder_id, alt_text, sort_order, is_active)
+             VALUES (:title, :media_type, :image_url, :folder_id, :alt_text, :sort_order, :is_active)'
+        );
+
+        $reusite = 0;
+        $esuate = [];
+
+        foreach ($fisiere as $index => $fisier) {
+            $numeOriginal = (string) ($fisier['name'] ?? '');
+            $baza = trim((string) pathinfo($numeOriginal, PATHINFO_FILENAME));
+            $titlu = trim((string) (preg_replace('/\s+/', ' ', str_replace(['-', '_'], ' ', $baza)) ?? ''));
+            if ($titlu === '') {
+                $titlu = 'Media ' . ($index + 1);
+            }
+
+            $incarcat = $this->handleMediaUpload($fisier, 'gallery', $baza !== '' ? $baza : $titlu);
+            if (!is_array($incarcat)) {
+                $esuate[] = $numeOriginal !== '' ? $numeOriginal : ('fișierul ' . ($index + 1));
+                continue;
+            }
+
+            $stmt->execute([
+                'title' => $titlu,
+                'media_type' => (string) $incarcat['media_type'],
+                'image_url' => (string) $incarcat['url'],
+                'folder_id' => $folderId > 0 ? $folderId : null,
+                'alt_text' => $titlu,
+                'sort_order' => 0,
+                'is_active' => $isActive,
+            ]);
+            $reusite++;
+        }
+
+        if ($reusite > 0) {
+            $mesaj = $reusite === 1 ? 'A fost încărcat 1 fișier.' : "Au fost încărcate {$reusite} fișiere.";
+            if ($esuate !== []) {
+                $mesaj .= ' Nu au putut fi încărcate: ' . implode(', ', array_slice($esuate, 0, 5))
+                    . (count($esuate) > 5 ? ' și altele' : '') . '.';
+            }
+            Flash::set('success', $mesaj);
+        } else {
+            Flash::set('error', 'Niciun fișier nu a putut fi încărcat. Verificați formatul și dimensiunea.');
+        }
+
+        header('Location: /admin/gallery');
+    }
+
+    /**
+     * Desface structura pe care o produce PHP pentru <input type="file" multiple>.
+     *
+     * PHP nu dă o listă de fișiere, ci un singur element cu câte un tablou pe
+     * fiecare cheie („name" e tablou, „tmp_name" e tablou și așa mai departe).
+     * Metoda le recompune în intrări separate, de forma pe care o așteaptă
+     * handleMediaUpload, sărind peste sloturile goale.
+     *
+     * @return list<array<string, mixed>>
+     */
+    private function normalizeUploadedFiles(mixed $camp): array
+    {
+        if (!is_array($camp) || !is_array($camp['name'] ?? null)) {
+            return [];
+        }
+
+        $rezultat = [];
+        foreach (array_keys($camp['name']) as $i) {
+            if ((int) ($camp['error'][$i] ?? UPLOAD_ERR_NO_FILE) === UPLOAD_ERR_NO_FILE) {
+                continue;
+            }
+            $rezultat[] = [
+                'name' => (string) ($camp['name'][$i] ?? ''),
+                'type' => (string) ($camp['type'][$i] ?? ''),
+                'tmp_name' => (string) ($camp['tmp_name'][$i] ?? ''),
+                'error' => (int) ($camp['error'][$i] ?? UPLOAD_ERR_OK),
+                'size' => (int) ($camp['size'][$i] ?? 0),
+            ];
+        }
+
+        return $rezultat;
+    }
+
+
     public function createGalleryFolder(): void
     {
         if (!$this->guard()) {

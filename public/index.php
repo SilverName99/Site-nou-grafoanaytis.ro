@@ -311,6 +311,7 @@ $router->post('/admin/gallery/folders', [AdminController::class, 'createGalleryF
 $router->post('/admin/gallery/folders/{id}/delete', [AdminController::class, 'deleteGalleryFolder']);
 $router->post('/admin/gallery/move-folder', [AdminController::class, 'moveGalleryItemToFolder']);
 $router->post('/admin/gallery', [AdminController::class, 'galleryCreate']);
+$router->post('/admin/gallery/bulk-upload', [AdminController::class, 'galleryBulkUpload']);
 $router->post('/admin/gallery/{id}/update', [AdminController::class, 'galleryUpdate']);
 $router->post('/admin/gallery/{id}/delete', [AdminController::class, 'galleryDelete']);
 $router->post('/admin/gallery/bulk-delete', [AdminController::class, 'galleryBulkDelete']);
