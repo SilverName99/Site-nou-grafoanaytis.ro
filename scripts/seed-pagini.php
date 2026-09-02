@@ -39,6 +39,7 @@ const PAGINI = [
     'acasa' => 'Acasă',
     'despre-noi' => 'Despre noi',
     'servicii' => 'Servicii',
+    'produse' => 'Produse',
     'servicii__tipar-offset' => 'Tipar offset',
     'servicii__tipar-digital' => 'Tipar digital',
     'servicii__ambalaje' => 'Ambalaje',

@@ -31,6 +31,7 @@ $meniu = [
     ['Acasă', '/'],
     ['Despre noi', '/despre-noi'],
     ['Servicii', '/servicii'],
+    ['Produse', '/produse'],
     ['Utilaje', '/utilaje'],
     ['Certificări', '/certificari'],
     ['Contact', '/contact'],
