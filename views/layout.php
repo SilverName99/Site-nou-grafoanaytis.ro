@@ -1858,5 +1858,7 @@ if (trim($designHeaderOutput) !== '' && preg_match($mobileMenuTokenPattern, $des
     </script>
 <?php $bsJsVersion = @filemtime(__DIR__ . '/../public/assets/vendor/bootstrap/js/bootstrap.bundle.min.js') ?: time(); ?>
 <script src="/assets/vendor/bootstrap/js/bootstrap.bundle.min.js?v=<?= $bsJsVersion ?>" defer></script>
+<?php $imgJsVersion = @filemtime(__DIR__ . '/../public/assets/js/imagini.js') ?: time(); ?>
+<script src="/assets/js/imagini.js?v=<?= $imgJsVersion ?>" defer></script>
 </body>
 </html>
