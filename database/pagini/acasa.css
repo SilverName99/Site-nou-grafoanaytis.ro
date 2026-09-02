@@ -1,8 +1,25 @@
 /* Pagina de start. Culorile vin din tokens.css; aici doar layout. */
 
-#hero { min-height: 68vh; display: flex; align-items: center; }
-#hero .hero-media { position: absolute; inset: 0; }
-#hero .hero-media img { width: 100%; height: 100%; object-fit: cover; }
+/*
+ * Înălțimea hero-ului. Se schimbă doar plafonul: la 68vh curat, pe un ecran
+ * înalt hero-ul urca la 734px și împingea tot conținutul sub linia de pliere.
+ * Modelul stă fix la 640px pe desktop.
+ */
+#hero { min-height: clamp(440px, 68vh, 640px); display: flex; align-items: center; }
+
+/* Fundalul închis ține locul fotografiei cât timp aceasta lipsește. */
+#hero .hero-media { position: absolute; inset: 0; background: #2b2b2b; }
+
+/*
+ * display:block e partea care contează: fără el, o imagine care nu se încarcă
+ * rămâne element inline și ignoră width și height, colapsând într-un dreptunghi
+ * mic în colț. color:transparent ascunde textul alternativ de ochi, nu și de
+ * cititoarele de ecran.
+ */
+#hero .hero-media img {
+  display: block; width: 100%; height: 100%;
+  object-fit: cover; color: transparent;
+}
 /*
  * Voal peste imagine: titlul hero este alb, iar fără el contrastul depinde de
  * ce se nimerește în fotografie. Voalul îl face previzibil.
@@ -13,10 +30,36 @@
 }
 #hero .hero-continut { padding-block: clamp(3rem, 10vw, 7rem); }
 
+/*
+ * Titlul hero urcă o treaptă pe scara Bootstrap, de la 64px la 72px, cât are
+ * modelul. Măsura limitată oprește ruptura necontrolată: fără ea, „2004"
+ * rămânea singur pe al doilea rând între 1024 și 1366px.
+ */
+#hero h1 {
+  font-size: clamp(2.5rem, 1.5rem + 3.2vw, 4.5rem);
+  max-width: 18ch;
+  margin-inline: auto;
+  text-wrap: balance;
+}
+
+/* Subtitlul crește fluid spre 28px. O valoare fixă ar da patru rânduri pe telefon. */
+#hero .h4 { font-size: clamp(1.25rem, 1rem + 0.8vw, 1.75rem); }
+
+/* 38px e înălțimea implicită Bootstrap, sub pragul de 44px pentru atingere. */
+#hero .btn { min-height: 50px; display: inline-flex; align-items: center; }
 #hero .btn-outline-light:hover { color: var(--ink); }
 
-.categorie { transition: transform .18s ease, box-shadow .18s ease; color: var(--ink); }
-.categorie:hover, .categorie:focus-visible { transform: translateY(-4px); }
+/*
+ * overflow:hidden taie colțul imaginii la raza cardului. Fără el, cardul e
+ * rotunjit jos și pătrat sus — se vede la prima fotografie cu colț închis.
+ */
+.categorie { transition: transform .18s ease, box-shadow .18s ease; color: var(--ink); overflow: hidden; }
+
+/* Umbra cerea !important: .shadow-sm din Bootstrap e declarată așa. */
+.categorie:hover, .categorie:focus-visible {
+  transform: translateY(-4px);
+  box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .12) !important;
+}
 .categorie .card-body { border-top: 3px solid var(--fill-brand); }
 
 /* Logourile de certificare: gri în repaus, culoare la interacțiune. */

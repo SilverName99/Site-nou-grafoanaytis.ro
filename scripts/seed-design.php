@@ -67,7 +67,7 @@ $header = <<<HTML
 HTML;
 
 $footer = <<<'HTML'
-<footer class="bg-dark text-white-50 py-5 mt-5">
+<footer class="bg-dark text-white text-opacity-75 py-5 mt-5">
   <div class="container">
     <div class="row g-4">
       <div class="col-12 col-md-5">
@@ -84,7 +84,7 @@ $footer = <<<'HTML'
           <li><a class="link-light link-underline-opacity-0 link-underline-opacity-100-hover" href="/certificari">Certificări</a></li>
         </ul>
       </div>
-      <div class="col-6 col-md-4">
+      <div class="col-12 col-md-4">
         <p class="text-white fw-semibold mb-2">Contact</p>
         <p class="mb-1">Str. Văleni nr. 141 (incinta Romfarmachim)<br>Ploiești, România</p>
         <p class="mb-1"><a class="link-light" href="tel:0244510507">0244 510 507</a></p>
@@ -93,7 +93,15 @@ $footer = <<<'HTML'
       </div>
     </div>
     <hr class="border-secondary my-4">
-    <p class="small mb-0">&copy; <?= date('Y') ?> Grafoanaytis. Toate drepturile rezervate.</p>
+    <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
+      <p class="small mb-0">&copy; {{an}} Grafoanaytis. Toate drepturile rezervate.</p>
+      <!-- Autorități de protecție a consumatorului. Nu sunt certificări ale
+           tipografiei, de aceea stau aici, nu în secțiunea de certificări. -->
+      <div class="d-flex align-items-center gap-3">
+        <img src="/uploads/gallery/autoritate-anpc.webp" alt="ANPC" height="34" loading="lazy">
+        <img src="/uploads/gallery/autoritate-infocons.webp" alt="InfoCons" height="34" loading="lazy">
+      </div>
+    </div>
   </div>
 </footer>
 HTML;

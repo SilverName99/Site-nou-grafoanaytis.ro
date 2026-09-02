@@ -15,8 +15,11 @@
 
 #hero .btn-outline-light:hover { color: var(--ink); }
 
-.categorie { transition: transform .18s ease, box-shadow .18s ease; color: var(--ink); }
-.categorie:hover, .categorie:focus-visible { transform: translateY(-4px); }
+.categorie { transition: transform .18s ease, box-shadow .18s ease; color: var(--ink); overflow: hidden; }
+.categorie:hover, .categorie:focus-visible {
+  transform: translateY(-4px);
+  box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .12) !important;
+}
 .categorie .card-body { border-top: 3px solid var(--fill-brand); }
 
 /* Logourile de certificare: gri în repaus, culoare la interacțiune. */

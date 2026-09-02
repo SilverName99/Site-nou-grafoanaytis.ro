@@ -154,3 +154,114 @@ h1, h2, h3, h4, h5, h6, .navbar-brand, .btn {
     #f1f2f4 14px, #f1f2f4 28px
   );
 }
+
+/* ══════════════════════════════════════════════════════════════════
+   Corecturi din compararea cu modelul exonia.ro
+   Valorile sunt măsurate pe ambele site-uri, nu estimate.
+   ══════════════════════════════════════════════════════════════════ */
+
+/*
+ * Măsura textului.
+ *
+ * WCAG 2.1 SC 1.4.8 cere text de corp sub 80 de caractere pe rând. Textele
+ * introductive rulau pe toată lățimea containerului: 147 de caractere pe
+ * /contact, 143 pe /produse — o panglică de text pe tot ecranul.
+ *
+ * Unitatea „ch" este lățimea cifrei zero, cu circa 39% mai lată decât
+ * caracterul mediu dintr-un text românesc scris cu Rubik. De aceea 48ch
+ * înseamnă în jur de 72 de caractere reale, nu 48.
+ */
+.custom-page-content .lead {
+  max-width: 48ch;
+}
+
+.custom-page-content p {
+  max-width: 54ch;
+}
+
+/* Fără asta, un text centrat rămâne lipit la stânga când primește max-width. */
+.custom-page-content .text-center p,
+.custom-page-content .text-center .lead {
+  margin-inline: auto;
+}
+
+/* Proza lungă respiră mai mult; etichetele de o linie rămân strânse. */
+.custom-page-content p:not(.small):not(.mb-0) {
+  line-height: 1.6;
+}
+
+/*
+ * Contrast.
+ *
+ * Bootstrap dă .text-secondary culoarea #6C757D, adică 4,69:1 pe alb — exact
+ * la limita AA. Tokenul propriu urcă la 7,73:1 fără să schimbe mărimea.
+ */
+.text-secondary {
+  color: var(--ink-muted) !important;
+}
+
+/*
+ * Subsolul.
+ *
+ * Modelul folosește un negru cald; .bg-dark din Bootstrap este un gri-albastru
+ * rece, care sub portocaliu arată murdar. Culoarea se schimbă prin variabila
+ * Bootstrap, nu în markup: subsolul este editabil din dashboard, iar o regulă
+ * pusă în markup s-ar pierde la prima editare.
+ */
+footer.bg-dark {
+  --bs-dark-rgb: 30, 26, 23;
+}
+
+/*
+ * Butoane.
+ *
+ * Modelul compilează Bootstrap cu colțuri drepte. Înălțimea implicită de 38px
+ * nu este o alegere, ci valoarea din cutie, iar pentru o țintă de atingere pe
+ * telefon pragul recomandat este 44px.
+ */
+.btn {
+  border-radius: 0;
+}
+
+/*
+ * 44px este pragul recomandat pentru o țintă de atingere pe telefon. Butoanele
+ * rămâneau la 38px, valoarea implicită Bootstrap, adică sub prag peste tot în
+ * afară de hero. Butoanele care nu sunt ținte de atingere — legăturile de tip
+ * text — nu sunt afectate vizual, fiindcă oricum nu au fundal.
+ */
+.btn {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Etichetele de acțiune cu majuscule, ca .btn-link, care e deja așa. */
+a.btn-primary,
+a.btn-outline-light,
+a.btn-light {
+  text-transform: uppercase;
+  letter-spacing: .02em;
+}
+
+/*
+ * Antetul.
+ *
+ * Padding-ul vertical era cel implicit din Bootstrap, 8px, ceea ce dădea un
+ * antet de 57px față de 94px la model. Creșterea e pe rampă: pe telefon
+ * modelul stă la 59px, deci acolo nu are rost să urcăm.
+ */
+@media (min-width: 992px) {
+  .navbar {
+    --bs-navbar-padding-y: 1.25rem;
+  }
+}
+
+/*
+ * Adresele de email nu au unde să se rupă și ies din coloană pe ecran îngust.
+ * Fără asta, pagina capătă derulare orizontală pe telefon.
+ */
+a[href^="mailto:"],
+a[href^="tel:"] {
+  overflow-wrap: anywhere;
+}

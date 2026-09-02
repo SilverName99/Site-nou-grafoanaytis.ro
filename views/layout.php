@@ -966,7 +966,16 @@ if (trim($designHeaderOutput) !== '' && preg_match($mobileMenuTokenPattern, $des
     </main>
 
     <?php if (trim($designFooter) !== ''): ?>
-        <?= $designFooter ?>
+        <?php
+        /*
+         * Subsolul este HTML salvat în baza de date, deci PHP-ul din el nu se
+         * execută. Un `<?= date('Y') ?>` scris acolo ajunge literal în pagină,
+         * iar browserul îl înghite ca pe un comentariu — așa a rămas anul lipsă
+         * din nota de copyright. Marcajul {{an}} rezolvă asta fără să ceară
+         * re-seed în fiecare ianuarie.
+         */
+        echo str_replace('{{an}}', date('Y'), $designFooter);
+        ?>
     <?php endif; ?>
     <?php
     $designJs = trim(implode("\n", array_filter([
