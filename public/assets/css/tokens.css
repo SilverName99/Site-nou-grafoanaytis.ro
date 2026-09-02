@@ -1,0 +1,91 @@
+/*
+ * Tokeni de culoare — grafoanaytis.ro
+ *
+ * Culoarea de brand este portocaliul pal #FFB877, aleasă în locul galbenului
+ * #ffd300 din modelul exonia.ro.
+ *
+ * Toată paleta pleacă din --brand-400. Spre deosebire de tema modelului, unde
+ * galbenul apare scris direct în CSS în mai multe locuri (triunghiuri, iconițe),
+ * aici culoarea există într-un singur loc, deci o schimbare viitoare de nuanță
+ * se face modificând aceste variabile.
+ *
+ * Contrastele de mai jos sunt măsurate, nu estimate.
+ */
+
+:root {
+  /* Scala de brand */
+  --brand-050: #FFF3E7;
+  --brand-100: #FFE5CE;
+  --brand-200: #FFD5AF;
+  --brand-300: #FFC591;
+  --brand-400: #FFB877;  /* culoarea de brand */
+  --brand-500: #FFA553;
+  --brand-600: #FF9330;
+  --brand-700: #FF7D07;
+  --brand-800: #DD6A00;
+  --brand-900: #B45600;
+
+  /* Neutre */
+  --ink:        #212529;
+  --ink-muted:  #52525B;
+  --line:       #DEE2E6;
+  --surface:    #FFFFFF;
+  --surface-alt:#F8F9FA;
+
+  /*
+   * Roluri. Portocaliul deschis este suficient de luminos încât să nu poată fi
+   * folosit ca text pe alb: #FFB877 pe alb dă doar 1,70:1. De aceea umplerea și
+   * textul sunt roluri separate, cu nuanțe diferite.
+   */
+
+  /* Umplere: bandă/buton portocaliu cu text închis deasupra — 9,09:1 */
+  --fill-brand:      var(--brand-400);
+  --fill-brand-hover:var(--brand-500);
+  --fill-brand-active:var(--brand-600);
+  --on-fill-brand:   var(--ink);
+
+  /* Text mare și titluri pe fundal alb — 3,42:1 (prag 3,0 pentru text mare) */
+  --text-brand-large: var(--brand-800);
+
+  /* Linkuri și text mic pe fundal alb — 4,92:1 (prag 4,5) */
+  --text-brand:       var(--brand-900);
+  --text-brand-hover: var(--brand-800);
+
+  /* Contur de focus vizibil pe ambele fundaluri */
+  --focus-ring: 0 0 0 0.25rem rgba(255, 184, 119, 0.55);
+}
+
+/* Punte către Bootstrap 5, ca utilitarele .btn-primary / .bg-primary să preia brandul. */
+:root {
+  --bs-primary: var(--brand-400);
+  --bs-primary-rgb: 255, 184, 119;
+  --bs-link-color: var(--text-brand);
+  --bs-link-color-rgb: 180, 86, 0;
+  --bs-link-hover-color: var(--text-brand-hover);
+}
+
+.btn-primary {
+  --bs-btn-color: var(--on-fill-brand);
+  --bs-btn-bg: var(--fill-brand);
+  --bs-btn-border-color: var(--fill-brand);
+  --bs-btn-hover-color: var(--on-fill-brand);
+  --bs-btn-hover-bg: var(--fill-brand-hover);
+  --bs-btn-hover-border-color: var(--fill-brand-hover);
+  --bs-btn-active-color: var(--on-fill-brand);
+  --bs-btn-active-bg: var(--fill-brand-active);
+  --bs-btn-active-border-color: var(--fill-brand-active);
+  --bs-btn-focus-shadow-rgb: 255, 184, 119;
+}
+
+/* Secțiunile pe fundal de brand (ex. banda video de pe prima pagină). */
+.bg-brand { background-color: var(--fill-brand); color: var(--on-fill-brand); }
+.bg-brand a:not(.btn) { color: var(--ink); text-decoration: underline; }
+
+.text-brand { color: var(--text-brand); }
+.text-brand-lg { color: var(--text-brand-large); }
+
+:where(a, button, [tabindex]):focus-visible {
+  outline: 2px solid var(--brand-900);
+  outline-offset: 2px;
+  box-shadow: var(--focus-ring);
+}

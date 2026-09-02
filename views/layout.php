@@ -301,8 +301,15 @@ if (trim($designHeaderOutput) !== '' && preg_match($mobileMenuTokenPattern, $des
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
-    <?php $cssVersion = @filemtime(__DIR__ . '/../public/assets/css/app.css') ?: time(); ?>
+    <?php
+    $cssVersion = @filemtime(__DIR__ . '/../public/assets/css/app.css') ?: time();
+    $bootstrapVersion = @filemtime(__DIR__ . '/../public/assets/vendor/bootstrap/css/bootstrap.min.css') ?: time();
+    $tokensVersion = @filemtime(__DIR__ . '/../public/assets/css/tokens.css') ?: time();
+    ?>
+    <link rel="stylesheet" href="/assets/vendor/bootstrap/css/bootstrap.min.css?v=<?= $bootstrapVersion ?>">
     <link rel="stylesheet" href="/assets/css/app.css?v=<?= $cssVersion ?><?= $assetVersionQuery ?>">
+    <?php /* Tokenii vin ultimii: suprascriu atât Bootstrap, cât și app.css. */ ?>
+    <link rel="stylesheet" href="/assets/css/tokens.css?v=<?= $tokensVersion ?>">
     <?php
     $designCss = trim(implode("\n", array_filter([
         $designHeaderCss,
@@ -1834,5 +1841,7 @@ if (trim($designHeaderOutput) !== '' && preg_match($mobileMenuTokenPattern, $des
             });
         })();
     </script>
+<?php $bsJsVersion = @filemtime(__DIR__ . '/../public/assets/vendor/bootstrap/js/bootstrap.bundle.min.js') ?: time(); ?>
+<script src="/assets/vendor/bootstrap/js/bootstrap.bundle.min.js?v=<?= $bsJsVersion ?>" defer></script>
 </body>
 </html>
