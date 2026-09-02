@@ -27,3 +27,33 @@
   .categorie, .certificare { transition: none; }
   .categorie:hover { transform: none; }
 }
+
+/* Banda de clienți */
+.client-placa {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 14px;
+  height: 84px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color .18s ease, transform .18s ease;
+}
+.client-placa img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  /* Logo-uri din industrii diferite, cu culori care se bat între ele. În gri
+     citești firmele ca pe o listă; culoarea revine la interacțiune. */
+  filter: grayscale(1);
+  opacity: .78;
+  transition: filter .18s ease, opacity .18s ease;
+}
+.client-placa:hover { border-color: var(--fill-brand); transform: translateY(-2px); }
+.client-placa:hover img { filter: none; opacity: 1; }
+
+@media (prefers-reduced-motion: reduce) {
+  .client-placa, .client-placa img { transition: none; }
+  .client-placa:hover { transform: none; }
+}

@@ -50,7 +50,7 @@ $header = <<<HTML
 <nav class="navbar navbar-expand-lg bg-white border-bottom sticky-top" aria-label="Navigare principală">
   <div class="container">
     <a class="navbar-brand fw-bold" href="/">
-      <img src="/uploads/gallery/grafoanaytis-logo.png" alt="Grafoanaytis" height="38"
+      <img src="/uploads/gallery/grafoanaytis-logo.webp" alt="Grafoanaytis" height="38"
            onerror="this.replaceWith(document.createTextNode('Grafoanaytis'))">
     </a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#meniu-principal"

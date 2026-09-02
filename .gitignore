@@ -4,3 +4,7 @@
 /.vscode/
 /storage/logs/
 *.log
+
+# Continut incarcat de client (imagini, filme). Ajunge pe server prin galerie,
+# nu prin git: sunt fisiere mari, care se schimba des si nu sunt cod.
+/public/uploads/
