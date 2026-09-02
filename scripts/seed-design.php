@@ -97,19 +97,36 @@ $footer = <<<'HTML'
 </footer>
 HTML;
 
-$valori = [
+/*
+ * Continut editabil de client: aici protectia are sens, ca o rulare repetata
+ * sa nu stearga ce a schimbat el din Design Site.
+ */
+$continut = [
     'design_header_html' => $header,
-    'design_menu_html' => '',
+    'design_menu_html' => '<a href="/">Acasă</a><a href="/despre-noi">Despre noi</a><a href="/servicii">Servicii</a><a href="/utilaje">Utilaje</a><a href="/certificari">Certificări</a><a href="/contact">Contact</a>',
     'design_footer_html' => $footer,
-    // Elemente ale magazinului din proiectul anterior: nu au ce căuta pe un
-    // site de prezentare.
+];
+
+/*
+ * Comutatoare de magazin mostenite din proiectul anterior. Se scriu mereu.
+ *
+ * Nu sunt continut, ci decizii care tin de tipul site-ului: un site de
+ * prezentare nu are cos si nu are banda de oferte. In plus, scripts/seed.php
+ * le lasa pe „1", asa ca la o instalare noua protectia de mai sus le-ar
+ * confunda cu editari facute de client si le-ar sari, lasand cosul flotant
+ * si tabul de oferte vizibile pe site.
+ */
+$comutatoare = [
     'floating_cart_enabled' => '0',
     'store_bbd_sidebar_enabled' => '0',
 ];
 
 $existente = Settings::all($db);
-$deScris = [];
-foreach ($valori as $cheie => $valoare) {
+$deScris = $comutatoare;
+foreach ($comutatoare as $cheie => $valoare) {
+    echo "scris:       {$cheie}\n";
+}
+foreach ($continut as $cheie => $valoare) {
     $curent = (string) ($existente[$cheie] ?? '');
     if ($curent !== '' && !$suprascrie) {
         echo "sărit:       {$cheie} (are deja valoare; folosiți --suprascrie)\n";
