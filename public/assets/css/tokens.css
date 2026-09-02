@@ -89,3 +89,48 @@
   outline-offset: 2px;
   box-shadow: var(--focus-ring);
 }
+
+/*
+ * Tipografie
+ *
+ * Modelul exonia.ro folosește Rubik la 16px, cu meniul scris cu majuscule la
+ * greutatea 500 și elementul activ la 800. Valorile sunt măsurate din pagina
+ * lor, nu estimate.
+ */
+
+:root {
+  --font-baza: Rubik, system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
+  --nav-culoare: #1B1817;
+}
+
+body {
+  font-family: var(--font-baza);
+  font-size: 16px;
+}
+
+h1, h2, h3, h4, h5, h6, .navbar-brand, .btn {
+  font-family: var(--font-baza);
+}
+
+/* Meniul principal */
+.navbar-nav .nav-link {
+  text-transform: uppercase;
+  font-weight: 500;
+  font-size: 1rem;
+  color: var(--nav-culoare);
+}
+
+.navbar-nav .nav-link:hover,
+.navbar-nav .nav-link:focus-visible {
+  color: var(--text-brand);
+}
+
+/*
+ * Pagina curentă. Modelul o colorează cu galbenul de brand, ceea ce pe fundal
+ * alb dă un contrast de circa 1,6:1 — sub orice prag de lizibilitate. Aici
+ * semnalul îl dau greutatea 800 și portocaliul închis, care trece pragul AA.
+ */
+.navbar-nav .nav-link.active {
+  font-weight: 800;
+  color: var(--text-brand);
+}

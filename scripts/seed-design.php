@@ -98,6 +98,35 @@ $footer = <<<'HTML'
 </footer>
 HTML;
 
+$headerJs = <<<'JS'
+/*
+ * Marcheaza in meniu pagina pe care se afla vizitatorul.
+ *
+ * Headerul este HTML salvat in setari, deci nu poate decide singur ce pagina
+ * este activa. Comparatia se face pe calea din adresa, iar potrivirea pe
+ * prefix acopera si subpaginile: /servicii/tipar-offset activeaza „Servicii".
+ */
+(function () {
+  var cale = window.location.pathname.replace(/\/+$/, '') || '/';
+  var linkuri = document.querySelectorAll('.navbar-nav .nav-link');
+  var potrivit = null;
+
+  linkuri.forEach(function (link) {
+    var href = (link.getAttribute('href') || '').replace(/\/+$/, '') || '/';
+    if (href === cale) {
+      potrivit = link;
+    } else if (href !== '/' && cale.indexOf(href + '/') === 0 && !potrivit) {
+      potrivit = link;
+    }
+  });
+
+  if (potrivit) {
+    potrivit.classList.add('active');
+    potrivit.setAttribute('aria-current', 'page');
+  }
+})();
+JS;
+
 /*
  * Continut editabil de client: aici protectia are sens, ca o rulare repetata
  * sa nu stearga ce a schimbat el din Design Site.
@@ -106,6 +135,7 @@ $continut = [
     'design_header_html' => $header,
     'design_menu_html' => '<a href="/">Acasă</a><a href="/despre-noi">Despre noi</a><a href="/servicii">Servicii</a><a href="/utilaje">Utilaje</a><a href="/certificari">Certificări</a><a href="/contact">Contact</a>',
     'design_footer_html' => $footer,
+    'design_header_js' => $headerJs,
 ];
 
 /*
