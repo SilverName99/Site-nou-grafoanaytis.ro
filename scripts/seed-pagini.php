@@ -20,6 +20,7 @@ declare(strict_types=1);
 require_once __DIR__ . '/../bootstrap.php';
 
 use App\Support\Database;
+use App\Support\ResponseCache;
 
 $config = require __DIR__ . '/../config/app.php';
 $db = Database::connection($config['db']);
@@ -62,6 +63,43 @@ foreach ($argv as $arg) {
     }
 }
 
+/**
+ * Rândurile din „pages" în care trebuie scrisă o pagină.
+ *
+ * Pentru pagini obișnuite este unul singur, găsit după slug. Pagina de start
+ * face excepție: SiteController o caută cu
+ *
+ *     WHERE slug = '' OR LOWER(slug) IN ('acasa', 'home')
+ *
+ * și o preferă pe cea cu slug gol. O editare din dashboard care golește slug-ul
+ * creează astfel o a doua pagină de start — iar scriptul, care căuta doar după
+ * „acasa", scria într-un rând pe care site-ul nu îl mai afișa. Se vedea exact
+ * ca o implementare care „nu a ajuns pe server": git pull mergea, seed-ul
+ * raporta succes, pagina rămânea veche.
+ *
+ * De aceea, pentru pagina de start scriem în toate rândurile pe care le-ar
+ * putea alege site-ul. Nu ștergem nimic: dublura rămâne, dar cu același
+ * conținut, deci oricare ar fi aleasă, vizitatorul vede pagina din git.
+ *
+ * @return list<int>
+ */
+function idsDeScris(PDO $db, string $slug): array
+{
+    if ($slug === 'acasa') {
+        $stmt = $db->query(
+            "SELECT id FROM pages WHERE slug = '' OR LOWER(slug) IN ('acasa', 'home')"
+        );
+
+        return $stmt ? array_map('intval', $stmt->fetchAll(PDO::FETCH_COLUMN)) : [];
+    }
+
+    $stmt = $db->prepare('SELECT id FROM pages WHERE slug = ? LIMIT 1');
+    $stmt->execute([$slug]);
+    $id = $stmt->fetchColumn();
+
+    return $id === false ? [] : [(int) $id];
+}
+
 $dir = __DIR__ . '/../database/pagini';
 $adaugate = 0;
 $actualizate = 0;
@@ -82,11 +120,9 @@ foreach (PAGINI as $fisier => $titlu) {
     $css = is_file($dir . '/' . $fisier . '.css') ? (string) file_get_contents($dir . '/' . $fisier . '.css') : null;
     $js = is_file($dir . '/' . $fisier . '.js') ? (string) file_get_contents($dir . '/' . $fisier . '.js') : null;
 
-    $stmt = $db->prepare('SELECT id FROM pages WHERE slug = ? LIMIT 1');
-    $stmt->execute([$slug]);
-    $id = $stmt->fetchColumn();
+    $ids = idsDeScris($db, $slug);
 
-    if ($id === false) {
+    if ($ids === []) {
         $db->prepare(
             'INSERT INTO pages (title, slug, html_content, css_content, js_content, is_published)
              VALUES (?, ?, ?, ?, ?, 1)'
@@ -102,13 +138,29 @@ foreach (PAGINI as $fisier => $titlu) {
         continue;
     }
 
-    $db->prepare(
+    $update = $db->prepare(
         'UPDATE pages
          SET title = ?, html_content = ?, css_content = ?, js_content = ?, deleted_at = NULL
          WHERE id = ?'
-    )->execute([$titlu, $html, $css, $js, $id]);
-    echo "actualizat:  /{$slug}\n";
+    );
+    foreach ($ids as $id) {
+        $update->execute([$titlu, $html, $css, $js, $id]);
+    }
+    $inPlus = count($ids) > 1 ? ' (' . count($ids) . ' rânduri)' : '';
+    echo "actualizat:  /{$slug}{$inPlus}\n";
     $actualizate++;
+}
+
+/*
+ * Golim cache-ul de pagini.
+ *
+ * Site-ul poate servi HTML salvat pe disc. Fără golire, o implementare corectă
+ * ar rămâne nevăzută până la expirarea cache-ului — încă un mod în care „am dat
+ * git pull și seed, dar tot nu se vede".
+ */
+$golite = ResponseCache::purgePageCache();
+if ($golite > 0) {
+    echo "\ncache: {$golite} pagini golite din cache.\n";
 }
 
 echo "\nGata: {$adaugate} adăugate, {$actualizate} actualizate, {$sarite} sărite.\n";

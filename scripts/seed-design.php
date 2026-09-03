@@ -16,6 +16,7 @@ declare(strict_types=1);
 require_once __DIR__ . '/../bootstrap.php';
 
 use App\Support\Database;
+use App\Support\ResponseCache;
 use App\Support\Settings;
 
 $config = require __DIR__ . '/../config/app.php';
@@ -194,6 +195,12 @@ foreach ($continut as $cheie => $valoare) {
 
 if ($deScris !== []) {
     Settings::save($db, $deScris);
+}
+
+/* Antetul și subsolul intră în HTML-ul salvat pe disc, deci și el trebuie golit. */
+$golite = ResponseCache::purgePageCache();
+if ($golite > 0) {
+    echo "cache:       {$golite} pagini golite din cache.\n";
 }
 
 echo "\nGata: " . count($deScris) . " setări scrise.\n";
