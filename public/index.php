@@ -115,7 +115,13 @@ $router->get('/health', static function (): void {
 $router->get('/robots\.txt', [SiteController::class, 'robots']);
 
 $router->get('/', [SiteController::class, 'home']);
-$router->get('/magazin', [SiteController::class, 'shop']);
+/*
+ * Catalogul stă la /produse, adresa din meniu. Ruta veche rămâne și trimite
+ * acolo, ca legăturile deja date și eventualele indexări să nu cadă în gol.
+ */
+$router->get('/magazin', static function (): void {
+    header('Location: /produse', true, 301);
+});
 $router->get('/blog', [SiteController::class, 'blog']);
 $router->get('/blog/{slug}', [SiteController::class, 'blogPost']);
 $router->get('/api/blog/posts', [SiteController::class, 'blogPostsApi']);

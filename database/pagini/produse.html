@@ -1,93 +1,33 @@
+<!--
+  Catalogul de produse.
+
+  Marcajul de catalog aduce lista cu filtre pe categorii și sortare. Nu se
+  scrie în comentariu: înlocuirea se face pe tot textul paginii, deci un
+  marcaj citat aici ar aduce catalogul a doua oară.
+
+  Paginile de serviciu trimit aici cu ?categorie=..., deci fiecare serviciu își
+  arată produsele fără să existe o pagină separată pentru fiecare.
+-->
 <section class="py-5 bg-body-tertiary">
   <div class="container">
     <h1 class="display-5 fw-normal mb-2">Produsele noastre</h1>
     <p class="lead mb-0">Ambalaje pentru produse alimentare, pharma și cosmetice, textile și
-    industriale, cu finisaje superioare: lăcuire, plastifiere, emboss și folio.</p>
+    industriale, cu finisaje superioare: lăcuire, plastifiere, emboss și folio. Alegeți un produs
+    și cereți mostre și ofertă de preț.</p>
   </div>
 </section>
 
 <section class="py-5">
   <div class="container">
-    <div class="row g-4">
-      <div class="col-12 col-md-6 col-lg-4">
-        <a href="/contact" class="card h-100 text-decoration-none border-0 shadow-sm categorie">
-          <div class="ratio ratio-4x3">
-            <img src="/uploads/gallery/produse-alimentare.webp" alt="Ambalaje alimentare" class="object-fit-cover" loading="lazy">
-          </div>
-          <div class="card-body position-relative">
-            <h2 class="h5 mb-1">Ambalaje alimentare</h2>
-            <a class="stretched-link" href="/magazin?categorie=Ambalaje%20alimentare" aria-label="Vezi produsele din categoria Ambalaje alimentare"></a>
-            <p class="text-secondary small mb-0">Cutii pentru cofetărie, dulciuri, ceaiuri, produse de patiserie.</p>
-          </div>
-        </a>
-      </div>
-      <div class="col-12 col-md-6 col-lg-4">
-        <a href="/contact" class="card h-100 text-decoration-none border-0 shadow-sm categorie">
-          <div class="ratio ratio-4x3">
-            <img src="/uploads/gallery/produse-cosmetice.webp" alt="Ambalaje cosmetice" class="object-fit-cover" loading="lazy">
-          </div>
-          <div class="card-body position-relative">
-            <h2 class="h5 mb-1">Ambalaje cosmetice</h2>
-            <a class="stretched-link" href="/magazin?categorie=Ambalaje%20cosmetice" aria-label="Vezi produsele din categoria Ambalaje cosmetice"></a>
-            <p class="text-secondary small mb-0">Cutii cu finisaje premium, folio și emboss, pentru produse de îngrijire.</p>
-          </div>
-        </a>
-      </div>
-      <div class="col-12 col-md-6 col-lg-4">
-        <a href="/contact" class="card h-100 text-decoration-none border-0 shadow-sm categorie">
-          <div class="ratio ratio-4x3">
-            <img src="/uploads/gallery/produse-farma.webp" alt="Ambalaje farmaceutice" class="object-fit-cover" loading="lazy">
-          </div>
-          <div class="card-body position-relative">
-            <h2 class="h5 mb-1">Ambalaje farma</h2>
-            <a class="stretched-link" href="/magazin?categorie=Ambalaje%20farma" aria-label="Vezi produsele din categoria Ambalaje farma"></a>
-            <p class="text-secondary small mb-0">Cutii și blistere pentru industria farmaceutică.</p>
-          </div>
-        </a>
-      </div>
-      <div class="col-12 col-md-6 col-lg-4">
-        <a href="/contact" class="card h-100 text-decoration-none border-0 shadow-sm categorie">
-          <div class="ratio ratio-4x3">
-            <img src="/uploads/gallery/produse-textile.webp" alt="Ambalaje pentru textile și încălțăminte" class="object-fit-cover" loading="lazy">
-          </div>
-          <div class="card-body position-relative">
-            <h2 class="h5 mb-1">Textile și încălțăminte</h2>
-            <p class="text-secondary small mb-0">Ambalaje pentru industria textilă și de încălțăminte.</p>
-          </div>
-        </a>
-      </div>
-      <div class="col-12 col-md-6 col-lg-4">
-        <a href="/contact" class="card h-100 text-decoration-none border-0 shadow-sm categorie">
-          <div class="ratio ratio-4x3">
-            <img src="/uploads/gallery/produse-tiparituri.webp" alt="Cataloage, reviste și agende" class="object-fit-cover" loading="lazy">
-          </div>
-          <div class="card-body position-relative">
-            <h2 class="h5 mb-1">Cataloage, reviste, agende</h2>
-            <a class="stretched-link" href="/magazin?categorie=Tip%C4%83rituri%20%C8%99i%20publica%C8%9Bii" aria-label="Vezi produsele din categoria Cataloage, reviste, agende"></a>
-            <p class="text-secondary small mb-0">Tipărituri broșate sau capsate, cu finisaje la alegere.</p>
-          </div>
-        </a>
-      </div>
-      <div class="col-12 col-md-6 col-lg-4">
-        <a href="/contact" class="card h-100 text-decoration-none border-0 shadow-sm categorie">
-          <div class="ratio ratio-4x3">
-            <img src="/uploads/gallery/produse-etichete.webp" alt="Etichete și mape" class="object-fit-cover" loading="lazy">
-          </div>
-          <div class="card-body position-relative">
-            <h2 class="h5 mb-1">Etichete și mape</h2>
-            <a class="stretched-link" href="/magazin?categorie=Etichete" aria-label="Vezi produsele din categoria Etichete și mape"></a>
-            <p class="text-secondary small mb-0">Etichete autoadezive, mape de prezentare, materiale promoționale.</p>
-          </div>
-        </a>
-      </div>
-    </div>
+    {{shop_catalog}}
   </div>
 </section>
 
-<section class="py-5 bg-brand">
+<section class="py-5 bg-body-tertiary">
   <div class="container text-center">
-    <h2 class="h3 fw-normal mb-2">Finisaje disponibile</h2>
-    <p class="mb-4">Lăcuire · Plastifiere · Emboss · Folio · Ștanțare automată · Gravură laser</p>
-    <a href="/contact" class="btn btn-light fw-semibold px-4">Cere o ofertă</a>
+    <h2 class="display-6 fw-normal mb-3">Nu găsiți ce vă trebuie?</h2>
+    <p class="lead mx-auto mb-4">Executăm și produse care nu sunt în listă. Spuneți-ne ce aveți
+    nevoie și vă răspundem cu o ofertă și un termen.</p>
+    <a href="/contact" class="btn btn-primary fw-semibold px-4">Cere ofertă</a>
   </div>
 </section>

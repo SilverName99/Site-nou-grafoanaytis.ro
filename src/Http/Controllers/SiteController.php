@@ -3288,7 +3288,15 @@ HTML;
             'title' => (string) $page['title'],
             'page' => $page,
             'mannequinSectionHtml' => $this->renderMannequinSection($db, $settings),
-            'shopCatalogHtml' => $slug === 'magazin' ? $this->renderShopCatalogSection($db, $this->requestCategoryFilter()) : '',
+            /*
+             * Catalogul intră în orice pagină care poartă marcajul, nu doar în
+             * cea cu slug-ul „magazin": clientul îl vrea la /produse, care este
+             * și adresa din meniu. Adresa de bază este chiar pagina curentă,
+             * ca filtrele de categorie să nu arunce vizitatorul în altă parte.
+             */
+            'shopCatalogHtml' => str_contains($pageHtmlContent, '{{shop_catalog}}')
+                ? $this->renderShopCatalogSection($db, $this->requestCategoryFilter(), '/' . ltrim($slug, '/'))
+                : '',
             /*
              * Produsele serviciului. Categoria poartă același slug ca ultimul
              * segment al paginii, deci „/servicii/lipire-cutii" își găsește
@@ -3866,8 +3874,11 @@ HTML;
         ]);
     }
 
-    private function renderShopCatalogSection(?PDO $db, string $categoryFilter = ''): string
-    {
+    private function renderShopCatalogSection(
+        ?PDO $db,
+        string $categoryFilter = '',
+        string $baseUrl = '/produse'
+    ): string {
         $categoryFilter = trim($categoryFilter);
         $sort = $this->requestShopCatalogSort();
         [$products] = $this->loadProducts();
@@ -3890,7 +3901,7 @@ HTML;
             'activeCategory' => $categoryFilter,
             'sort' => $sort,
             'sortOptions' => $this->shopCatalogSortOptions(),
-            'baseUrl' => '/magazin',
+            'baseUrl' => $baseUrl,
             /* În mod prezentare, cardurile nu arată preț și nu adaugă în coș. */
             'modPrezentare' => \App\Support\ModPrezentare::activ($this->cachedSettings($db)),
         ]);
@@ -8636,9 +8647,10 @@ CSS;
         $productBasePrice = (float) ($product['base_price'] ?? $productPrice);
         $productSalePrice = (float) (($product['sale_price'] ?? 0) ?: 0);
         $productCategory = (string) (($product['category_name'] ?? $product['category']) ?? '');
-        $productCategoryUrl = '/magazin';
+        /* Catalogul stă la /produse, iar filtrul lui citește „categorie". */
+        $productCategoryUrl = '/produse';
         if (trim($productCategory) !== '') {
-            $productCategoryUrl .= '?category=' . rawurlencode(trim($productCategory));
+            $productCategoryUrl .= '?categorie=' . rawurlencode(trim($productCategory));
         }
         $hasSaleForTemplate = $productSalePrice > 0
             && $productBasePrice > 0

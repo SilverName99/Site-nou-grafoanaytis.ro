@@ -146,7 +146,8 @@ if ($sortOptions === []) {
             <p class="bv-popular-card__desc"><?= htmlspecialchars($desc !== '' ? $desc : 'Supliment natural', ENT_QUOTES) ?></p>
             <h3 class="bv-popular-card__name"><a href="/produs/<?= rawurlencode($slug) ?>"><?= htmlspecialchars($name, ENT_QUOTES) ?></a></h3>
 
-            <div class="bv-popular-card__rating">
+            <?php /* Notele nu au sens pe un site care nu vinde și nu are recenzii. */ ?>
+            <div class="bv-popular-card__rating"<?= $modPrezentare ? ' hidden' : '' ?>>
               <span class="bv-popular-card__stars" aria-label="Rating <?= number_format($reviewsAverage, 1) ?> din 5">
                 <?php for ($i = 1; $i <= 5; $i++): ?>
                   <svg class="bv-popular-card__star" viewBox="0 0 24 24" fill="<?= $i <= $roundedStars ? 'currentColor' : 'none' ?>" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M12 3.8l2.6 5.3 5.8.8-4.2 4.1 1 5.8L12 17l-5.2 2.8 1-5.8-4.2-4.1 5.8-.8L12 3.8z"/></svg>
@@ -419,3 +420,118 @@ if ($sortOptions === []) {
   });
 })();
 </script>
+
+<?php if ($modPrezentare): ?>
+<style>
+/*
+ * Hainele de magazin ale componentei.
+ *
+ * Este preluată din proiectul anterior: verde, „Playfair Display" la titluri,
+ * cerc roșu de reducere. Pe site-ul tipografiei nu se potrivesc niciuna. Se
+ * suprascriu aici, nu în componentă, ca instalarea de magazin să rămână
+ * neatinsă — comutatorul de mod prezentare decide care variantă se vede.
+ */
+/*
+ * „!important" aici nu este lene: mai sus, în aceeași componentă, colțurile
+ * rotunde sunt impuse cu !important și cu clip-path, ca să taie fotografia.
+ * O regulă obișnuită, oricât de specifică, nu le poate întoarce.
+ */
+.shop-catalog-v2 .bv-popular-card,
+.shop-catalog-v2 .bv-popular__grid > .bv-popular-card {
+  border-color: var(--line);
+  border-radius: 0 !important;
+  background: var(--surface);
+  clip-path: none !important;
+}
+
+.shop-catalog-v2 .bv-popular-card__media,
+.shop-catalog-v2 .bv-popular-card__media-wrap,
+.shop-catalog-v2 .bv-popular__grid > .bv-popular-card .bv-popular-card__media-wrap {
+  border-radius: 0 !important;
+  background: var(--surface-alt);
+}
+
+.shop-catalog-v2 .bv-popular-card:hover {
+  border-color: var(--fill-brand);
+  box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .08);
+}
+
+.shop-catalog-v2 .bv-popular-card__name {
+  font-family: var(--font-baza);
+  font-size: 1.25rem;
+  font-weight: 600;
+  line-height: 1.25;
+  color: var(--ink);
+}
+
+.shop-catalog-v2 .bv-popular-card__desc {
+  font-family: var(--font-baza);
+  color: var(--ink-muted);
+  letter-spacing: normal;
+  text-transform: none;
+  font-size: .875rem;
+  white-space: normal;
+}
+
+.shop-catalog-v2 .bv-popular-card__quote {
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .02em;
+  color: var(--text-brand);
+}
+
+.shop-catalog-v2 .bv-popular-card__cart-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 0;
+  background: var(--fill-brand);
+  color: var(--ink);
+}
+
+.shop-catalog-v2 .bv-popular-card__bubble {
+  display: none;
+}
+
+.shop-catalog-v2__sort-btn {
+  border-color: var(--line);
+  border-radius: 0;
+  background: var(--surface);
+  color: var(--ink);
+  font-family: var(--font-baza);
+}
+
+.shop-catalog-v2__sort-menu {
+  border-radius: 0;
+  background: var(--surface);
+  border-color: var(--line);
+}
+
+.shop-catalog-v2__sort-option {
+  border-radius: 0;
+  font-family: var(--font-baza);
+}
+
+.shop-catalog-v2__filter-toggle,
+.shop-catalog-v2__filter-col h4,
+.shop-catalog-v2__filter-col label {
+  font-family: var(--font-baza);
+}
+
+/*
+ * Panoul de filtre, închis.
+ *
+ * Are înălțime zero și „overflow: hidden", dar titlul „CATEGORII" tot se
+ * desena peste primul card. „visibility" nu lasă loc de interpretare: conținutul
+ * nu se pictează și nu primește nici focus de la tastatură cât e închis.
+ */
+.shop-catalog-v2__filters:not(.is-open) {
+  border-width: 0;
+  margin-bottom: 0;
+  visibility: hidden;
+}
+
+.shop-catalog-v2__filters.is-open {
+  visibility: visible;
+}
+</style>
+<?php endif; ?>
