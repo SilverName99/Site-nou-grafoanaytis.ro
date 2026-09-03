@@ -8621,7 +8621,16 @@ CSS;
         $productSlug = (string) ($product['slug'] ?? '');
         $productImages = $this->extractProductImageUrls($product, true);
         $mainImage = $productImages[0] ?? '/assets/img/product-placeholder.svg';
-        $carouselImages = $this->extractProductImageUrls($product, false);
+        /*
+         * Caruselul pornește de la fotografia principală, nu de la a doua.
+         *
+         * În magazinul vechi imaginea principală se afișa separat, deasupra, iar
+         * caruselul arăta restul. Șablonul de aici nu mai are acel loc separat:
+         * caruselul este tot spațiul de imagine. Lăsată pe „false", fotografia
+         * de pe cardul din catalog — cea pe care o recunoaște clientul — lipsea
+         * cu totul de pe pagina produsului.
+         */
+        $carouselImages = $this->extractProductImageUrls($product, true);
         $galleryHtml = $this->buildProductImageGalleryHtml($productImages, $productName);
         $badges = $this->buildProductBadgeList($product);
         $badgesHtml = $this->buildProductBadgesHtml($badges);

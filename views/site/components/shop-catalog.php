@@ -158,10 +158,13 @@ if ($sortOptions === []) {
 
             <div class="bv-popular-card__bottom">
               <?php if ($modPrezentare): ?>
-                <span class="bv-popular-card__quote">Cere ofertă</span>
-                <span class="bv-popular-card__cart-btn" aria-hidden="true">
-                  <svg viewBox="0 0 18 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.5 1 16.5 7l-6 6M0 7h16"/></svg>
-                </span>
+                <?php /* Tot rândul este o legătură, nu doar textul: săgeata era desen, iar clicul pe ea nu ducea nicăieri. */ ?>
+                <a class="bv-popular-card__quote-link" href="/produs/<?= rawurlencode($slug) ?>" aria-label="Cere ofertă pentru <?= htmlspecialchars($name, ENT_QUOTES) ?>">
+                  <span class="bv-popular-card__quote">Cere ofertă</span>
+                  <span class="bv-popular-card__cart-btn" aria-hidden="true">
+                    <svg viewBox="0 0 18 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.5 1 16.5 7l-6 6M0 7h16"/></svg>
+                  </span>
+                </a>
               <?php else: ?>
                 <p class="bv-popular-card__price">
                   <?= number_format($price, 2) ?> lei
@@ -471,6 +474,47 @@ if ($sortOptions === []) {
   text-transform: none;
   font-size: .875rem;
   white-space: normal;
+}
+
+/*
+ * Cardurile au titluri de lungimi diferite, deci rândul de jos ajungea la
+ * înălțimi diferite pe același rând de grilă. Corpul se întinde, iar rândul de
+ * jos este împins la bază: butoanele stau pe aceeași linie de la un card la altul.
+ */
+.shop-catalog-v2 .bv-popular-card {
+  display: flex;
+  flex-direction: column;
+}
+
+.shop-catalog-v2 .bv-popular-card__body {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+}
+
+.shop-catalog-v2 .bv-popular-card__bottom {
+  margin-top: auto;
+}
+
+/*
+ * Rândul de jos al cardului.
+ *
+ * Săgeata arată ca un buton, deci trebuie să se poarte ca unul: legătura
+ * acoperă și eticheta, și săgeata, iar zona de atins trece de 44px pe înălțime.
+ */
+.shop-catalog-v2 .bv-popular-card__quote-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  width: 100%;
+  min-height: 44px;
+  text-decoration: none;
+}
+
+.shop-catalog-v2 .bv-popular-card__quote-link:focus-visible {
+  outline: 2px solid var(--text-brand);
+  outline-offset: 3px;
 }
 
 .shop-catalog-v2 .bv-popular-card__quote {

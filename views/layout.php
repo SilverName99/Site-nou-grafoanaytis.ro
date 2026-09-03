@@ -1835,7 +1835,10 @@ if (trim($designHeaderOutput) !== '' && preg_match($mobileMenuTokenPattern, $des
 
             const init = () => {
                 applyCount(initialCount);
+                <?php /* În mod prezentare /api/cart/ răspunde 404: nu are rost să fie cerut. */ ?>
+                <?php if (!\App\Support\ModPrezentare::esteActiv()): ?>
                 refreshFromApi();
+                <?php endif; ?>
             };
 
             if (document.readyState === 'loading') {

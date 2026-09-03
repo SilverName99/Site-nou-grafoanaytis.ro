@@ -34,9 +34,26 @@ final class ModPrezentare
         '/comenzile-mele',
     ];
 
+    /** Ce s-a citit ultima dată, ca șabloanele să nu care setările după ele. */
+    private static ?bool $memorat = null;
+
     public static function activ(array $settings): bool
     {
-        return (string) ($settings['presentation_mode_enabled'] ?? '0') === '1';
+        self::$memorat = (string) ($settings['presentation_mode_enabled'] ?? '0') === '1';
+
+        return self::$memorat;
+    }
+
+    /**
+     * Pentru șabloane, care nu primesc setările în date.
+     *
+     * Răspunde „false" până când cineva citește setările măcar o dată; pe
+     * traseul public asta se întâmplă în „index.php", înaintea oricărei
+     * afișări, deci un șablon nu apucă să întrebe mai devreme.
+     */
+    public static function esteActiv(): bool
+    {
+        return self::$memorat === true;
     }
 
     /**
