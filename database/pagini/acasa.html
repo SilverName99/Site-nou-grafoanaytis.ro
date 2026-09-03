@@ -14,7 +14,19 @@
 <!-- Hero -->
 <section id="hero" class="position-relative overflow-hidden">
   <div class="hero-media">
-    <img src="/uploads/gallery/hero-grafoanaytis.webp" alt="Producție tipografică Grafoanaytis" loading="eager">
+    <!--
+      Filmul de fundal.
+
+      „muted" nu este o preferință, ci condiția pusă de browsere ca un film să
+      poată porni singur; „playsinline" îl ține în pagină pe iPhone, altfel se
+      deschide pe tot ecranul. Afișul se va încărca din fotografia de hală,
+      când o trimite clientul; până atunci rămâne fundalul închis de sub el.
+    -->
+    <video class="hero-video" autoplay loop muted playsinline preload="auto"
+           poster="/uploads/gallery/hero-grafoanaytis.webp"
+           aria-label="Film de prezentare a tipografiei, fără sunet, rulat ca fundal">
+      <source src="/uploads/gallery/sitewide.mp4" type="video/mp4">
+    </video>
   </div>
   <div class="container position-relative hero-continut">
     <div class="row">
@@ -22,10 +34,17 @@
         <h1 class="display-3 fw-medium mb-3">Tipografie pe piața prahoveană din 2004</h1>
         <p class="h4 fw-normal mb-4">Tipar offset și digital, ambalaje cu finisaje superioare, termene scurte.</p>
         <a href="/servicii" class="btn btn-primary fw-semibold px-4 me-2">Vezi serviciile</a>
-        <a href="#video" class="btn btn-outline-light fw-semibold px-4">Vezi filmul</a>
+        <a href="/contact" class="btn btn-outline-light fw-semibold px-4">Cere ofertă</a>
       </div>
     </div>
   </div>
+  <!--
+    Comanda de oprire.
+
+    O imagine în mișcare pornită singur, mai lungă de cinci secunde, trebuie să
+    poată fi oprită de vizitator (WCAG 2.2.2). Butonul se arată doar dacă
+    filmul chiar pornește, deci îl adaugă scriptul paginii, nu markup-ul.
+  -->
 </section>
 
 <!--
@@ -92,29 +111,6 @@
       <div class="col-12 col-lg-4">
         <p class="display-3 fw-semibold text-brand-lg mb-0">[N]</p>
         <p class="text-uppercase fw-semibold small text-secondary">clienți deserviți</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- Bandă video pe fundal de brand. Text închis deasupra: 9,09:1. -->
-<section id="video" class="bg-brand py-5">
-  <div class="container">
-    <h2 class="display-5 fw-normal text-center mb-4">Noi suntem Grafoanaytis</h2>
-    <div class="row">
-      <div class="col-12 col-lg-10 mx-auto">
-        <div class="ratio ratio-16x9 rounded overflow-hidden shadow-sm">
-          <!--
-            Filmul trimis de client. „preload=metadata" aduce doar antetul
-            fișierului, cât să apară primul cadru; restul se descarcă abia la
-            apăsarea pe Play, ca pagina să nu tragă câteva megaocteți degeaba.
-          -->
-          <video controls preload="metadata" playsinline>
-            <source src="/uploads/gallery/sitewide.mp4" type="video/mp4">
-            Browserul dumneavoastră nu poate reda acest material video.
-            <a href="/uploads/gallery/sitewide.mp4">Descărcați filmul de prezentare</a>.
-          </video>
-        </div>
       </div>
     </div>
   </div>

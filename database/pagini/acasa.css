@@ -16,9 +16,47 @@
  * mic în colț. color:transparent ascunde textul alternativ de ochi, nu și de
  * cititoarele de ecran.
  */
-#hero .hero-media img {
+#hero .hero-media img,
+#hero .hero-media video {
   display: block; width: 100%; height: 100%;
   object-fit: cover; color: transparent;
+}
+
+/*
+ * Filmul nu prinde clicuri: butoanele din hero stau deasupra lui, iar un clic
+ * pe fundal nu trebuie să facă nimic.
+ */
+#hero .hero-video { pointer-events: none; }
+
+/*
+ * Comanda de oprire a filmului.
+ *
+ * Stă în colț, peste voal. Fundalul închis la 62% dă un contrast de 7,0:1
+ * pentru semnul alb — peste pragul de 4,5:1 — și rămâne lizibil oricât de
+ * deschis ar fi cadrul din spate. 44px este pragul pentru o țintă de atingere.
+ */
+#hero .hero-video-comanda {
+  position: absolute;
+  right: 1rem;
+  bottom: 1rem;
+  z-index: 2;
+  width: 44px;
+  height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255, 255, 255, .55);
+  border-radius: 0;
+  background: rgba(0, 0, 0, .62);
+  color: #fff;
+  font-size: .8rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+#hero .hero-video-comanda:hover {
+  background: rgba(0, 0, 0, .8);
+  border-color: #fff;
 }
 /*
  * Voal peste imagine: titlul hero este alb, iar fără el contrastul depinde de
