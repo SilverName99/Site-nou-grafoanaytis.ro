@@ -502,3 +502,69 @@ a[href^="tel:"] {
   margin-top: .15rem;
   font-size: clamp(.7rem, .58rem + .28vw, .875rem);
 }
+
+/* ══════════════════════════════════════════════════════════════════
+   Sertarul cu cererea de ofertă
+
+   Site-ul nu vinde, ci ofertează: în locul butonului de coș, fiecare produs
+   are un panou lateral cu formular, ca la model.
+   ══════════════════════════════════════════════════════════════════ */
+
+.sertar-oferta {
+  --bs-offcanvas-width: min(28rem, 100vw);
+}
+
+.sertar-oferta .offcanvas-header h2 {
+  display: flex;
+  align-items: center;
+  gap: .625rem;
+}
+
+.sertar-oferta__poza {
+  width: 56px;
+  height: 56px;
+  object-fit: cover;
+  flex: none;
+}
+
+/*
+ * Capcana pentru roboți.
+ *
+ * „display: none" ar fi mai simplu, dar unele completări automate sar peste
+ * câmpurile ascunse așa, iar unii roboți le recunosc și le ocolesc. Scoaterea
+ * din ecran păstrează câmpul „real" pentru amândoi, dar invizibil pentru om.
+ */
+.sertar-oferta__capcana {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+.sertar-oferta__raspuns:empty {
+  display: none;
+}
+
+.sertar-oferta__raspuns {
+  margin-bottom: .75rem;
+  padding: .625rem .75rem;
+  font-size: .9375rem;
+}
+
+/* Verde 5,9:1 și roșu 5,5:1 pe fundalurile lor: peste pragul AA. */
+.sertar-oferta__raspuns.este-bine {
+  background: #E8F5EC;
+  color: #14602E;
+}
+
+.sertar-oferta__raspuns.este-eroare {
+  background: #FDECEC;
+  color: #8B1A1A;
+}
+
+.sertar-oferta__declansator .sageata,
+.sertar-oferta__formular .sageata {
+  margin-left: .5rem;
+  flex: none;
+}

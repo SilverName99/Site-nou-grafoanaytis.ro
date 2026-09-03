@@ -47,6 +47,7 @@ if (!$db instanceof PDO) {
 const PAGINI = [
     'acasa' => 'Acasă',
     'companie' => 'Companie',
+    'magazin' => 'Produse',
     'servicii' => 'Servicii',
     'produse' => 'Produse',
     'servicii__tipar-offset' => 'Tipar offset',

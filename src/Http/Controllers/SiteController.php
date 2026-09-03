@@ -16,6 +16,7 @@ use App\Support\NewsletterService;
 use App\Support\OrderMailer;
 use App\Support\OrderNumber;
 use App\Support\ReviewGuard;
+use App\Support\CereriOferta;
 use App\Support\Settings;
 use App\Support\StripeGateway;
 use App\Support\View;
@@ -273,6 +274,8 @@ final class SiteController
         }
         View::render('site/product', array_merge([
             'product' => $product,
+            /* În mod prezentare, cardurile de produse înrudite nu au coș și nici preț. */
+            'modPrezentare' => \App\Support\ModPrezentare::activ($settings),
             'extraFields' => $extraFields,
             'productReviews' => $productReviews,
             'similarProducts' => $similarProducts,
@@ -2770,6 +2773,239 @@ final class SiteController
      *
      * @return list<string>
      */
+    /**
+     * Cererea de ofertă venită din sertarul de pe pagina de produs.
+     *
+     * Primește și răspunde JSON, ca formularul de contact. Cererea se salvează
+     * întâi și se trimite pe e-mail după: dacă expedierea eșuează — server de
+     * mail picat, adresă greșită în setări — clientul potențial rămâne totuși
+     * în listă, ceea ce este tot rostul acestui modul.
+     */
+    public function quoteRequestSubmit(): void
+    {
+        $db = $this->db();
+        if (!$db instanceof PDO) {
+            $this->jsonResponse(['ok' => false, 'error' => 'Conexiunea la baza de date nu este disponibilă.'], 500);
+            return;
+        }
+
+        $payload = json_decode(trim((string) file_get_contents('php://input')), true);
+        if (!is_array($payload)) {
+            $this->jsonResponse(['ok' => false, 'error' => 'Date invalide.'], 400);
+            return;
+        }
+
+        /*
+         * Capcană pentru roboți: un câmp ascuns pe care un om nu îl vede și nu
+         * îl completează. Răspundem „ok" ca robotul să nu învețe că a fost
+         * prins și să încerce altfel.
+         */
+        if (trim((string) ($payload['website'] ?? '')) !== '') {
+            $this->jsonResponse(['ok' => true, 'message' => 'Cererea a fost trimisă.']);
+            return;
+        }
+
+        $nume = trim((string) ($payload['name'] ?? ''));
+        $firma = trim((string) ($payload['company'] ?? ''));
+        $email = strtolower(trim((string) ($payload['email'] ?? '')));
+        $telefon = trim((string) ($payload['phone'] ?? ''));
+        $mesaj = trim((string) ($payload['message'] ?? ''));
+        $acord = (bool) ($payload['consent'] ?? false);
+
+        if ($nume === '' || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $this->jsonResponse(['ok' => false, 'error' => 'Completați numele și o adresă de e-mail validă.'], 422);
+            return;
+        }
+
+        if (!$acord) {
+            $this->jsonResponse(['ok' => false, 'error' => 'Este nevoie de acordul pentru prelucrarea datelor.'], 422);
+            return;
+        }
+
+        /* Limite de lungime: baza are coloane mărginite, iar un mesaj de zece mii
+           de caractere nu este o cerere de ofertă, ci un abuz. */
+        $nume = mb_substr($nume, 0, 160);
+        $firma = mb_substr($firma, 0, 160);
+        $telefon = mb_substr($telefon, 0, 60);
+        $mesaj = mb_substr($mesaj, 0, 4000);
+
+        /*
+         * Produsul se caută după slug, nu se ia din formular: un id trimis de
+         * client nu este de încredere, iar numele venit din browser ar putea
+         * spune orice. Slug-ul necunoscut nu invalidează cererea — poate veni
+         * de pe o pagină de serviciu, fără produs anume.
+         */
+        $produs = null;
+        $slugProdus = trim((string) ($payload['product_slug'] ?? ''));
+        if ($slugProdus !== '') {
+            $cauta = $db->prepare(
+                'SELECT id, slug, name FROM products WHERE slug = :slug AND deleted_at IS NULL LIMIT 1'
+            );
+            $cauta->execute(['slug' => $slugProdus]);
+            $produs = $cauta->fetch() ?: null;
+        }
+
+        $id = CereriOferta::adauga($db, [
+            'product_id' => is_array($produs) ? (int) ($produs['id'] ?? 0) : null,
+            'product_name' => is_array($produs) ? (string) ($produs['name'] ?? '') : null,
+            'product_slug' => $slugProdus !== '' ? $slugProdus : null,
+            'name' => $nume,
+            'company' => $firma !== '' ? $firma : null,
+            'email' => $email,
+            'phone' => $telefon !== '' ? $telefon : null,
+            'message' => $mesaj !== '' ? $mesaj : null,
+            'consent_at' => date('Y-m-d H:i:s'),
+            'source_url' => mb_substr(trim((string) ($_SERVER['HTTP_REFERER'] ?? '')), 0, 500) ?: null,
+        ]);
+
+        if ($id === null) {
+            $this->jsonResponse(['ok' => false, 'error' => 'Cererea nu a putut fi salvată.'], 500);
+            return;
+        }
+
+        $this->trimiteEmailCerereOferta($db, [
+            'nume' => $nume,
+            'firma' => $firma,
+            'email' => $email,
+            'telefon' => $telefon,
+            'mesaj' => $mesaj,
+            'produs' => is_array($produs) ? (string) ($produs['name'] ?? '') : '',
+        ]);
+
+        $this->jsonResponse([
+            'ok' => true,
+            'message' => 'Am primit cererea. Vă răspundem cu o ofertă și un termen.',
+        ]);
+    }
+
+    /**
+     * Trimite înștiințarea către tipografie. Eșecul nu întoarce eroare
+     * vizitatorului: cererea este deja salvată, deci nu s-a pierdut nimic.
+     *
+     * @param array<string, string> $date
+     */
+    private function trimiteEmailCerereOferta(PDO $db, array $date): void
+    {
+        $settings = Settings::all($db);
+        $sigur = static fn (string $v): string => htmlspecialchars(
+            $v !== '' ? $v : '-',
+            ENT_QUOTES | ENT_SUBSTITUTE,
+            'UTF-8'
+        );
+
+        $subiect = $date['produs'] !== ''
+            ? 'Cerere de ofertă: ' . $date['produs']
+            : 'Cerere de ofertă de pe site';
+
+        $html = '<h2>' . $sigur($subiect) . '</h2>'
+            . '<p><strong>Nume:</strong> ' . $sigur($date['nume']) . '<br>'
+            . '<strong>Firmă:</strong> ' . $sigur($date['firma']) . '<br>'
+            . '<strong>E-mail:</strong> ' . $sigur($date['email']) . '<br>'
+            . '<strong>Telefon:</strong> ' . $sigur($date['telefon']) . '</p>'
+            . '<p><strong>Mesaj:</strong><br>' . nl2br($sigur($date['mesaj'])) . '</p>'
+            . '<p>Cererea a fost salvată și în Dashboard → Cereri de ofertă.</p>';
+
+        foreach ($this->destinatariFormularContact($settings) as $destinatar) {
+            try {
+                OrderMailer::sendCustom($destinatar, $subiect, $html, $settings, $db, [
+                    'email_type' => 'quote_request_notification',
+                    'source' => 'quote_request',
+                    'trigger' => 'quote_request_submit',
+                    'from_email' => $date['email'],
+                    'from_name' => $date['nume'],
+                ]);
+            } catch (Throwable) {
+                /* Cererea este salvată; expedierea ratată nu o pierde. */
+            }
+        }
+    }
+
+    /**
+     * Butonul „Solicită mostre și ofertă de preț" și sertarul lui.
+     *
+     * Modelul deschide un panou lateral în loc să ducă la pagina de contact:
+     * vizitatorul nu părăsește produsul, iar cererea vine legată de el. Aici
+     * panoul este un offcanvas Bootstrap, deci se închide cu Escape, ține
+     * focusul înăuntru cât e deschis și îl întoarce pe buton la închidere —
+     * lucruri pe care un panou scris de mână le ratează aproape mereu.
+     */
+    private function buildProductQuoteDrawerHtml(string $slug, string $nume, string $imagine): string
+    {
+        $sigur = static fn (string $v): string => htmlspecialchars($v, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+        $id = 'sertar-oferta';
+        $numeSigur = $sigur($nume);
+        $slugSigur = $sigur($slug);
+
+        $miniatura = $imagine !== ''
+            ? '<img src="' . $sigur($imagine) . '" alt="" width="56" height="56" class="sertar-oferta__poza">'
+            : '';
+
+        return <<<HTML
+<button class="btn btn-primary fw-semibold px-4 sertar-oferta__declansator" type="button"
+        data-bs-toggle="offcanvas" data-bs-target="#{$id}" aria-controls="{$id}">
+  Solicită mostre și ofertă de preț
+  <svg class="sageata" width="18" height="14" viewBox="0 0 18 14" aria-hidden="true" focusable="false"><path d="M10.5 1 16.5 7l-6 6M0 7h16" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+</button>
+
+<div class="offcanvas offcanvas-end sertar-oferta" tabindex="-1" id="{$id}" aria-labelledby="{$id}-titlu">
+  <div class="offcanvas-header align-items-start">
+    <div>
+      <p class="text-secondary small mb-1">Mostre și ofertă de preț pentru:</p>
+      <h2 class="h5 mb-0" id="{$id}-titlu">{$miniatura}<span>{$numeSigur}</span></h2>
+    </div>
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Închide"></button>
+  </div>
+  <div class="offcanvas-body">
+    <p>Completați formularul cu datele dumneavoastră de contact și vă răspundem cu o ofertă și un termen.</p>
+
+    <form class="sertar-oferta__formular" novalidate data-produs="{$slugSigur}">
+      <div class="mb-3">
+        <label class="form-label" for="oferta-nume">Nume și prenume <span aria-hidden="true">*</span></label>
+        <input class="form-control" id="oferta-nume" name="name" type="text" autocomplete="name" required>
+      </div>
+      <div class="mb-3">
+        <label class="form-label" for="oferta-firma">Companie</label>
+        <input class="form-control" id="oferta-firma" name="company" type="text" autocomplete="organization">
+      </div>
+      <div class="mb-3">
+        <label class="form-label" for="oferta-email">E-mail <span aria-hidden="true">*</span></label>
+        <input class="form-control" id="oferta-email" name="email" type="email" autocomplete="email" required>
+      </div>
+      <div class="mb-3">
+        <label class="form-label" for="oferta-telefon">Telefon</label>
+        <input class="form-control" id="oferta-telefon" name="phone" type="tel" autocomplete="tel">
+      </div>
+      <div class="mb-3">
+        <label class="form-label" for="oferta-mesaj">Aveți întrebări? Ce tiraj vă interesează?</label>
+        <textarea class="form-control" id="oferta-mesaj" name="message" rows="4"></textarea>
+      </div>
+
+      <!-- Capcană pentru roboți: ascunsă de ochi, nu și de completarea automată. -->
+      <div class="sertar-oferta__capcana" aria-hidden="true">
+        <label for="oferta-website">Nu completați acest câmp</label>
+        <input id="oferta-website" name="website" type="text" tabindex="-1" autocomplete="off">
+      </div>
+
+      <div class="form-check mb-3">
+        <input class="form-check-input" id="oferta-acord" name="consent" type="checkbox" required>
+        <label class="form-check-label small" for="oferta-acord">
+          Sunt de acord ca datele de mai sus să fie folosite pentru a-mi răspunde la această cerere.
+          <a href="/politica-de-confidentialitate" target="_blank" rel="noopener">Politica de confidențialitate</a>
+        </label>
+      </div>
+
+      <p class="sertar-oferta__raspuns" role="status" aria-live="polite"></p>
+
+      <button class="btn btn-primary fw-semibold w-100" type="submit">
+        Trimite solicitarea
+        <svg class="sageata" width="18" height="14" viewBox="0 0 18 14" aria-hidden="true" focusable="false"><path d="M10.5 1 16.5 7l-6 6M0 7h16" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+      </button>
+    </form>
+  </div>
+</div>
+HTML;
+    }
+
     private function destinatariFormularContact(array $settings): array
     {
         $brut = trim((string) ($settings['contact_form_recipients'] ?? ''));
@@ -3596,6 +3832,8 @@ final class SiteController
             'sort' => $sort,
             'sortOptions' => $this->shopCatalogSortOptions(),
             'baseUrl' => '/magazin',
+            /* În mod prezentare, cardurile nu arată preț și nu adaugă în coș. */
+            'modPrezentare' => \App\Support\ModPrezentare::activ($this->cachedSettings($db)),
         ]);
     }
 
@@ -4826,6 +5064,30 @@ CSS;
                  GROUP BY TRIM(category)'
             );
             $rows = $stmt ? ($stmt->fetchAll() ?: []) : [];
+
+            /*
+             * Și categoriile legate, nu doar cea principală.
+             *
+             * Coloana „category" ține o singură categorie — familia produsului.
+             * Un produs stă însă și sub serviciile care îl execută, iar acelea
+             * trăiesc în product_category_links. Fără rândurile de aici,
+             * „Lipire cutii" nu apărea în lista de filtre, iar filtrul o
+             * respingea ca pe o categorie inexistentă — deși potrivirea pe
+             * produs (ProductCategories::matchesName) o cunoștea deja.
+             */
+            $legate = $db->query(
+                'SELECT c.name AS category_name, COUNT(DISTINCT l.product_id) AS products_count
+                 FROM product_category_links l
+                 JOIN product_categories c ON c.id = l.category_id
+                 JOIN products p ON p.id = l.product_id AND p.deleted_at IS NULL
+                 GROUP BY c.name'
+            );
+            foreach ($legate ? ($legate->fetchAll() ?: []) : [] as $rand) {
+                if (is_array($rand)) {
+                    $rows[] = $rand;
+                }
+            }
+
             foreach ($rows as $row) {
                 if (!is_array($row)) {
                     continue;
@@ -4835,10 +5097,12 @@ CSS;
                     continue;
                 }
                 $key = mb_strtolower($name);
+                /* Aceeași categorie poate veni din ambele surse: păstrăm numărul mai mare. */
+                $existent = (int) ($counts[$key]['count'] ?? 0);
                 $counts[$key] = [
                     'value' => $name,
                     'label' => $name,
-                    'count' => max(0, (int) ($row['products_count'] ?? 0)),
+                    'count' => max($existent, max(0, (int) ($row['products_count'] ?? 0))),
                 ];
             }
         } catch (Throwable) {
@@ -8382,6 +8646,11 @@ CSS;
             'product_bbd_selector' => $productBbdSelectorHtml,
             'product_requires_bbd' => $requiresBbdSelection ? '1' : '0',
             'product_quantity_input' => $productQuantityInputHtml,
+            'product_quote_button' => $this->buildProductQuoteDrawerHtml(
+                (string) ($product['slug'] ?? ''),
+                (string) ($product['name'] ?? ''),
+                (string) ($product['image_url'] ?? '')
+            ),
             'product_add_to_cart_button' => $this->buildProductAddToCartButtonHtml(
                 $productId,
                 $productPrice,
@@ -8435,6 +8704,7 @@ CSS;
                 'product_highlights',
                 'product_quantity_input',
                 'product_add_to_cart_button',
+                'product_quote_button',
                 'product_post_cart_note',
             ], true)) {
                 $html = str_replace($placeholder, $value, $html);

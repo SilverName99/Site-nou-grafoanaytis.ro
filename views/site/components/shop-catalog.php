@@ -1,5 +1,12 @@
 <?php
 $catalogPayload = is_array($catalog ?? null) ? $catalog : [];
+/*
+ * În mod prezentare nu există coș, deci nici preț și nici buton de adăugat:
+ * ruta /cos/adauga răspunde 404, iar un buton care duce acolo ar fi o
+ * promisiune ruptă. Cardul trimite la produs, unde stă sertarul cu cererea
+ * de ofertă.
+ */
+$modPrezentare = (bool) ($modPrezentare ?? false);
 $categories = is_array($catalogPayload['categories'] ?? null)
     ? $catalogPayload['categories']
     : (is_array($categories ?? null) ? $categories : []);
@@ -149,20 +156,27 @@ if ($sortOptions === []) {
             </div>
 
             <div class="bv-popular-card__bottom">
-              <p class="bv-popular-card__price">
-                <?= number_format($price, 2) ?> lei
-                <?php if ($hasSale && $basePrice > $price): ?>
-                  <span class="bv-popular-card__old"><?= number_format($basePrice, 2) ?> lei</span>
-                <?php endif; ?>
-              </p>
-              <?php if ($outOfStock): ?>
-                <span class="bv-popular-card__stock-out">Stoc epuizat</span>
+              <?php if ($modPrezentare): ?>
+                <span class="bv-popular-card__quote">Cere ofertă</span>
+                <span class="bv-popular-card__cart-btn" aria-hidden="true">
+                  <svg viewBox="0 0 18 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.5 1 16.5 7l-6 6M0 7h16"/></svg>
+                </span>
               <?php else: ?>
-                <form method="post" action="/cos/adauga/<?= (int) ($product['id'] ?? 0) ?>">
-                  <button type="submit" class="bv-popular-card__cart-btn" aria-label="Adaugă în coș">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="20" r="1"/><circle cx="18" cy="20" r="1"/><path d="M3 4h2l2.2 11.2a2 2 0 0 0 2 1.6h7.7a2 2 0 0 0 2-1.6L21 7H7"/></svg>
-                  </button>
-                </form>
+                <p class="bv-popular-card__price">
+                  <?= number_format($price, 2) ?> lei
+                  <?php if ($hasSale && $basePrice > $price): ?>
+                    <span class="bv-popular-card__old"><?= number_format($basePrice, 2) ?> lei</span>
+                  <?php endif; ?>
+                </p>
+                <?php if ($outOfStock): ?>
+                  <span class="bv-popular-card__stock-out">Stoc epuizat</span>
+                <?php else: ?>
+                  <form method="post" action="/cos/adauga/<?= (int) ($product['id'] ?? 0) ?>">
+                    <button type="submit" class="bv-popular-card__cart-btn" aria-label="Adaugă în coș">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="20" r="1"/><circle cx="18" cy="20" r="1"/><path d="M3 4h2l2.2 11.2a2 2 0 0 0 2 1.6h7.7a2 2 0 0 0 2-1.6L21 7H7"/></svg>
+                    </button>
+                  </form>
+                <?php endif; ?>
               <?php endif; ?>
             </div>
           </div>

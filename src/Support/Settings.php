@@ -139,6 +139,12 @@ final class Settings
         'design_menu_html' => '<a href="/">Acasă</a><a href="/companie">Companie</a><a href="/servicii">Servicii</a><a href="/produse">Produse</a><a href="/utilaje">Utilaje</a><a href="/certificari">Certificări</a><a href="/contact">Contact</a>',
         'design_menu_css' => '',
         'design_menu_js' => '',
+        /*
+         * Mod prezentare: rutele de coș și checkout răspund 404. Implicit oprit,
+         * ca instalarea să rămână un magazin funcțional; pentru grafoanaytis.ro
+         * îl pornește scripts/seed-design.php.
+         */
+        'presentation_mode_enabled' => '0',
         'floating_cart_enabled' => '1',
         'floating_cart_show_desktop' => '1',
         'floating_cart_show_mobile' => '1',

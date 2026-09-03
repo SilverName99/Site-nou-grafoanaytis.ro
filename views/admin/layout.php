@@ -88,7 +88,7 @@ if ($adminFavicon === '') {
             };
         };
 
-        $magazinOpen = $isActive(['/admin/products', '/admin/orders', '/admin/coupons', '/admin/categories', '/admin/promo-products', '/admin/competition', '/admin/settings/floating-cart', '/admin/products/fields', '/admin/products/templates', '/admin/products/reviews'])
+        $magazinOpen = $isActive(['/admin/products', '/admin/orders', '/admin/cereri-oferta', '/admin/coupons', '/admin/categories', '/admin/promo-products', '/admin/competition', '/admin/settings/floating-cart', '/admin/products/fields', '/admin/products/templates', '/admin/products/reviews'])
             || $path === '/admin/orders/trash';
         $usersOpen = $isActive(['/admin/users']);
         $usersSettingsActive = $isActive(['/admin/users/settings']) && trim((string) ($_GET['tab'] ?? 'settings')) !== 'points';
@@ -168,6 +168,15 @@ if ($adminFavicon === '') {
                             </a>
                             <a class="<?= ($path === '/admin/orders' || $path === '/admin/orders/trash') ? 'active' : '' ?>" href="/admin/orders">
                                 <span class="nav-icon"><?= $icon('orders') ?></span> Comenzi
+                            </a>
+                            <?php
+                            /*
+                             * Cererile de ofertă stau lângă comenzi, fiindcă pe
+                             * un site care nu vinde ele sunt comenzile.
+                             */
+                            ?>
+                            <a class="<?= str_starts_with($path, '/admin/cereri-oferta') ? 'active' : '' ?>" href="/admin/cereri-oferta">
+                                <span class="nav-icon"><?= $icon('orders') ?></span> Cereri de ofertă
                             </a>
                             <a class="<?= ($path === '/admin/coupons') ? 'active' : '' ?>" href="/admin/coupons">
                                 <span class="nav-icon"><?= $icon('coupon') ?></span> Cupoane

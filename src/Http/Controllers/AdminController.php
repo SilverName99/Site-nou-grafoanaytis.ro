@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 
 use App\Support\AdminActivityLog;
 use App\Support\Auth;
+use App\Support\CereriOferta;
 use App\Support\Database;
 use App\Support\EmailAutomation;
 use App\Support\FanCourierGateway;
@@ -1760,6 +1761,81 @@ final class AdminController
             'title' => 'Categorii produse',
             'categories' => $categories,
         ], 'admin/layout');
+    }
+
+    /**
+     * Cererile de ofertă venite din sertarul de pe pagina de produs.
+     *
+     * Pe un site care nu vinde, aceasta este căsuța de intrare: fiecare rând
+     * este un client potențial. De aceea stă în meniul principal, nu îngropată
+     * sub Magazin — spre deosebire de mesajele formularului de contact, care
+     * sunt la Emailuri și pe care nimeni nu le caută acolo.
+     */
+    public function cereriOferta(): void
+    {
+        if (!$this->guard()) {
+            return;
+        }
+
+        $db = $this->db();
+        $stare = trim((string) ($_GET['stare'] ?? ''));
+        $cereri = [];
+        $numarPeStari = array_fill_keys(CereriOferta::STARI, 0);
+
+        if ($db instanceof PDO) {
+            $cereri = CereriOferta::lista($db, $stare);
+            $numarPeStari = CereriOferta::numarPeStari($db);
+        }
+
+        View::render('admin/cereri-oferta', [
+            'title' => 'Cereri de ofertă',
+            'cereri' => $cereri,
+            'stareCurenta' => $stare,
+            'numarPeStari' => $numarPeStari,
+        ], 'admin/layout');
+    }
+
+    /** @param array<string, string> $params */
+    public function cerereOfertaUpdate(array $params): void
+    {
+        if (!$this->guard()) {
+            return;
+        }
+
+        $db = $this->db();
+        if ($db instanceof PDO) {
+            CereriOferta::schimbaStarea(
+                $db,
+                (int) ($params['id'] ?? 0),
+                trim((string) ($_POST['stare'] ?? '')),
+                trim((string) ($_POST['nota'] ?? ''))
+            );
+        }
+
+        header('Location: /admin/cereri-oferta' . $this->intoarcereLaFiltru());
+    }
+
+    /** @param array<string, string> $params */
+    public function cerereOfertaDelete(array $params): void
+    {
+        if (!$this->guard()) {
+            return;
+        }
+
+        $db = $this->db();
+        if ($db instanceof PDO) {
+            CereriOferta::sterge($db, (int) ($params['id'] ?? 0));
+        }
+
+        header('Location: /admin/cereri-oferta' . $this->intoarcereLaFiltru());
+    }
+
+    /** Păstrează filtrul deschis după o acțiune, ca lista să nu sară la început. */
+    private function intoarcereLaFiltru(): string
+    {
+        $stare = trim((string) ($_POST['stare_filtru'] ?? ''));
+
+        return $stare !== '' ? '?stare=' . rawurlencode($stare) : '';
     }
 
     public function blogAuthors(): void

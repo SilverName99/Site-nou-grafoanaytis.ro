@@ -203,6 +203,11 @@ $continut = [
 $comutatoare = [
     'floating_cart_enabled' => '0',
     'store_bbd_sidebar_enabled' => '0',
+    /*
+     * Site de prezentare: coșul și checkout-ul răspund 404. Codul rămâne, deci
+     * trecerea la magazin online cere doar stingerea comutatorului.
+     */
+    'presentation_mode_enabled' => '1',
 ];
 
 $existente = Settings::all($db);

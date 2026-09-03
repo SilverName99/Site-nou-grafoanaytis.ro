@@ -1881,5 +1881,14 @@ if (trim($designHeaderOutput) !== '' && preg_match($mobileMenuTokenPattern, $des
 <script src="/assets/vendor/bootstrap/js/bootstrap.bundle.min.js?v=<?= $bsJsVersion ?>" defer></script>
 <?php $imgJsVersion = @filemtime(__DIR__ . '/../public/assets/js/imagini.js') ?: time(); ?>
 <script src="/assets/js/imagini.js?v=<?= $imgJsVersion ?>" defer></script>
+<?php
+/*
+ * Sertarul cu cererea de ofertă. Scriptul iese singur dacă pagina nu are
+ * formular, deci nu are rost să fie încărcat condiționat: e mai ieftin un
+ * fișier mic pus în cache o dată decât o ramură în PHP pe fiecare pagină.
+ */
+$sertarJsVersion = @filemtime(__DIR__ . '/../public/assets/js/sertar-oferta.js') ?: time();
+?>
+<script src="/assets/js/sertar-oferta.js?v=<?= $sertarJsVersion ?>" defer></script>
 </body>
 </html>

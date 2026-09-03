@@ -1,0 +1,71 @@
+<!--
+  Șablonul paginii de produs, după modelul exonia.ro.
+
+  Se editează din Dashboard → Magazin → Șabloane produse. Marcajele {{...}} se
+  înlocuiesc la randare cu datele produsului, deci un produs nou nu cere nicio
+  atingere aici.
+-->
+<article class="produs">
+  <div class="container">
+    <div class="row g-4 g-lg-5 align-items-start">
+      <div class="col-12 col-lg-7">
+        {{product_image_carousel}}
+      </div>
+
+      <div class="col-12 col-lg-5">
+        <h1 class="produs__titlu">{{product_name}}</h1>
+        <p class="produs__subtitlu">{{product_short_description}}</p>
+
+        {{product_highlights}}
+
+        <p class="produs__eticheta"><a href="{{product_category_url}}">{{product_category}}</a></p>
+
+        <div class="produs__actiune">
+          {{product_quote_button}}
+        </div>
+      </div>
+    </div>
+
+    <section class="produs__bloc">
+      <h2 class="produs__sectiune">Descriere</h2>
+      <p class="produs__text">{{product_description}}</p>
+    </section>
+
+    <!--
+      Caracteristicile vin din câmpurile suplimentare ale produsului. Rândurile
+      fără valoare se ascund singure din CSS, deci un produs care nu are, de
+      pildă, termen de execuție nu arată un rând gol.
+    -->
+    <section class="produs__bloc">
+      <h2 class="produs__sectiune">Caracteristici</h2>
+      <dl class="caracteristici">
+        <div class="caracteristici__rand">
+          <dt>Dimensiuni</dt>
+          <dd>{{field_dimensiuni}}</dd>
+        </div>
+        <div class="caracteristici__rand">
+          <dt>Material</dt>
+          <dd>{{field_material}}</dd>
+        </div>
+        <div class="caracteristici__rand">
+          <dt>Tiraj minim</dt>
+          <dd>{{field_tiraj}}</dd>
+        </div>
+        <div class="caracteristici__rand">
+          <dt>Personalizare</dt>
+          <dd>{{field_personalizare}}</dd>
+        </div>
+        <div class="caracteristici__rand">
+          <dt>Finisaje</dt>
+          <dd>{{field_finisaje}}</dd>
+        </div>
+        <div class="caracteristici__rand">
+          <dt>Termen de execuție</dt>
+          <dd>{{field_termen}}</dd>
+        </div>
+      </dl>
+    </section>
+  </div>
+
+  {{product_similar_products_section}}
+</article>

@@ -242,6 +242,8 @@ if ($galleryUrls === []) {
 }
 </style>
 <script>
+/* Steagul vine din PHP: în mod prezentare, cardurile nu au coș și nici preț. */
+const MOD_PREZENTARE = <?= !empty($modPrezentare) ? 'true' : 'false' ?>;
 (() => {
     const initTabs = (scope) => {
         const navCandidates = Array.from(scope.querySelectorAll('.product-tabs__nav, .pdp-v2__tabs, [data-tabs-nav]'));
@@ -880,10 +882,19 @@ if ($galleryUrls === []) {
                         + '<h4 class="similar-product-card__name"><a href="' + url + '">' + name + '</a></h4>'
                         + '<div class="similar-product-card__rating"><span class="similar-product-card__stars" aria-label="Rating ' + reviewsAverage.toFixed(1) + ' din 5">' + starsHtml + '</span><span class="similar-product-card__reviews">(' + reviewsCount + ')</span></div>'
                         + '<div class="similar-product-card__bottom">'
-                        + '<p class="similar-product-card__price">' + priceLabel + (regularPriceLabel !== '' ? '<span class="similar-product-card__old">' + regularPriceLabel + '</span>' : '') + '</p>'
-                        + (outOfStock
-                            ? '<span class="similar-product-card__stock-out">Stoc epuizat</span>'
-                            : '<form method="post" action="/cos/adauga/' + productId + '"><button type="submit" class="similar-product-card__cart-btn" aria-label="Adaugă în coș"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="20" r="1"/><circle cx="18" cy="20" r="1"/><path d="M3 4h2l2.2 11.2a2 2 0 0 0 2 1.6h7.7a2 2 0 0 0 2-1.6L21 7H7"/></svg></button></form>'
+                        /*
+                         * În mod prezentare nu există coș și nici prețuri: cardul
+                         * duce la produs, unde stă sertarul cu cererea de ofertă.
+                         * Ruta /cos/adauga răspunde oricum 404, deci un buton
+                         * care duce acolo ar fi doar o promisiune ruptă.
+                         */
+                        + (MOD_PREZENTARE
+                            ? '<a class="similar-product-card__quote" href="' + url + '">Cere ofertă</a>'
+                            : '<p class="similar-product-card__price">' + priceLabel + (regularPriceLabel !== '' ? '<span class="similar-product-card__old">' + regularPriceLabel + '</span>' : '') + '</p>'
+                              + (outOfStock
+                                  ? '<span class="similar-product-card__stock-out">Stoc epuizat</span>'
+                                  : '<form method="post" action="/cos/adauga/' + productId + '"><button type="submit" class="similar-product-card__cart-btn" aria-label="Adaugă în coș"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="20" r="1"/><circle cx="18" cy="20" r="1"/><path d="M3 4h2l2.2 11.2a2 2 0 0 0 2 1.6h7.7a2 2 0 0 0 2-1.6L21 7H7"/></svg></button></form>'
+                              )
                         )
                         + '</div>'
                         + '</article>';

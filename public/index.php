@@ -85,6 +85,15 @@ if (\App\Support\Maintenance::intercepteaza(
 )) {
     return;
 }
+// Mod prezentare: rutele de vânzare răspund 404. Se verifică tot înaintea
+// cache-ului de pagină, altfel un coș salvat înainte de activare ar mai fi
+// servit din cache după.
+if (\App\Support\ModPrezentare::intercepteaza(
+    $cacheSettings,
+    (string) ($_SERVER['REQUEST_URI'] ?? '/')
+)) {
+    return;
+}
 $pageCacheContext = ResponseCache::beginRequest(
     (string) ($_SERVER['REQUEST_METHOD'] ?? 'GET'),
     (string) ($_SERVER['REQUEST_URI'] ?? '/'),
@@ -169,6 +178,8 @@ $router->get('/contul-meu/resetare-parola/{token}', [SiteController::class, 'pas
 $router->post('/contul-meu/resetare-parola/{token}', [SiteController::class, 'passwordResetTokenSubmit']);
 $router->get('/contact', [SiteController::class, 'contact']);
 $router->post('/contact/send', [SiteController::class, 'contactSend']);
+// Cererile de ofertă: înlocuiesc coșul pe un site care nu vinde, ci ofertează.
+$router->post('/api/cerere-oferta', [SiteController::class, 'quoteRequestSubmit']);
 
 $router->get('/admin/login', [AuthController::class, 'showLogin']);
 $router->post('/admin/login', [AuthController::class, 'login']);
@@ -218,6 +229,9 @@ $router->post('/admin/blog/authors', [AdminController::class, 'blogAuthorsSave']
 $router->get('/admin/products/reviews', [AdminController::class, 'productReviews']);
 $router->post('/admin/products/reviews', [AdminController::class, 'productReviewsSave']);
 $router->post('/admin/products/reviews/import', [AdminController::class, 'productReviewsImport']);
+$router->get('/admin/cereri-oferta', [AdminController::class, 'cereriOferta']);
+$router->post('/admin/cereri-oferta/{id}/stare', [AdminController::class, 'cerereOfertaUpdate']);
+$router->post('/admin/cereri-oferta/{id}/sterge', [AdminController::class, 'cerereOfertaDelete']);
 $router->get('/admin/categories', [AdminController::class, 'categories']);
 $router->post('/admin/categories', [AdminController::class, 'createCategory']);
 $router->post('/admin/categories/{id}/update', [AdminController::class, 'updateCategory']);

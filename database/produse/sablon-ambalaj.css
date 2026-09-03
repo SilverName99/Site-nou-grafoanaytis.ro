@@ -1,0 +1,266 @@
+/* Pagina de produs. Culorile vin din tokens.css; aici doar așezarea. */
+
+.produs {
+  padding-block: 2.5rem 3.5rem;
+}
+
+/*
+ * Titlul cu bară verticală în stânga, ca la model. Bara este de brand și are
+ * rol decorativ, deci nu poartă informație și nu are cerință de contrast.
+ */
+.produs__titlu {
+  font-size: clamp(1.75rem, 1.1rem + 2.2vw, 2.75rem);
+  font-weight: 500;
+  line-height: 1.15;
+  border-left: 4px solid var(--fill-brand);
+  padding-left: 1rem;
+  margin-bottom: .75rem;
+}
+
+.produs__subtitlu {
+  font-size: clamp(1.125rem, .95rem + .8vw, 1.5rem);
+  font-weight: 400;
+  line-height: 1.35;
+  color: var(--ink);
+  border-left: 4px solid transparent;
+  padding-left: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+/* Fără categorie, eticheta ar rămâne un dreptunghi gol sub titlu. */
+.produs__eticheta:has(a:empty) {
+  display: none;
+}
+
+.produs__eticheta {
+  margin-bottom: 1.5rem;
+}
+
+.produs__eticheta a {
+  display: inline-block;
+  padding: .3rem .75rem;
+  background: var(--surface-alt);
+  border: 1px solid var(--line);
+  color: var(--ink);
+  font-size: .875rem;
+  text-decoration: none;
+}
+
+.produs__eticheta a:hover {
+  border-color: var(--fill-brand);
+}
+
+.produs__bloc {
+  margin-top: 3rem;
+}
+
+.produs__sectiune {
+  font-size: clamp(1.5rem, 1.1rem + 1.4vw, 2.25rem);
+  font-weight: 400;
+  color: var(--text-brand-large);
+  margin-bottom: 1rem;
+}
+
+/* Descrierea ajunge în pagină ca text simplu, deci rândurile ei se păstrează. */
+.produs__text {
+  white-space: pre-line;
+  max-width: 68ch;
+  line-height: 1.7;
+}
+
+/* ── Tabelul de caracteristici ─────────────────────────────────────────── */
+
+.caracteristici {
+  margin: 0;
+  border-top: 1px solid var(--line);
+}
+
+.caracteristici__rand {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: .25rem;
+  padding: .875rem 0;
+  border-bottom: 1px solid var(--line);
+}
+
+@media (min-width: 768px) {
+  .caracteristici__rand {
+    grid-template-columns: 14rem 1fr;
+    gap: 1.5rem;
+    padding: 1rem .75rem;
+  }
+
+  /* Rânduri alternate, ca la model: ajută ochiul pe un tabel lung. */
+  .caracteristici__rand:nth-child(odd) {
+    background: var(--surface-alt);
+  }
+}
+
+.caracteristici dt {
+  font-weight: 600;
+}
+
+.caracteristici dd {
+  margin: 0;
+  line-height: 1.6;
+}
+
+/*
+ * Un rând fără valoare dispare cu totul.
+ *
+ * Șablonul este același pentru toate produsele, deci enumeră toate câmpurile
+ * posibile. Fără regula asta, un produs care nu are termen de execuție ar
+ * arăta o etichetă urmată de nimic — ceea ce se citește ca o scăpare, nu ca o
+ * informație lipsă.
+ */
+.caracteristici__rand:has(dd:empty) {
+  display: none;
+}
+
+/* ── Caruselul de imagini ───────────────────────────────────────────────
+   Marcajul îl generează aplicația, iar stilul lui stătea în app.css, care nu
+   se mai încarcă pe partea publică — acolo era tema verde a proiectului
+   anterior. Fără el, miniaturile se desenau la mărimea fișierului: 1600px
+   fiecare, cu 248px de derulare orizontală pe pagină. Aici este portat doar
+   ce ține de așezare, cu colțuri drepte și cu accentul de brand.
+   ────────────────────────────────────────────────────────────────────── */
+
+.product-carousel__viewport {
+  position: relative;
+  min-height: 220px;
+  overflow: hidden;
+  touch-action: pan-y;
+  user-select: none;
+}
+
+.product-carousel__track {
+  display: flex;
+  width: 100%;
+  transition: transform .35s ease;
+}
+
+.product-carousel__slide {
+  flex: 0 0 100%;
+  width: 100%;
+  margin: 0;
+}
+
+.product-carousel__slide img {
+  width: 100%;
+  border: 1px solid var(--line);
+  display: block;
+}
+
+.product-carousel__fullscreen {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 34px;
+  height: 34px;
+  border: 1px solid rgba(255, 255, 255, .55);
+  background: rgba(30, 26, 23, .72);
+  color: #fff;
+  cursor: pointer;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.product-carousel__fullscreen svg {
+  width: 18px;
+  height: 18px;
+  fill: currentColor;
+}
+
+.product-carousel__controls {
+  margin-top: .75rem;
+  display: grid;
+  grid-template-columns: 36px minmax(0, 1fr) 36px;
+  align-items: center;
+  gap: .625rem;
+}
+
+.product-carousel__nav {
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--ink);
+  cursor: pointer;
+  line-height: 1;
+}
+
+.product-carousel__nav:hover {
+  border-color: var(--fill-brand);
+}
+
+.product-carousel__thumbs {
+  display: flex;
+  gap: .5rem;
+  overflow-x: auto;
+  padding-bottom: 2px;
+}
+
+.product-carousel__thumb {
+  flex: none;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  width: 64px;
+  height: 64px;
+  padding: 0;
+  overflow: hidden;
+  cursor: pointer;
+  opacity: .75;
+}
+
+.product-carousel__thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.product-carousel__thumb.is-active,
+.product-carousel__thumb:hover {
+  border-color: var(--fill-brand);
+  opacity: 1;
+}
+
+.product-carousel.is-dragging .product-carousel__track {
+  transition: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .product-carousel__track { transition: none; }
+}
+
+/* ── Aplicabilitatea ───────────────────────────────────────────────────
+   Lista de puncte forte, cu iconiță de frunză. Marcajul îl generează tot
+   aplicația, iar stilul stătea în app.css. Fără el, iconița SVG nu are nicio
+   mărime și se desenează cât o lasă cutia — pe pagina de produs ieșeau frunze
+   de 300px, una sub alta.
+   ────────────────────────────────────────────────────────────────────── */
+
+.product-highlights {
+  margin: 0 0 1.5rem;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: .625rem;
+}
+
+.product-highlights__item {
+  display: flex;
+  align-items: flex-start;
+  gap: .625rem;
+  line-height: 1.5;
+}
+
+.product-highlights__icon {
+  flex: none;
+  width: 20px;
+  height: 20px;
+  margin-top: .15rem;
+  color: var(--text-brand-large);
+}
