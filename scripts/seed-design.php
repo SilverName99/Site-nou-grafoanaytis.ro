@@ -56,7 +56,7 @@ $header = <<<HTML
   <div class="container">
     <div class="antet-sigle">
       <a class="navbar-brand fw-bold me-0" href="/">
-        <img src="/uploads/gallery/grafoanaytis-logo.webp" alt="Grafoanaytis" height="44"
+        <img src="/uploads/gallery/logo-grafoanaytis-alb-bk.png" alt="Grafoanaytis — offset &amp; digital solutions" height="44"
              onerror="this.replaceWith(document.createTextNode('Grafoanaytis'))">
       </a>
       <!--
@@ -66,8 +66,8 @@ $header = <<<HTML
       -->
       <a class="antet-sigle__partener" href="/certificari"
          title="Membru fondator al Asociației Furnizorilor de Ambalaje Sustenabile">
-        <img src="/uploads/gallery/afas.png" height="44"
-             alt="Membru fondator AFAS — Asociația Furnizorilor de Ambalaje Sustenabile">
+        <img src="/uploads/gallery/afas-logo.png" height="44"
+             alt="AFAS — Asociația Furnizorilor de Ambalaje Sustenabile">
       </a>
     </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#meniu-principal"
