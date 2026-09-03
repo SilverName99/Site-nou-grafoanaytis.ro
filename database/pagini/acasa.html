@@ -28,37 +28,49 @@
   </div>
 </section>
 
-<!-- Despre: text stânga, imagine dreapta -->
-<section id="despre" class="py-5">
+<!--
+  Benzile de prezentare, după modelul exonia.ro.
+
+  Se întind pe toată lățimea ecranului: fotografia se lipește de o margine, iar
+  jumătatea cu text stă pe un fundal cu linii decorative care iese pe cealaltă
+  margine. Textul rămâne aliniat la container, ca restul paginii.
+-->
+
+<!-- Text stânga, fotografie lipită de marginea dreaptă -->
+<section id="despre" class="banda-alternanta banda-alternanta--foto-dreapta">
   <div class="container">
-    <div class="row g-4 align-items-center">
-      <div class="col-12 col-md-6">
-        <h2 class="display-4 text-brand-lg fw-normal mb-3">Experiență</h2>
-        <div class="h5 fw-normal lh-base">Grafoanaytis activează pe piața prahoveană din 2004 și oferă clienților servicii de tipar offset și digital. Ne dorim să fim cunoscuți prin calitatea produselor, termenele scurte de execuție și modul flexibil de colaborare.</div>
-        <a href="/despre-noi" class="btn btn-link px-0 fw-semibold text-uppercase">Despre noi</a>
+    <div class="row">
+      <div class="col-12 col-md-6 banda-alternanta__text align-self-center">
+        <h2 class="display-2 fw-normal text-brand-lg mb-3 banda-alternanta__titlu">Experiență</h2>
+        <div class="h3 fw-normal banda-alternanta__corp">
+          <p>Grafoanaytis activează pe piața prahoveană din 2004 și oferă clienților servicii de tipar offset și digital. Ne dorim să fim cunoscuți prin calitatea produselor, termenele scurte de execuție și modul flexibil de colaborare.</p>
+        </div>
+        <a href="/despre-noi" class="btn btn-link px-0 fw-semibold text-uppercase banda-alternanta__actiune">Despre noi<svg class="sageata" width="18" height="14" viewBox="0 0 18 14" aria-hidden="true" focusable="false"><path d="M10.5 1 16.5 7l-6 6M0 7h16" fill="none" stroke="currentColor" stroke-width="2"/></svg></a>
       </div>
-      <div class="col-12 col-md-6">
-        <div class="ratio ratio-4x3 rounded overflow-hidden">
-          <img src="/uploads/gallery/despre.webp" alt="Hala de producție" class="object-fit-cover" loading="lazy">
+      <div class="col-12 col-md-6 banda-alternanta__foto">
+        <div class="banda-alternanta__cadru">
+          <img src="/uploads/gallery/despre.webp" alt="Hala de producție Grafoanaytis" loading="lazy">
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- Abordare: imagine stânga, text dreapta (alternanță) -->
-<section id="abordare" class="py-5 bg-body-tertiary">
+<!-- Fotografie lipită de marginea stângă, text dreapta (alternanță) -->
+<section id="abordare" class="banda-alternanta banda-alternanta--foto-stanga bg-body-tertiary">
   <div class="container">
-    <div class="row g-4 align-items-center">
-      <div class="col-12 col-md-6 order-md-first">
-        <div class="ratio ratio-4x3 rounded overflow-hidden">
-          <img src="/uploads/gallery/abordare.webp" alt="Control de calitate" class="object-fit-cover" loading="lazy">
+    <div class="row">
+      <div class="col-12 col-md-6 banda-alternanta__foto order-md-first">
+        <div class="banda-alternanta__cadru">
+          <img src="/uploads/gallery/abordare.webp" alt="Control de calitate în tipografie" loading="lazy">
         </div>
       </div>
-      <div class="col-12 col-md-6">
-        <h2 class="display-4 text-brand-lg fw-normal mb-3">Precizie</h2>
-        <div class="h5 fw-normal lh-base">Suntem specializați în producerea ambalajelor pentru produse alimentare, pharma și cosmetice, textile și industriale, cu finisaje superioare: lăcuire, plastifiere, emboss și folio. Capacitățile de producție ne permit tiraje medii și mari în cel mai scurt timp.</div>
-        <a href="/utilaje" class="btn btn-link px-0 fw-semibold text-uppercase">Vezi utilajele</a>
+      <div class="col-12 col-md-6 banda-alternanta__text align-self-center">
+        <h2 class="display-2 fw-normal text-brand-lg mb-3 banda-alternanta__titlu">Precizie</h2>
+        <div class="h3 fw-normal banda-alternanta__corp">
+          <p>Suntem specializați în producerea ambalajelor pentru produse alimentare, pharma și cosmetice, textile și industriale, cu finisaje superioare: lăcuire, plastifiere, emboss și folio. Capacitățile de producție ne permit tiraje medii și mari în cel mai scurt timp.</p>
+        </div>
+        <a href="/utilaje" class="btn btn-link px-0 fw-semibold text-uppercase banda-alternanta__actiune">Vezi utilajele<svg class="sageata" width="18" height="14" viewBox="0 0 18 14" aria-hidden="true" focusable="false"><path d="M10.5 1 16.5 7l-6 6M0 7h16" fill="none" stroke="currentColor" stroke-width="2"/></svg></a>
       </div>
     </div>
   </div>
@@ -92,9 +104,15 @@
     <div class="row">
       <div class="col-12 col-lg-10 mx-auto">
         <div class="ratio ratio-16x9 rounded overflow-hidden shadow-sm">
-          <video controls preload="none" poster="/uploads/gallery/video-poster.webp">
-            <source src="/uploads/video/prezentare.mp4" type="video/mp4">
+          <!--
+            Filmul trimis de client. „preload=metadata" aduce doar antetul
+            fișierului, cât să apară primul cadru; restul se descarcă abia la
+            apăsarea pe Play, ca pagina să nu tragă câteva megaocteți degeaba.
+          -->
+          <video controls preload="metadata" playsinline>
+            <source src="/uploads/gallery/sitewide.mp4" type="video/mp4">
             Browserul dumneavoastră nu poate reda acest material video.
+            <a href="/uploads/gallery/sitewide.mp4">Descărcați filmul de prezentare</a>.
           </video>
         </div>
       </div>

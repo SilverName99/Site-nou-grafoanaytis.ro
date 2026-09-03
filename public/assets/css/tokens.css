@@ -251,10 +251,15 @@ a.btn-light {
  * antet de 57px față de 94px la model. Creșterea e pe rampă: pe telefon
  * modelul stă la 59px, deci acolo nu are rost să urcăm.
  */
-@media (min-width: 992px) {
+@media (min-width: 1200px) {
   .navbar {
     --bs-navbar-padding-y: 1.25rem;
   }
+}
+
+/* O intrare de meniu nu se rupe niciodată în două rânduri. */
+.navbar-nav .nav-link {
+  white-space: nowrap;
 }
 
 /*
@@ -264,4 +269,197 @@ a.btn-light {
 a[href^="mailto:"],
 a[href^="tel:"] {
   overflow-wrap: anywhere;
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   Benzile de prezentare de pe prima pagină
+
+   Modelul exonia.ro le construiește pe toată lățimea ecranului: fotografia
+   se lipește de o margine, iar jumătatea cu text stă pe un fundal decorativ
+   care iese pe cealaltă margine. Textul rămâne aliniat la container.
+
+   Valorile de tipografie sunt măsurate pe pagina lor, nu estimate:
+   titlu 72px / greutate 400 / interlinie 1,2 și corp 28px / 400 / 1,2 pe
+   ecran lat. Aceleași valori le dau clasele .display-2 și .h3 din Bootstrap,
+   folosite și de ei, deci mărimile se potrivesc la orice lățime de ecran.
+   ══════════════════════════════════════════════════════════════════ */
+
+.banda-alternanta {
+  position: relative;
+  /*
+   * „isolation" ține stratul de mai jos (z-index: -1) în interiorul secțiunii:
+   * decorul rămâne peste fundalul benzii, dar sub text și sub fotografie.
+   * Fără el ar trebui ridicat containerul cu „position: relative", iar atunci
+   * fotografia s-ar ancora de container și s-ar opri la marginea lui.
+   */
+  isolation: isolate;
+}
+
+/*
+ * Jumătățile se măsoară în procente din secțiune, nu în „vw".
+ *
+ * Unitatea vw include și lățimea barei de derulare, deci 50vw depășește cu
+ * 15px jumătatea vizibilă și ar împinge fotografia peste text. Secțiunea, ca
+ * bloc obișnuit, are exact lățimea vizibilă, deci 50% cade fix pe mijloc.
+ */
+.banda-alternanta::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 50%;
+  z-index: -1;
+  background: url('/assets/img/linii-decorative.svg') no-repeat center center / cover;
+}
+
+.banda-alternanta--foto-dreapta::before { left: 0; }
+
+/* Aceleași linii, oglindite, ca banda următoare să nu pară o repetare. */
+.banda-alternanta--foto-stanga::before {
+  right: 0;
+  transform: scaleX(-1);
+}
+
+/*
+ * Marginile interioare ale coloanei cu text, ca la model: mai lată în stânga
+ * decât în dreapta, ca textul să nu se lipească de fotografie.
+ */
+.banda-alternanta__text {
+  padding: 3rem 5% 3rem 8%;
+}
+
+/* Alinierea optică a titlului: bara literei iese cu puțin în afara coloanei. */
+.banda-alternanta__titlu {
+  margin-left: -.03em;
+}
+
+/*
+ * Interlinia strânsă a corpului este cerută explicit („aceeași spațiere ca la
+ * exonia") și este potrivită pentru text de 28px. Regula generală de mai sus,
+ * scrisă pentru proza de 16px, ar urca-o la 1,6 și ar rări prea mult rândurile.
+ */
+.banda-alternanta .banda-alternanta__corp p:not(.small) {
+  line-height: 1.2;
+  max-width: none;
+  margin-bottom: 1rem;
+}
+
+.banda-alternanta__actiune {
+  gap: .5rem;
+}
+
+.banda-alternanta__actiune .sageata {
+  color: var(--text-brand-large);
+  flex: none;
+}
+
+/* Fotografia umple jumătatea ei de ecran, până în marginea paginii. */
+.banda-alternanta__foto {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.banda-alternanta__cadru {
+  position: relative;
+  aspect-ratio: 9 / 7;
+}
+
+.banda-alternanta__cadru img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+@media (min-width: 768px) {
+  /*
+   * Cadrul devine simplu distanțier: dă înălțimea minimă a benzii, iar
+   * fotografia se agață de secțiune, ca să treacă dincolo de container.
+   *
+   * Coloana trebuie scoasă și ea din „position: relative", valoarea implicită
+   * a coloanelor Bootstrap. Altfel fotografia se ancorează de coloană și se
+   * oprește la marginea containerului, nu la marginea ecranului.
+   */
+  .banda-alternanta__foto,
+  .banda-alternanta__cadru {
+    position: static;
+  }
+
+  /*
+   * Înălțimea se scrie explicit, nu „auto".
+   *
+   * La o imagine, „height: auto" cu top și bottom fixate nu întinde cutia: se
+   * ia înălțimea proprie a fotografiei. Cu fotografiile de acum ieșea din
+   * întâmplare aproape cât banda, dar pentru un fișier lipsă — înlocuit cu un
+   * pixel pătrat — cutia devenea 720×720 și dădea peste secțiunea următoare.
+   */
+  .banda-alternanta__cadru img {
+    inset: 0 auto;
+    width: 50%;
+    height: 100%;
+  }
+
+  .banda-alternanta--foto-dreapta .banda-alternanta__cadru img { right: 0; }
+  .banda-alternanta--foto-stanga  .banda-alternanta__cadru img { left: 0; }
+}
+
+/* Pe telefon coloanele se așază una sub alta, deci decorul ia toată lățimea. */
+@media (max-width: 767.98px) {
+  .banda-alternanta::before {
+    width: 100%;
+    left: 0;
+    right: auto;
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   Antetul: două sigle, mereu vizibil
+
+   Clientul cere sigla asociației lângă sigla firmei, pe orice pagină, cu
+   antetul lipit de marginea de sus.
+   ══════════════════════════════════════════════════════════════════ */
+
+.antet-sigle {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  min-width: 0;
+}
+
+/* Linie subțire între cele două sigle, ca să nu pară o singură emblemă. */
+.antet-sigle__partener {
+  display: inline-flex;
+  align-items: center;
+  padding-left: 1rem;
+  border-left: 1px solid var(--line);
+}
+
+/*
+ * Înălțimea o dă CSS-ul, nu atributul: fișierul clientului poate veni în orice
+ * proporție, iar „width:auto" păstrează proporția oricare ar fi ea. Limita de
+ * lățime oprește o siglă foarte lată să împingă meniul.
+ */
+.antet-sigle img {
+  height: 44px;
+  width: auto;
+  max-width: 150px;
+  object-fit: contain;
+  display: block;
+}
+
+@media (max-width: 575.98px) {
+  .antet-sigle {
+    gap: .625rem;
+  }
+
+  .antet-sigle__partener {
+    padding-left: .625rem;
+  }
+
+  .antet-sigle img {
+    height: 34px;
+    max-width: 108px;
+  }
 }

@@ -47,12 +47,29 @@ foreach ($meniu as [$eticheta, $url]) {
 }
 
 $header = <<<HTML
-<nav class="navbar navbar-expand-lg bg-white border-bottom sticky-top" aria-label="Navigare principală">
+<!--
+  Meniul se desface abia de la 1200px. Cu șapte intrări, butonul de ofertă și
+  două sigle, la 992px rândul se rupea în două: „Despre noi" și „Cere ofertă"
+  treceau pe al doilea rând, iar antetul creștea la 105px.
+-->
+<nav class="navbar navbar-expand-xl bg-white border-bottom sticky-top" aria-label="Navigare principală">
   <div class="container">
-    <a class="navbar-brand fw-bold" href="/">
-      <img src="/uploads/gallery/grafoanaytis-logo.webp" alt="Grafoanaytis" height="38"
-           onerror="this.replaceWith(document.createTextNode('Grafoanaytis'))">
-    </a>
+    <div class="antet-sigle">
+      <a class="navbar-brand fw-bold me-0" href="/">
+        <img src="/uploads/gallery/grafoanaytis-logo.webp" alt="Grafoanaytis" height="44"
+             onerror="this.replaceWith(document.createTextNode('Grafoanaytis'))">
+      </a>
+      <!--
+        Sigla asociației, cerută de client lângă sigla firmei. Duce la pagina de
+        certificări, unde se vede la mărime citibilă: în antet, rândurile de text
+        din siglă ajung la câțiva pixeli înălțime.
+      -->
+      <a class="antet-sigle__partener" href="/certificari"
+         title="Membru fondator al Asociației Furnizorilor de Ambalaje Sustenabile">
+        <img src="/uploads/gallery/afas.png" height="44"
+             alt="Membru fondator AFAS — Asociația Furnizorilor de Ambalaje Sustenabile">
+      </a>
+    </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#meniu-principal"
             aria-controls="meniu-principal" aria-expanded="false" aria-label="Deschide meniul">
       <span class="navbar-toggler-icon"></span>
@@ -60,7 +77,7 @@ $header = <<<HTML
     <div class="collapse navbar-collapse justify-content-end" id="meniu-principal">
       <ul class="navbar-nav">
 {$linkuriMeniu}      </ul>
-      <a href="/contact" class="btn btn-primary fw-semibold ms-lg-3 mt-2 mt-lg-0">Cere ofertă</a>
+      <a href="/contact" class="btn btn-primary fw-semibold ms-xl-3 mt-2 mt-xl-0 text-nowrap">Cere ofertă</a>
     </div>
   </div>
 </nav>

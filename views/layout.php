@@ -298,9 +298,21 @@ if (trim($designHeaderOutput) !== '' && preg_match($mobileMenuTokenPattern, $des
     <link rel="icon" href="<?= $siteFaviconUrlEscaped ?>">
     <link rel="shortcut icon" href="<?= $siteFaviconUrlEscaped ?>">
     <link rel="apple-touch-icon" href="<?= $siteFaviconUrlEscaped ?>">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+    <?php
+    /*
+     * Fonturile de la Google au fost scoase.
+     *
+     * Erau moștenite din proiectul anterior și cereau DM Sans și Playfair
+     * Display. Playfair nu apare nicăieri, iar DM Sans doar în stilurile
+     * widgeturilor de magazin (bv-*), care pe acest site sunt oprite. Site-ul
+     * scrie cu Rubik, găzduit local.
+     *
+     * Legătura nu era doar greutate inutilă la fiecare încărcare de pagină:
+     * browserul cerea fișierele direct de la Google, deci adresa IP a
+     * vizitatorului ajungea acolo înainte de orice acord pentru cookie-uri.
+     * Pe un site cu modul GDPR, asta este exact ce nu trebuie să se întâmple.
+     */
+    ?>
     <?php
     $cssVersion = @filemtime(__DIR__ . '/../public/assets/css/app.css') ?: time();
     $bootstrapVersion = @filemtime(__DIR__ . '/../public/assets/vendor/bootstrap/css/bootstrap.min.css') ?: time();
