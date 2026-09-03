@@ -26,7 +26,15 @@ $config = require __DIR__ . '/../config/app.php';
 $db = Database::connection($config['db']);
 
 if (!$db instanceof PDO) {
-    exit("Conexiunea la baza de date nu este disponibilă.\n");
+    /*
+     * Ieșire cu cod de eroare, nu cu zero.
+     *
+     * „exit(mesaj)" returnează 0, deci un lanț „git pull && seed && seed" mergea
+     * mai departe și raporta succes chiar dacă baza de date era căzută și nu se
+     * scrisese nimic. Codul 1 oprește lanțul acolo unde trebuie.
+     */
+    fwrite(STDERR, "Conexiunea la baza de date nu este disponibilă.\n");
+    exit(1);
 }
 
 /**
@@ -38,7 +46,7 @@ if (!$db instanceof PDO) {
  */
 const PAGINI = [
     'acasa' => 'Acasă',
-    'despre-noi' => 'Despre noi',
+    'companie' => 'Companie',
     'servicii' => 'Servicii',
     'produse' => 'Produse',
     'servicii__tipar-offset' => 'Tipar offset',

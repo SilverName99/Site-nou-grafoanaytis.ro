@@ -23,14 +23,22 @@ $config = require __DIR__ . '/../config/app.php';
 $db = Database::connection($config['db']);
 
 if (!$db instanceof PDO) {
-    exit("Conexiunea la baza de date nu este disponibilă.\n");
+    /*
+     * Ieșire cu cod de eroare, nu cu zero.
+     *
+     * „exit(mesaj)" returnează 0, deci un lanț „git pull && seed && seed" mergea
+     * mai departe și raporta succes chiar dacă baza de date era căzută și nu se
+     * scrisese nimic. Codul 1 oprește lanțul acolo unde trebuie.
+     */
+    fwrite(STDERR, "Conexiunea la baza de date nu este disponibilă.\n");
+    exit(1);
 }
 
 $suprascrie = in_array('--suprascrie', $argv, true);
 
 $meniu = [
     ['Acasă', '/'],
-    ['Despre noi', '/despre-noi'],
+    ['Companie', '/companie'],
     ['Servicii', '/servicii'],
     ['Produse', '/produse'],
     ['Utilaje', '/utilaje'],
@@ -48,6 +56,25 @@ foreach ($meniu as [$eticheta, $url]) {
 }
 
 $header = <<<HTML
+<!--
+  Banner de comunicare a proiectului cu finanțare europeană.
+
+  Stă în antet, deasupra meniului, deci apare pe toate paginile: obligația de
+  informare nu ține de o pagină anume. Nu este lipicios — se derulează în sus,
+  iar meniul rămâne.
+
+  Fundal de brand cu text închis: 9,09:1. Toată banda este o singură legătură,
+  ca ținta de atingere să fie mare, nu doar câteva cuvinte subliniate. Fișierul
+  este servit din site, nu din galerie, care acceptă doar imagini și mp4.
+-->
+<div id="banner-comunicare" class="bg-brand">
+  <a class="banner-comunicare__legatura container d-block text-center py-2"
+     href="/documente/comunicat-presa-proiect-332198.pdf" target="_blank" rel="noopener"
+     aria-label="Comunicat de presă privind proiectul 332198, fișier PDF, se deschide într-o filă nouă">
+    <span class="banner-comunicare__rand">Comunicare implementare proiect „Dezvoltarea activității GRAFOANAYTIS SRL prin achiziția de echipamente”, Cod proiect 332198</span>
+    <span class="banner-comunicare__rand">Scurtă descriere a proiectului – PR-SM-2021-2027 GRAFOANAYTIS_332198</span>
+  </a>
+</div>
 <!--
   Meniul se desface abia de la 1200px. Cu șapte intrări, butonul de ofertă și
   două sigle, la 992px rândul se rupea în două: „Despre noi" și „Cere ofertă"
@@ -96,7 +123,7 @@ $footer = <<<'HTML'
       <div class="col-6 col-md-3">
         <p class="text-white fw-semibold mb-2">Navigare</p>
         <ul class="list-unstyled mb-0">
-          <li><a class="link-light link-underline-opacity-0 link-underline-opacity-100-hover" href="/despre-noi">Despre noi</a></li>
+          <li><a class="link-light link-underline-opacity-0 link-underline-opacity-100-hover" href="/companie">Companie</a></li>
           <li><a class="link-light link-underline-opacity-0 link-underline-opacity-100-hover" href="/servicii">Servicii</a></li>
           <li><a class="link-light link-underline-opacity-0 link-underline-opacity-100-hover" href="/utilaje">Utilaje</a></li>
           <li><a class="link-light link-underline-opacity-0 link-underline-opacity-100-hover" href="/certificari">Certificări</a></li>
@@ -159,7 +186,7 @@ JS;
  */
 $continut = [
     'design_header_html' => $header,
-    'design_menu_html' => '<a href="/">Acasă</a><a href="/despre-noi">Despre noi</a><a href="/servicii">Servicii</a><a href="/utilaje">Utilaje</a><a href="/certificari">Certificări</a><a href="/contact">Contact</a>',
+    'design_menu_html' => '<a href="/">Acasă</a><a href="/companie">Companie</a><a href="/servicii">Servicii</a><a href="/utilaje">Utilaje</a><a href="/certificari">Certificări</a><a href="/contact">Contact</a>',
     'design_footer_html' => $footer,
     'design_header_js' => $headerJs,
 ];

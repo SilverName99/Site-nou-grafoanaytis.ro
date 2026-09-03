@@ -10,7 +10,7 @@ $defaultSnippets = [
   <a href="/" style="color:white;font-size:1.4rem;font-weight:700;text-decoration:none;">Logo</a>
   <nav style="display:flex;gap:24px;">
     <a href="/" style="color:white;text-decoration:none;">Acasă</a>
-    <a href="/despre-noi" style="color:white;text-decoration:none;">Despre</a>
+    <a href="/companie" style="color:white;text-decoration:none;">Despre</a>
     <a href="/contact" style="color:white;text-decoration:none;">Contact</a>
   </nav>
 </header>',

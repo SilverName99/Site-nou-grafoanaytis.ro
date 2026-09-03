@@ -136,7 +136,7 @@ final class Settings
         'design_footer_html' => '',
         'design_footer_css' => '',
         'design_footer_js' => '',
-        'design_menu_html' => '<a href="/">Acasă</a><a href="/despre-noi">Despre noi</a><a href="/servicii">Servicii</a><a href="/produse">Produse</a><a href="/utilaje">Utilaje</a><a href="/certificari">Certificări</a><a href="/contact">Contact</a>',
+        'design_menu_html' => '<a href="/">Acasă</a><a href="/companie">Companie</a><a href="/servicii">Servicii</a><a href="/produse">Produse</a><a href="/utilaje">Utilaje</a><a href="/certificari">Certificări</a><a href="/contact">Contact</a>',
         'design_menu_css' => '',
         'design_menu_js' => '',
         'floating_cart_enabled' => '1',

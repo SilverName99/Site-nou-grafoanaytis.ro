@@ -465,3 +465,40 @@ a[href^="tel:"] {
     max-width: 176px;
   }
 }
+
+/*
+ * Banda de comunicare a proiectului.
+ *
+ * Modelul trimis de client scrie textul cu majuscule, îngroșat și subliniat, pe
+ * două rânduri. Aici păstrăm forma, dar pe fundalul de brand și cu text închis:
+ * negru pe portocaliu dă 9,09:1, față de 3,4:1 cât ar da albastrul din model.
+ *
+ * Sublinierea rămâne, fiindcă banda este o legătură: fără ea, singurul semn că
+ * se poate apăsa ar fi cursorul, care pe telefon nu există.
+ */
+#banner-comunicare .banner-comunicare__legatura {
+  color: var(--on-fill-brand);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+#banner-comunicare .banner-comunicare__legatura:hover,
+#banner-comunicare .banner-comunicare__legatura:focus-visible {
+  background: var(--fill-brand-hover);
+}
+
+#banner-comunicare .banner-comunicare__rand {
+  display: block;
+  font-weight: 700;
+  font-size: clamp(.75rem, .6rem + .35vw, .9375rem);
+  line-height: 1.35;
+  text-transform: uppercase;
+  letter-spacing: .01em;
+  text-wrap: balance;
+}
+
+/* Al doilea rând este subtitlul: rămâne citibil, dar nu concurează cu primul. */
+#banner-comunicare .banner-comunicare__rand + .banner-comunicare__rand {
+  margin-top: .15rem;
+  font-size: clamp(.7rem, .58rem + .28vw, .875rem);
+}
