@@ -125,7 +125,14 @@ copii.push(
 );
 
 const totalTexte = date.reduce((s, x) => s + x.texte.length, 0);
-const totalFisiere = date.reduce((s, x) => s + x.fisiere.length, 0);
+/*
+ * Fișierele se numără o singură dată, chiar dacă apar pe mai multe pagini:
+ * aceeași fotografie de utilaj stă și pe „Acasă", și pe „Utilaje". Numărate ca
+ * rânduri, clientul credea că are de trimis 21 de poze în loc de 16.
+ */
+const totalFisiere = new Set(
+  date.flatMap((x) => x.fisiere.map((f) => f.fisier))
+).size;
 copii.push(
   tabel([
     capDeTabel('Ce lipsește', 'Câte', 'Unde'),
