@@ -36,6 +36,7 @@ if (!empty($socialAuthConfig['google_enabled'])) {
 }
 $pageHtml = str_replace('{{mannequin_section}}', $mannequinSectionHtml, $pageHtml);
 $pageHtml = str_replace('{{shop_catalog}}', $shopCatalogHtml, $pageHtml);
+$pageHtml = str_replace('{{produse_serviciu}}', (string) ($produseCategorieHtml ?? ''), $pageHtml);
 $pageHtml = str_replace('{{blog_posts}}', $blogPostsHtml, $pageHtml);
 $pageHtml = str_replace('{{cart_form}}', $cartFormHtml, $pageHtml);
 $pageHtml = str_replace('{{checkout_form}}', $checkoutFormHtml, $pageHtml);

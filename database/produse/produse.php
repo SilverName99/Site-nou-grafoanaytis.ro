@@ -29,9 +29,13 @@ return [
         'lipire-cutii' => 'Lipire cutii',
         'aplicare-ferestre' => 'Aplicare ferestre',
 
-        // Servicii pentru clienți finali
+        // Servicii pentru clienți finali. Slug-ul este identic cu al paginii
+        // de serviciu, ca lista de produse să se lege singură.
         'tipar-offset' => 'Tipar offset',
         'tipar-digital' => 'Tipar digital',
+        'ambalaje' => 'Ambalaje',
+        'servicii-de-stantare' => 'Servicii de ștanțare',
+        'inscriptionare-folio-emboss' => 'Inscripționare folio / emboss',
     ],
 
     'campuri' => [
@@ -45,6 +49,42 @@ return [
 
     'produse' => [
         [
+            'slug' => 'cutii-cu-fereastra-pentru-retail',
+            'nume' => 'Cutii cu fereastră pentru retail',
+            'subtitlu' => 'Produsul se vede din raft, fără să fie scos din ambalaj',
+            'descriere' => "Cutii pliate cu fereastră din folie PVC, pentru produse care se vând la raft: jucării, articole de papetărie, produse de îngrijire, seturi cadou.\n\nFereastra se aplică automat, iar decupajul se ștanțează odată cu conturul cutiei, deci nu apare o operație în plus care să scumpească tirajul.",
+            'aplicabilitate' => "Retail și magazine de proximitate|Jucării și papetărie|Seturi cadou",
+            'imagine' => 'geam5.webp',
+            'galerie' => ['geam5.webp', 'geam.webp', 'geam2.webp', 'geam4.webp', 'geam8.webp'],
+            'categorii' => ['cutii-cu-fereastra', 'aplicare-ferestre', 'ambalaje', 'tipar-offset'],
+            'campuri' => [
+                'dimensiuni' => '[DE COMPLETAT: dimensiunile uzuale]',
+                'material' => 'Carton duplex sau grafic, folie PVC pentru fereastră',
+                'tiraj' => '[DE COMPLETAT: tirajul minim]',
+                'personalizare' => 'Tipar offset, policromie',
+                'finisaje' => 'Ștanțare, aplicare fereastră, lăcuire, lipire automată',
+                'termen' => '[DE COMPLETAT]',
+            ],
+        ],
+        [
+            'slug' => 'cutii-pentru-dulciuri-si-cadouri',
+            'nume' => 'Cutii pentru dulciuri și cadouri alimentare',
+            'subtitlu' => 'Cutii cu mâner sau cu capac, pentru produse vândute la bucată',
+            'descriere' => "Cutii pentru bomboane, prăjituri, mochi și cadouri alimentare, cu mâner ștanțat sau cu capac separat.\n\nSe tipăresc offset și se finisează cu lăcuire sau plastifiere, potrivite pentru contact alimentar.",
+            'aplicabilitate' => "Cofetării și ciocolaterii|Cadouri corporate|Magazine cu vânzare la bucată",
+            'imagine' => 'dulciuri.webp',
+            'galerie' => ['dulciuri.webp', 'mochi.webp', 'prajituri2.webp', 'alimentar2.webp'],
+            'categorii' => ['ambalaje-alimentare', 'ambalaje', 'lipire-cutii', 'tipar-offset'],
+            'campuri' => [
+                'dimensiuni' => '[DE COMPLETAT: dimensiunile uzuale]',
+                'material' => 'Carton duplex, contact alimentar',
+                'tiraj' => '[DE COMPLETAT: tirajul minim]',
+                'personalizare' => 'Tipar offset, policromie',
+                'finisaje' => 'Lăcuire, plastifiere, ștanțare, lipire automată',
+                'termen' => '[DE COMPLETAT]',
+            ],
+        ],
+        [
             'slug' => 'cutii-cu-fereastra-pentru-cofetarie',
             'nume' => 'Cutii cu fereastră pentru cofetărie',
             'subtitlu' => 'Fereastra din folie PVC se aplică automat, iar prăjitura se vede fără să fie atinsă',
@@ -52,7 +92,7 @@ return [
             'aplicabilitate' => "Cofetării și patiserii|Laboratoare de dulciuri|Magazine cu vânzare la bucată",
             'imagine' => 'prajituri.webp',
             'galerie' => ['prajituri.webp', 'prajituri2.webp', 'alimtenar.webp', 'mochi.webp'],
-            'categorii' => ['ambalaje-alimentare', 'cutii-cu-fereastra', 'aplicare-ferestre', 'tipar-offset'],
+            'categorii' => ['ambalaje-alimentare', 'cutii-cu-fereastra', 'aplicare-ferestre', 'tipar-offset', 'ambalaje'],
             'campuri' => [
                 'dimensiuni' => '[DE COMPLETAT: dimensiunile uzuale]',
                 'material' => 'Carton duplex sau microondulat, contact alimentar',
@@ -70,7 +110,7 @@ return [
             'aplicabilitate' => "Cosmetice și îngrijire personală|Seturi cadou|Produse de raft premium",
             'imagine' => 'box3.webp',
             'galerie' => ['box3.webp', 'box2.webp', 'box1.webp', 'cosmetic2.webp'],
-            'categorii' => ['ambalaje-cosmetice', 'stantare-folio-embos', 'lipire-cutii', 'tipar-offset'],
+            'categorii' => ['ambalaje-cosmetice', 'stantare-folio-embos', 'lipire-cutii', 'tipar-offset', 'ambalaje', 'servicii-de-stantare', 'inscriptionare-folio-emboss'],
             'campuri' => [
                 'dimensiuni' => '[DE COMPLETAT: dimensiunile uzuale]',
                 'material' => 'Carton grafic 250–350 g, cu sau fără cașerare',
@@ -88,7 +128,7 @@ return [
             'aplicabilitate' => "Medicamente și suplimente|Dispozitive medicale|Produse de farmacie",
             'imagine' => 'ambalaj-farma-3.webp',
             'galerie' => ['ambalaj-farma-3.webp', 'ambalaj-farma-4.webp', 'ambalaj-farma.webp', 'ambalaj-farma2.webp', 'blister.webp'],
-            'categorii' => ['ambalaje-farma', 'lipire-cutii', 'stantare-folio-embos', 'tipar-offset'],
+            'categorii' => ['ambalaje-farma', 'lipire-cutii', 'stantare-folio-embos', 'tipar-offset', 'ambalaje', 'servicii-de-stantare'],
             'campuri' => [
                 'dimensiuni' => '[DE COMPLETAT: dimensiunile uzuale]',
                 'material' => 'Carton grafic alb, cerneluri fără migrare',
@@ -106,7 +146,7 @@ return [
             'aplicabilitate' => "Ceaiuri și infuzii|Condimente|Produse bio și naturale",
             'imagine' => 'matcha.webp',
             'galerie' => ['matcha.webp', 'matcha2.webp', 'ceai.webp', 'sirin.webp'],
-            'categorii' => ['ambalaje-alimentare', 'lipire-cutii', 'tipar-offset'],
+            'categorii' => ['ambalaje-alimentare', 'lipire-cutii', 'tipar-offset', 'ambalaje'],
             'campuri' => [
                 'dimensiuni' => '[DE COMPLETAT: dimensiunile uzuale]',
                 'material' => 'Carton duplex, contact alimentar',
@@ -124,7 +164,7 @@ return [
             'aplicabilitate' => "Producători de alimente|Retail alimentar|Ambalaje de grup",
             'imagine' => 'alimentar2.webp',
             'galerie' => ['alimentar2.webp', 'alimtenar.webp', 'dulciuri.webp', 'mochi.webp'],
-            'categorii' => ['ambalaje-alimentare', 'lipire-cutii', 'tipar-offset'],
+            'categorii' => ['ambalaje-alimentare', 'lipire-cutii', 'tipar-offset', 'ambalaje', 'servicii-de-stantare'],
             'campuri' => [
                 'dimensiuni' => '[DE COMPLETAT: dimensiunile uzuale]',
                 'material' => 'Carton duplex și microondulat, contact alimentar',
@@ -142,7 +182,7 @@ return [
             'aplicabilitate' => "Berării și crame|HoReCa|Cadouri corporate",
             'imagine' => 'bere.webp',
             'galerie' => ['bere.webp', 'bere2.webp', 'cupholder1.webp', 'vin1.webp'],
-            'categorii' => ['ambalaje-alimentare', 'stantare-folio-embos', 'tipar-offset'],
+            'categorii' => ['ambalaje-alimentare', 'stantare-folio-embos', 'tipar-offset', 'ambalaje', 'servicii-de-stantare'],
             'campuri' => [
                 'dimensiuni' => '[DE COMPLETAT: dimensiunile uzuale]',
                 'material' => 'Carton microondulat sau duplex gros',
@@ -178,7 +218,7 @@ return [
             'aplicabilitate' => "Cadouri corporate|Instituții și administrație|Campanii de final de an",
             'imagine' => 'agenda3.webp',
             'galerie' => ['agenda3.webp', 'agenda1.webp', 'agenda2.webp', 'agenda4.webp'],
-            'categorii' => ['tiparituri', 'stantare-folio-embos', 'tipar-offset'],
+            'categorii' => ['tiparituri', 'stantare-folio-embos', 'tipar-offset', 'inscriptionare-folio-emboss'],
             'campuri' => [
                 'dimensiuni' => 'A4, A5 și formate la cerere',
                 'material' => 'Hârtie offset și carton pentru coperți',
@@ -232,7 +272,7 @@ return [
             'aplicabilitate' => "Prezentări comerciale|Conferințe și târguri|Instituții",
             'imagine' => 'mapa.webp',
             'galerie' => ['mapa.webp', 'mapa2.webp', 'evenimente-imobil.webp'],
-            'categorii' => ['tiparituri', 'stantare-folio-embos', 'tipar-offset'],
+            'categorii' => ['tiparituri', 'stantare-folio-embos', 'tipar-offset', 'servicii-de-stantare'],
             'campuri' => [
                 'dimensiuni' => 'Pentru documente A4',
                 'material' => 'Carton grafic 300–350 g',
@@ -250,7 +290,7 @@ return [
             'aplicabilitate' => "Magazine de cadouri|Instituții de cult|Produse de colecție",
             'imagine' => 'tamaie.webp',
             'galerie' => ['tamaie.webp', 'tamaie2.webp', 'cutie-123.webp'],
-            'categorii' => ['ambalaje-cosmetice', 'stantare-folio-embos', 'lipire-cutii', 'tipar-offset'],
+            'categorii' => ['ambalaje-cosmetice', 'stantare-folio-embos', 'lipire-cutii', 'tipar-offset', 'ambalaje', 'inscriptionare-folio-emboss'],
             'campuri' => [
                 'dimensiuni' => '[DE COMPLETAT: dimensiunile uzuale]',
                 'material' => 'Carton grafic, cu sau fără cașerare',

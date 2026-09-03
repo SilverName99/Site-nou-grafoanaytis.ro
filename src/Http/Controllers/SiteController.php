@@ -3289,6 +3289,15 @@ HTML;
             'page' => $page,
             'mannequinSectionHtml' => $this->renderMannequinSection($db, $settings),
             'shopCatalogHtml' => $slug === 'magazin' ? $this->renderShopCatalogSection($db, $this->requestCategoryFilter()) : '',
+            /*
+             * Produsele serviciului. Categoria poartă același slug ca ultimul
+             * segment al paginii, deci „/servicii/lipire-cutii" își găsește
+             * singur produsele, fără nimic de configurat.
+             */
+            'produseCategorieHtml' => $this->renderProduseCategorieSection(
+                $db,
+                (string) (substr(strrchr('/' . $slug, '/') ?: '', 1))
+            ),
             'blogPostsHtml' => $slug === 'blog' ? $this->renderBlogPostsSection($db) : '',
             'cartFormHtml' => $cartFormHtml,
             'checkoutFormHtml' => $checkoutFormHtml,
@@ -3805,6 +3814,56 @@ HTML;
     private function requestShopCatalogSort(): string
     {
         return $this->normalizeShopCatalogSort((string) ($_GET['sort'] ?? 'alpha_asc'));
+    }
+
+    /**
+     * Produsele executate cu un serviciu, pentru pagina serviciului.
+     *
+     * Traseul cerut de client este serviciu → produsele lui → produs. O pagină
+     * de serviciu este o pagină obișnuită, iar categoria de produse poartă
+     * același slug ca ea: „/servicii/lipire-cutii" arată produsele din
+     * categoria „lipire-cutii". Fără potrivire, marcajul dispare — un serviciu
+     * fără produse legate nu trebuie să lase o secțiune goală în pagină.
+     *
+     * Nu este catalogul de la /magazin: acolo sunt filtre și sortare, aici doar
+     * lista scurtă a serviciului.
+     */
+    private function renderProduseCategorieSection(?PDO $db, string $slugCategorie): string
+    {
+        if (!$db instanceof PDO || $slugCategorie === '') {
+            return '';
+        }
+
+        try {
+            $stmt = $db->prepare(
+                'SELECT p.id, p.name, p.slug, p.short_description, p.image_url
+                 FROM products p
+                 JOIN product_category_links l ON l.product_id = p.id
+                 JOIN product_categories c ON c.id = l.category_id
+                 WHERE c.slug = :slug
+                   AND p.deleted_at IS NULL
+                   AND p.is_active = 1
+                 GROUP BY p.id
+                 ORDER BY p.name ASC'
+            );
+            $stmt->execute(['slug' => $slugCategorie]);
+            $produse = $stmt->fetchAll(PDO::FETCH_ASSOC) ?: [];
+        } catch (Throwable) {
+            return '';
+        }
+
+        if ($produse === []) {
+            return '';
+        }
+
+        $stmt = $db->prepare('SELECT name FROM product_categories WHERE slug = :slug LIMIT 1');
+        $stmt->execute(['slug' => $slugCategorie]);
+        $numeCategorie = (string) ($stmt->fetchColumn() ?: '');
+
+        return $this->renderPhpView('site/components/produse-categorie', [
+            'produse' => $produse,
+            'numeCategorie' => $numeCategorie,
+        ]);
     }
 
     private function renderShopCatalogSection(?PDO $db, string $categoryFilter = ''): string
