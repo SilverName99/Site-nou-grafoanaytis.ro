@@ -11,6 +11,7 @@ declare(strict_types=1);
  *
  *   php scripts/seed-produse.php
  *   php scripts/seed-produse.php --suprascrie
+ *   php scripts/seed-produse.php --suprascrie --curata   (scoate produsele străine)
  */
 
 require_once __DIR__ . '/../bootstrap.php';
@@ -182,6 +183,73 @@ foreach ($date['produse'] as $produs) {
         }
     }
 }
+
+/* ── Curățarea produselor străine ────────────────────────────────────────
+   Instalarea a fost preluată dintr-un magazin, deci în bază pot exista produse
+   care nu au ce căuta pe site-ul tipografiei — „Miere de Manuka", „Spirulină".
+   Se scot doar la cerere și doar prin marcare ca șterse, nu prin DELETE: dacă
+   se dovedește că mai trebuiau, se recuperează dintr-o singură comandă.
+   ────────────────────────────────────────────────────────────────────── */
+
+if (in_array('--curata', $argv, true)) {
+    $sluguri = array_column($date['produse'], 'slug');
+    $semne = implode(',', array_fill(0, count($sluguri), '?'));
+    $stmt = $db->prepare(
+        "SELECT id, name FROM products WHERE deleted_at IS NULL AND slug NOT IN ({$semne})"
+    );
+    $stmt->execute($sluguri);
+    $straine = $stmt->fetchAll(PDO::FETCH_ASSOC) ?: [];
+
+    foreach ($straine as $strain) {
+        $db->prepare('UPDATE products SET deleted_at = NOW(), is_active = 0 WHERE id = ?')
+            ->execute([(int) $strain['id']]);
+        echo "scos:                {$strain['name']}\n";
+    }
+
+    if ($straine === []) {
+        echo "curat:               niciun produs străin în bază\n";
+    }
+}
+
+/* ── Produsele asemănătoare ──────────────────────────────────────────────
+   Aplicația le arată doar dacă sunt alese explicit pentru fiecare produs, în
+   „similar_products_json". Alegerea de mână, la paisprezece produse, s-ar
+   strica la prima adăugare, deci se calculează: pentru fiecare produs, cele
+   mai apropiate patru, ordonate după câte categorii au în comun cu el.
+   ────────────────────────────────────────────────────────────────────── */
+
+$categoriiPeProdus = [];
+$stmt = $db->query(
+    'SELECT l.product_id, l.category_id
+     FROM product_category_links l
+     JOIN products p ON p.id = l.product_id AND p.deleted_at IS NULL'
+);
+foreach ($stmt ? $stmt->fetchAll(PDO::FETCH_ASSOC) : [] as $rand) {
+    $categoriiPeProdus[(int) $rand['product_id']][] = (int) $rand['category_id'];
+}
+
+$scrieSimilare = $db->prepare('UPDATE products SET similar_products_json = ? WHERE id = ?');
+$legate = 0;
+foreach ($categoriiPeProdus as $idProdus => $categoriile) {
+    $scoruri = [];
+    foreach ($categoriiPeProdus as $idAltul => $aleLui) {
+        if ($idAltul === $idProdus) {
+            continue;
+        }
+        $comune = count(array_intersect($categoriile, $aleLui));
+        if ($comune > 0) {
+            $scoruri[$idAltul] = $comune;
+        }
+    }
+    /* La scor egal contează ordinea din catalog, ca rezultatul să fie stabil. */
+    arsort($scoruri);
+    $alese = array_slice(array_keys($scoruri), 0, 4);
+    if ($alese !== []) {
+        $scrieSimilare->execute([json_encode(array_values($alese)), $idProdus]);
+        $legate++;
+    }
+}
+echo "similare:            {$legate} produse au primit produse asemănătoare\n";
 
 $golite = ResponseCache::purgePageCache();
 if ($golite > 0) {

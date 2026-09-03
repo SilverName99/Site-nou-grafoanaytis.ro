@@ -8694,6 +8694,29 @@ CSS;
             'product_reviews_block' => $reviewSectionHtml,
             'product_tabs_section' => $tabsSectionHtml,
             'product_similar_products_section' => $similarProductsSectionHtml,
+            /*
+             * Varianta simplă a produselor înrudite.
+             *
+             * Banda din „product_similar_products_section" este componenta
+             * moștenită din magazin: carusel cu stele, procent de reducere și
+             * buton de coș, iar stilul ei stă în app.css, care nu se mai
+             * încarcă pe partea publică — deci se desena cu ce prindea. Aici
+             * sunt aceleași produse, în cardurile site-ului, fără preț și fără
+             * note, ca pe paginile de serviciu.
+             */
+            'product_produse_similare' => $this->renderPhpView('site/components/produse-categorie', [
+                'produse' => array_map(
+                    static fn (array $p): array => [
+                        'name' => (string) ($p['name'] ?? ''),
+                        'slug' => (string) ($p['slug'] ?? ''),
+                        'short_description' => (string) ($p['short_description'] ?? ''),
+                        'image_url' => (string) ($p['image_url'] ?? ''),
+                    ],
+                    array_values($similarProducts)
+                ),
+                'titlu' => 'Produse asemănătoare',
+                'subtitlu' => 'Din aceeași categorie, executate în aceeași hală.',
+            ]),
             'product_icon_leaf' => '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19.1 5.1c-6 .2-10.4 3.9-10.4 6.5 0 2.9 2 4.9 4.5 4.9 4.2 0 7.7-4 8.2-9.6.1-.9-.6-1.8-2.3-1.8Z" fill="none" stroke="currentColor" stroke-width="1.55" stroke-linecap="round" stroke-linejoin="round"/><path d="M6.6 20.4c2.1-4.7 6.1-8 11.3-10.2" fill="none" stroke="currentColor" stroke-width="1.45" stroke-linecap="round"/></svg>',
             'product_icon_truck' => '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.8 7.8h9.8v6.6H3.8Z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M13.6 10.3h3.6l2.7 2.7v1.4h-6.3Z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M5.8 16.9h1" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><path d="M16.2 16.9h1.1" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><circle cx="8" cy="18" r="1.75" fill="none" stroke="currentColor" stroke-width="1.7"/><circle cx="17.5" cy="18" r="1.75" fill="none" stroke="currentColor" stroke-width="1.7"/></svg>',
             'product_icon_shield' => '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 5 6v6c0 5 3.5 8.6 7 10 3.5-1.4 7-5 7-10V6l-7-3Z"/><path d="m9.4 12.3 1.8 1.8 3.5-3.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>',
@@ -8751,6 +8774,7 @@ CSS;
                 'product_reviews_block',
                 'product_tabs_section',
                 'product_similar_products_section',
+                'product_produse_similare',
                 'product_icon_leaf',
                 'product_icon_truck',
                 'product_icon_shield',

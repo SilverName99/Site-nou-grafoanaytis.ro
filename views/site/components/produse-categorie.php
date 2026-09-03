@@ -7,16 +7,19 @@
  */
 $produse = is_array($produse ?? null) ? $produse : [];
 $numeCategorie = trim((string) ($numeCategorie ?? ''));
+$titlu = trim((string) ($titlu ?? 'Ce executăm cu acest serviciu'));
+$subtitlu = trim((string) ($subtitlu ?? 'Alegeți un produs și cereți mostre și ofertă de preț.'));
+$fundal = trim((string) ($fundal ?? 'bg-body-tertiary'));
 $e = static fn (?string $v): string => htmlspecialchars((string) $v, ENT_QUOTES, 'UTF-8');
 
 if ($produse === []) {
     return;
 }
 ?>
-<section id="produse-serviciu" class="py-5 bg-body-tertiary">
+<section id="produse-serviciu" class="py-5 <?= $e($fundal) ?>">
   <div class="container">
-    <h2 class="display-5 fw-normal mb-2">Ce executăm cu acest serviciu</h2>
-    <p class="lead mb-4">Alegeți un produs și cereți mostre și ofertă de preț.</p>
+    <h2 class="display-5 fw-normal mb-2"><?= $e($titlu) ?></h2>
+    <p class="lead mb-4"><?= $e($subtitlu) ?></p>
 
     <div class="row g-4">
       <?php foreach ($produse as $produs): ?>

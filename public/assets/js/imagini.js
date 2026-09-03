@@ -56,6 +56,18 @@
   }
 
   function verifica(img) {
+    /*
+     * O imagine fără sursă nu este o imagine lipsă.
+     *
+     * Stratul care arată fotografia pe tot ecranul are un <img> gol până la
+     * prima apăsare pe buton — atunci primește sursa. Marcat din start, el
+     * apărea ca un dreptunghi hașurat uriaș în josul paginii de produs.
+     */
+    var sursa = img.getAttribute('src');
+    if (sursa === null || sursa.trim() === '') {
+      return;
+    }
+
     if (img.complete) {
       if (img.naturalWidth === 0) laEroare(img);
       return;

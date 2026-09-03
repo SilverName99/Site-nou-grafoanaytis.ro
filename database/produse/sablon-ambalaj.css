@@ -264,3 +264,63 @@
   margin-top: .15rem;
   color: var(--text-brand-large);
 }
+
+/* ── Imaginea pe tot ecranul ────────────────────────────────────────────
+   Stratul care se deschide de pe butonul din colțul caruselului. Stilul lui
+   stătea tot în app.css, iar fără el nu era ascuns și nici fixat: se desena
+   inline, în josul paginii, ca un dreptunghi de 1500px. Aici este portat cu
+   colțuri drepte și cu negrul cald al site-ului.
+   ────────────────────────────────────────────────────────────────────── */
+
+.product-carousel-fullscreen {
+  position: fixed;
+  inset: 0;
+  background: rgba(30, 26, 23, .93);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 1080;
+  padding: 1.125rem;
+}
+
+.product-carousel-fullscreen.is-active {
+  display: flex;
+}
+
+.product-carousel-fullscreen__image {
+  max-width: min(1200px, 92vw);
+  max-height: 84vh;
+  object-fit: contain;
+}
+
+.product-carousel-fullscreen__close,
+.product-carousel-fullscreen__nav {
+  position: absolute;
+  width: 44px;
+  height: 44px;
+  border: 1px solid rgba(255, 255, 255, .55);
+  background: rgba(30, 26, 23, .8);
+  color: #fff;
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.product-carousel-fullscreen__close:hover,
+.product-carousel-fullscreen__nav:hover {
+  border-color: #fff;
+  background: rgba(30, 26, 23, .95);
+}
+
+.product-carousel-fullscreen__close {
+  top: 1rem;
+  right: 1rem;
+}
+
+.product-carousel-fullscreen__nav {
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.product-carousel-fullscreen__nav[data-action="prev"] { left: 1rem; }
+.product-carousel-fullscreen__nav[data-action="next"] { right: 1rem; }
