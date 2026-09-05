@@ -82,9 +82,11 @@
      * par o pagină care sare. Contorul se ține pe părinte, deci un card dintr-o
      * grilă nu moștenește întârzierea titlului de secțiune.
      *
-     * Plafonul de patru trepte există pentru grilele lungi: la al
-     * șaptesprezecelea produs, o întârziere de 1,2 secunde ar fi arătat ca o
-     * pagină care se încarcă greu.
+     * Plafonul este scurt dinadins. La o grilă de șaptesprezece produse toate
+     * cardurile sunt frați, deci de la al patrulea încolo ar fi primit toate
+     * aceeași întârziere — iar 280ms adunați la pragul de declanșare se simțeau
+     * ca o pagină care răspunde greu la derulare. 45ms pe treaptă, cel mult
+     * trei trepte: destul cât să se vadă un val, prea puțin cât să se aștepte.
      */
     var contoare = new WeakMap();
 
@@ -101,11 +103,15 @@
       }
     }, {
       /*
-       * Marginea de jos scade zona de declanșare cu 8% din înălțimea ecranului:
-       * blocul începe să apară după ce a intrat cu adevărat în pagină, nu în
-       * clipa în care marginea lui de sus atinge marginea de jos a ecranului.
+       * Marginea de jos este pozitivă: zona de declanșare coboară sub ecran cu
+       * 12% din înălțimea lui, deci blocul pornește cu puțin înainte de a intra
+       * în pagină și ajunge la locul lui chiar când îl vezi.
+       *
+       * Era negativă — blocul aștepta să intre bine în ecran înainte să
+       * pornească — și se simțea ca o întârziere la derulare, mai ales pe
+       * grila de produse.
        */
-      rootMargin: '0px 0px -8% 0px',
+      rootMargin: '0px 0px 12% 0px',
       threshold: 0
     });
 
@@ -117,7 +123,7 @@
 
       el.classList.add('apare');
       if (pozitie > 0) {
-        el.style.transitionDelay = Math.min(pozitie, 4) * 70 + 'ms';
+        el.style.transitionDelay = Math.min(pozitie, 3) * 45 + 'ms';
       }
       observator.observe(el);
     }

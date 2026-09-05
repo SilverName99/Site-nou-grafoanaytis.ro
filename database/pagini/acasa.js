@@ -314,59 +314,61 @@
     }
 
     /*
-     * Derularea se face din poziția de derulare a cutiei, nu dintr-o animație
-     * CSS pe bandă.
+     * Mișcarea este o mutare a benzii, nu o derulare a cutiei.
      *
-     * Varianta cu „@keyframes translateX" mergea, dar nu putea fi apucată cu
-     * mâna: transformarea este scrisă de animație, iar o tragere ar fi trebuit
-     * să i se suprapună, ceea ce înseamnă fie oprirea animației și recalcularea
-     * poziției la fiecare apăsare, fie două surse de adevăr pentru aceeași
-     * mișcare. Aici mișcarea este una singură — „scrollLeft" — iar tragerea,
-     * degetul, rotița și tastele o schimbă toate la fel.
+     * A treia variantă, și ultima. Prima muta banda dintr-o animație CSS: se
+     * vedea frumos, dar nu putea fi apucată cu mâna, fiindcă transformarea o
+     * scria animația. A doua o muta din „scrollLeft", ca s-o poată apuca
+     * oricine: mergea, dar sacadat. Derularea unei cutii trece prin firul
+     * principal — la fiecare cadru browserul așază din nou cele treizeci și opt
+     * de sigle și repictează banda mascată. Vizibil, mai ales pe un ecran lat.
      *
-     * Lista este dublată în pagină, deci la jumătatea lățimii banda arată
-     * exact ca la început: scăzând jumătatea când o depășim, bucla nu se vede.
+     * „translate3d" nu așază și nu pictează nimic: mută un strat deja desenat,
+     * treabă pe care o face placa video. Cadrul rămâne ieftin oricâte sigle ar
+     * fi, iar sursa de adevăr rămâne una singură — „pozitie" — pe care o scriu
+     * la fel și ceasul, și degetul, și tastele.
      */
     carusel.classList.add('carusel-clienti--tragere');
 
-    /*
-     * Cele două proprietăți de care depinde mișcarea se scriu și din script,
-     * nu doar din foaia de stil.
-     *
-     * „overflow-x: auto" o face cutie derulabilă — fără ea, „scrollLeft" este
-     * mereu zero și banda stă pe loc, oricât de des i-am cere să se miște.
-     * „scroll-behavior: auto" o ferește de o derulare lină moștenită din altă
-     * parte, care ar înmuia fiecare cadru într-o animație anulată de următorul.
-     *
-     * Scrise aici, mișcarea nu se mai poate opri dintr-o foaie de stil rămasă
-     * în urmă în cache.
-     */
-    carusel.style.overflowX = 'auto';
-    carusel.style.scrollBehavior = 'auto';
-
-    /* 98 de pixeli pe secundă: aceeași viteză ca animația de dinainte. */
+    /* 98 de pixeli pe secundă: aceeași viteză ca la prima variantă. */
     var VITEZA = 98 / 1000;
 
+    var pozitie = 0;
     var oprit = false;
     var seTrage = false;
     var pornireX = 0;
-    var pornireScroll = 0;
+    var pornirePozitie = 0;
     var ultimulCadru = 0;
 
+    /*
+     * Lungimea unei jumătăți, adică a listei nedublate.
+     *
+     * Se măsoară de la marginea benzii până la primul element dublat — cele din
+     * a doua jumătate poartă „aria-hidden", fiindcă pentru un cititor de ecran
+     * sunt aceleași sigle citite a doua oară. Distanța dintre două margini nu
+     * se schimbă cu transformarea benzii, deci se poate citi oricând, chiar în
+     * timpul mișcării.
+     *
+     * „scrollWidth / 2" ar fi fost aproape, dar nu exact: rotunjirea la pixel
+     * întreg lasă o fracțiune care se aduna la fiecare buclă, până când siglele
+     * ajungeau vizibil decalate.
+     */
+    var primulDublat = banda.querySelector('[aria-hidden="true"]');
+
     function jumatate() {
-      return banda.scrollWidth / 2;
+      if (!primulDublat) {
+        return banda.scrollWidth / 2;
+      }
+      return primulDublat.getBoundingClientRect().left - banda.getBoundingClientRect().left;
     }
 
-    function normalizeaza() {
+    function aseaza() {
       var j = jumatate();
-      if (j <= 0) {
-        return;
+      if (j > 0) {
+        /* Modulo pozitiv: merge și când tragerea a dus poziția sub zero. */
+        pozitie = ((pozitie % j) + j) % j;
       }
-      if (carusel.scrollLeft >= j) {
-        carusel.scrollLeft -= j;
-      } else if (carusel.scrollLeft < 0) {
-        carusel.scrollLeft += j;
-      }
+      banda.style.transform = 'translate3d(' + (-pozitie).toFixed(2) + 'px, 0, 0)';
     }
 
     function cadru(acum) {
@@ -385,45 +387,41 @@
       /*
        * Starea „mouse deasupra" se citește din DOM, nu se ține minte.
        *
-       * Prima variantă o ținea într-o variabilă, pusă pe „pointerenter" și
-       * scoasă pe „pointerleave". Iese greșit exact în drumul obișnuit al
-       * cititorului: treci cu mouse-ul peste bandă, derulezi mai departe,
-       * banda pleacă de sub cursor — și „pointerleave" nu mai vine niciodată,
-       * fiindcă mouse-ul n-a mișcat. Banda rămânea oprită până la reîncărcare.
-       *
-       * „matches(':hover')" nu poate rămâne în urmă: browserul îl recalculează
-       * odată cu poziția elementului.
+       * O variabilă pusă pe „pointerenter" și scoasă pe „pointerleave" iese
+       * greșit exact în drumul obișnuit al cititorului: treci cu mouse-ul peste
+       * bandă, derulezi mai departe, banda pleacă de sub cursor — și
+       * „pointerleave" nu mai vine niciodată, fiindcă mouse-ul n-a mișcat.
        *
        * Focalizarea se citește cu „:focus-visible", nu cu „:focus": banda are
        * „tabindex", deci o apucare cu mouse-ul o și focalizează, iar cu „:focus"
-       * ar fi rămas oprită după fiecare tragere. „:focus-visible" prinde doar
-       * focalizarea venită din tastatură, care chiar trebuie să oprească banda.
+       * ar fi rămas oprită după fiecare tragere.
        */
       var deasupra = carusel.matches(':hover') || carusel.matches(':focus-visible');
 
       if (!oprit && !deasupra && !seTrage && !miscareRedusa && !document.hidden) {
-        carusel.scrollLeft += VITEZA * trecut;
-        normalizeaza();
+        pozitie += VITEZA * trecut;
+        aseaza();
       }
 
       window.requestAnimationFrame(cadru);
     }
 
+    aseaza();
     window.requestAnimationFrame(cadru);
+
+    /* Lățimile se schimbă la redimensionare; poziția se așază din nou. */
+    var ceasRedimensionare = null;
+    window.addEventListener('resize', function () {
+      window.clearTimeout(ceasRedimensionare);
+      ceasRedimensionare = window.setTimeout(aseaza, 150);
+    });
 
     /* ── Tragerea cu mâna ─────────────────────────────────────────────── */
 
     carusel.addEventListener('pointerdown', function (e) {
-      /*
-       * Pe ecran tactil derularea cu degetul o face browserul singur, mai bine
-       * decât am face-o noi: nu ne băgăm.
-       */
-      if (e.pointerType === 'touch') {
-        return;
-      }
       seTrage = true;
       pornireX = e.clientX;
-      pornireScroll = carusel.scrollLeft;
+      pornirePozitie = pozitie;
       carusel.classList.add('se-trage');
       carusel.setPointerCapture(e.pointerId);
     });
@@ -434,8 +432,8 @@
       }
       /* Fără asta, mouse-ul ținut apăsat marchează siglele ca pe un text. */
       e.preventDefault();
-      carusel.scrollLeft = pornireScroll - (e.clientX - pornireX);
-      normalizeaza();
+      pozitie = pornirePozitie - (e.clientX - pornireX);
+      aseaza();
     });
 
     function incheieTragerea(e) {
@@ -453,16 +451,38 @@
     carusel.addEventListener('pointercancel', incheieTragerea);
 
     /*
-     * Fără rândul ăsta, tragerea nu funcționează deloc pe sigle.
+     * Fără rândul ăsta, tragerea nu funcționează pe sigle.
      *
      * O imagine este, implicit, un obiect pe care browserul îl poate lua și
      * duce în altă filă. La a doua mișcare cu butonul apăsat pornește „drag"-ul
      * nativ, care fură pointerul și trimite „pointercancel" — adică exact
-     * evenimentul prin care noi încheiem tragerea. Se vedea ca o bandă care se
-     * mișcă doi-trei pixeli și se oprește.
+     * evenimentul prin care noi încheiem tragerea.
      */
     carusel.addEventListener('dragstart', function (e) {
       e.preventDefault();
+    });
+
+    /*
+     * De la tastatură.
+     *
+     * Banda nu mai este o cutie derulabilă, deci săgețile nu mai fac nimic
+     * singure. Cine ajunge pe ea cu „Tab" trebuie totuși s-o poată mișca, iar
+     * un pas de o siglă este pasul firesc.
+     */
+    carusel.addEventListener('keydown', function (e) {
+      var pas = 0;
+      if (e.key === 'ArrowRight') {
+        pas = 1;
+      } else if (e.key === 'ArrowLeft') {
+        pas = -1;
+      } else {
+        return;
+      }
+      e.preventDefault();
+      var element = banda.firstElementChild;
+      var latime = element ? element.getBoundingClientRect().width + 16 : 216;
+      pozitie += pas * latime;
+      aseaza();
     });
 
     /* ── Butonul de oprire ────────────────────────────────────────────── */
@@ -470,8 +490,8 @@
     /*
      * O mișcare pornită singură, mai lungă de cinci secunde, trebuie să poată
      * fi oprită de vizitator — WCAG 2.2.2, aceeași regulă ca la filmul de
-     * fundal. Butonul se construiește din script, nu din markup: dacă banda nu
-     * se mișcă singură, nu are ce opri.
+     * fundal. Butonul se construiește din script: dacă banda nu se mișcă
+     * singură, nu are ce opri.
      *
      * Tragerea rămâne însă și atunci: „mai puțină mișcare" înseamnă „nu porni
      * tu nimic", nu „nu-l lăsa pe om să miște".

@@ -1143,13 +1143,13 @@ html { scroll-behavior: smooth; }
 
 .are-aparitii .apare {
   opacity: 0;
-  transform: translateY(18px);
+  transform: translateY(14px);
   /*
-   * Curba pornește repede și se așază lin. 0,55s este pragul de sub care
+   * Curba pornește repede și se așază lin. 0,45s este pragul de sub care
    * mișcarea se simte ca o pagină vie și peste care începe să pară o pagină
    * care se încarcă greu.
    */
-  transition: opacity .55s ease, transform .55s cubic-bezier(.22, .61, .36, 1);
+  transition: opacity .45s ease, transform .45s cubic-bezier(.22, .61, .36, 1);
   /* Cât timp elementul se mișcă, browserul îl desenează pe strat propriu. */
   will-change: opacity, transform;
 }

@@ -137,25 +137,35 @@
 /*
  * Banda se poate apuca și trage.
  *
- * Clasa o pune scriptul, după ce preia derularea: fără JavaScript banda stă
- * pe loc, iar un cursor de „apucă-mă" pe ceva care nu se mișcă ar fi o
- * promisiune goală. Cu el, cutia devine derulabilă și cu degetul, și cu
- * rotița, și cu tastele săgeți când are focus.
+ * Clasa o pune scriptul: fără JavaScript banda stă pe loc, iar un cursor de
+ * „apucă-mă" pe ceva care nu se mișcă ar fi o promisiune goală.
+ *
+ * „touch-action: pan-y" spune browserului să-și păstreze derularea paginii pe
+ * verticală și să ne lase nouă mișcarea pe orizontală. Fără ea, un deget tras
+ * în lateral peste bandă ar fi mișcat pagina, nu siglele.
  */
 .carusel-clienti--tragere {
-  overflow-x: auto;
   cursor: grab;
-  /* Bara de derulare ar fi tăiat un rând sub sigle; mișcarea se vede oricum. */
-  scrollbar-width: none;
-  -ms-overflow-style: none;
+  touch-action: pan-y;
 }
-
-.carusel-clienti--tragere::-webkit-scrollbar { display: none; }
 
 .carusel-clienti--tragere.se-trage {
   cursor: grabbing;
   /* Cât ține tragerea, siglele nu se selectează ca text. */
   user-select: none;
+}
+
+/*
+ * Banda își cere strat propriu.
+ *
+ * Fără „will-change", browserul o desenează în stratul paginii și repictează
+ * la fiecare cadru; cu el, o ține deoparte și doar o mută — treabă de placă
+ * video, nu de fir principal. Aici stă tot timpul, fiindcă banda se mișcă tot
+ * timpul: sfatul obișnuit — pune-l doar cât ține animația — este scris pentru
+ * animații care se termină.
+ */
+.carusel-clienti__banda {
+  will-change: transform;
 }
 
 .carusel-clienti--tragere:focus-visible {
@@ -214,8 +224,10 @@
  * prin derulare laterală.
  */
 @media (prefers-reduced-motion: reduce) {
-  .carusel-clienti__banda { animation: none; }
-  .carusel-clienti { overflow-x: auto; }
+  /*
+   * Banda nu mai pornește singură, dar rămâne de tras cu mâna: scriptul o
+   * mișcă la fel, doar că numai când i se cere.
+   */
   .carusel-clienti__element img { transition: none; }
 }
 
