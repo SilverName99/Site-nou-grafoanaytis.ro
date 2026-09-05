@@ -87,7 +87,8 @@
   font-weight: 700;
   line-height: 1.12;
   text-transform: uppercase;
-  letter-spacing: -.01em;
+  /* Majusculele stau prea strâns una în alta; puțin aer între ele. */
+  letter-spacing: .025em;
   /*
    * Titlul iese prin golul din latura de sus, dar nu trece peste linia din
    * stânga: în machetă începe la circa 9% din lățimea chenarului, adică
@@ -101,7 +102,13 @@
 .operatie__text {
   grid-column: 1 / -1;
   grid-row: 2;
-  color: var(--ink-muted);
+  /*
+   * Negru, nu gri: textul stă în chenar, deci e conținut, nu notă de subsol.
+   * Greutatea 500 există ca fișier propriu în Rubik, deci nu e îngroșată de
+   * browser — o falsă îngroșare ar fi ieșit pătată la literele cu diacritice.
+   */
+  color: var(--ink);
+  font-weight: 500;
   line-height: 1.6;
   /*
    * Aerul din machetă. Acolo chenarul este aproape pătrat — 284 pe 293 — iar
