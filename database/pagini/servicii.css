@@ -1,0 +1,158 @@
+/*
+ * Servicii — Grafoanaytis
+ *
+ * Cele trei operații pentru parteneri, după macheta trimisă de client:
+ * titlu mare pe două rânduri, un chenar în formă de colț care pornește de sub
+ * titlu și coboară pe stânga, descriere, fotografie.
+ *
+ * Culorile vin din tokens.css; aici doar formele.
+ */
+
+/*
+ * Rândul de deasupra coloanelor este titlu, nu doar text.
+ *
+ * În macheta clientului arată ca o frază obișnuită, deci nu primește nici
+ * mărimea, nici greutatea unui titlu — dar rămâne „h2", ca secțiunea să aibă
+ * un cap în structura paginii. Altfel cineva care parcurge pagina pe titluri
+ * sare de la „Serviciile noastre" direct în gol.
+ */
+.operatii__intro {
+  font-family: inherit;
+  font-size: 1.125rem;
+  font-weight: 400;
+  color: var(--ink-muted);
+  margin-bottom: 2.5rem;
+}
+
+.operatii {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* „relative" ancorează butonul întins peste coloană. */
+.operatie { position: relative; }
+
+@media (max-width: 991.98px) {
+  .operatii { grid-template-columns: 1fr; gap: 2.5rem; }
+}
+
+.operatie__titlu {
+  font-family: inherit;
+  font-size: clamp(1.5rem, 1.1rem + 1.4vw, 2.125rem);
+  font-weight: 700;
+  line-height: 1.12;
+  text-transform: uppercase;
+  letter-spacing: -.01em;
+  margin-bottom: 1.25rem;
+}
+
+/*
+ * Butonul stă în titlu, dar apasă toată coloana.
+ *
+ * Clientul a cerut ca serviciul să fie „accesat prin click". Varianta naivă —
+ * un buton care înghite tot conținutul — ar fi scos cele trei servicii din
+ * structura de titluri a paginii. Aici butonul rămâne înăuntrul titlului, deci
+ * „h3" se păstrează, iar suprafața de apăsat se întinde peste coloană printr-un
+ * strat transparent. Fiind buton adevărat, răspunde și la Enter, și la Space.
+ */
+.operatie__declansator {
+  padding: 0;
+  border: 0;
+  background: none;
+  text-align: left;
+  font: inherit;
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.operatie__declansator::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+}
+
+/* Conturul de focalizare desenat pe coloană, nu strâns în jurul titlului. */
+.operatie__declansator:focus-visible { outline: none; }
+
+.operatie:has(.operatie__declansator:focus-visible) {
+  outline: 2px solid var(--brand-900);
+  outline-offset: 6px;
+  box-shadow: 0 0 0 2px var(--surface), var(--focus-ring);
+}
+
+/*
+ * Chenarul în formă de colț.
+ *
+ * În machetă linia pornește de sub titlu, merge spre dreapta, cotește în jos
+ * și coboară pe lângă text și fotografie — un colț de pagină, nu un card. Se
+ * desenează din două margini pe un element gol, nu din pseudo-elemente, ca să
+ * poată crește odată cu conținutul.
+ */
+.operatie__text {
+  display: block;
+  border-left: 1px solid var(--ink);
+  border-top: 1px solid var(--ink);
+  padding: 1.25rem 1rem 1.5rem;
+  color: var(--ink-muted);
+  line-height: 1.6;
+  max-width: 34ch;
+}
+
+.operatie__poza {
+  display: block;
+  border-left: 1px solid var(--ink);
+  padding: 0 1rem 1.25rem;
+}
+
+.operatie__poza img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+}
+
+/*
+ * Îndemnul de jos. Nu este o legătură separată — toată coloana deschide
+ * sertarul — deci arată ca un semn, nu ca un buton în plus.
+ */
+.operatie__indemn {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  margin-left: 1rem;
+  font-size: .8125rem;
+  font-weight: 700;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--text-brand);
+}
+
+.operatie__indemn .sageata {
+  transition: transform .18s ease;
+}
+
+.operatie__declansator:hover .operatie__titlu,
+.operatie__declansator:focus-visible .operatie__titlu {
+  color: var(--text-brand);
+}
+
+.operatie__declansator:hover .operatie__text,
+.operatie__declansator:hover .operatie__poza,
+.operatie__declansator:focus-visible .operatie__text,
+.operatie__declansator:focus-visible .operatie__poza {
+  border-color: var(--fill-brand);
+}
+
+.operatie__declansator:hover .sageata,
+.operatie__declansator:focus-visible .sageata {
+  transform: translateX(4px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .operatie__indemn .sageata { transition: none; }
+  .operatie__declansator:hover .sageata { transform: none; }
+}

@@ -64,6 +64,17 @@ $e = static fn (?string $v): string => htmlspecialchars((string) $v, ENT_QUOTES,
                             <a href="/produs/<?= $e($cerere['product_slug'] ?? '') ?>" target="_blank" rel="noopener">
                                 <?= $e($cerere['product_name']) ?>
                             </a>
+                        <?php elseif (trim((string) ($cerere['product_slug'] ?? '')) !== ''): ?>
+                            <?php
+                            /*
+                             * Cerere venită de pe o pagină de serviciu, nu de pe un produs.
+                             * Serverul păstrează slug-ul chiar dacă nu găsește produsul —
+                             * fără rândul acesta, coloana arăta „—" și cererea ajungea în
+                             * dashboard fără să spună la ce se referă.
+                             */
+                            ?>
+                            <span><?= $e($cerere['product_slug']) ?></span>
+                            <span class="muted" style="display:block;font-size:11px;">serviciu</span>
                         <?php else: ?>
                             <span class="muted">—</span>
                         <?php endif; ?>

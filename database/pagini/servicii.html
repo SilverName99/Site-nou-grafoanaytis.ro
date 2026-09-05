@@ -1,194 +1,146 @@
+<!--
+  Servicii — Grafoanaytis
+
+  Refăcută după punctele 9, 10 și 11 din revizie:
+
+  - o singură bandă de titlu, centrată, cu textul nou (punctul 10 manual);
+  - cele trei operații pentru parteneri, după macheta trimisă: titlu mare pe
+    două rânduri, chenar în formă de colț, descriere, fotografie (punctul 10 auto);
+  - clic pe o coloană deschide sertarul de ofertă, cu serviciul completat
+    (punctul 9 manual);
+  - tot ce era sub „Servicii pentru clienți" este șters (punctul 11 manual).
+-->
+
 <section class="py-5 bg-body-tertiary">
-  <div class="container">
-    <h1 class="display-5 fw-normal mb-2">Serviciile noastre</h1>
-    <p class="lead mb-0">Tipografia activează pe piața prahoveană din 2004 și oferă clienților săi
-    servicii de tipar offset și digital.</p>
+  <div class="container text-center">
+    <h1 class="display-5 fw-normal mb-3">Serviciile noastre</h1>
+    <p class="lead mb-0 mx-auto">Grafoanaytis execută pentru societățile partenere servicii de
+    înnobilare și finisare a tiparului cu tehnologii de ultimă generație. Caserare, imprimare folio,
+    timbru sec și braille, ștanțare, lipire și aplicare ferestre PVC.</p>
   </div>
 </section>
 
-
-<!--
-  Serviciile executate pentru parteneri.
-
-  Din plansa clientului: sunt operațiile pe care le facem pentru alte tipografii,
-  nu produse finite. De aceea stau într-o bandă separată, înaintea serviciilor
-  pentru clienți finali, cu trei carduri late, ca în modelul lui.
-
-  Fiecare card duce la produsele executate cu serviciul respectiv, prin categoria
-  cu același nume.
--->
 <section id="pentru-parteneri" class="py-5">
   <div class="container">
-    <h2 class="display-5 fw-normal mb-2">Executăm pentru partenerii noștri</h2>
-    <p class="lead mb-4">Operații de finisare pe care le facem și pentru alte tipografii, pe utilajele noastre.</p>
+    <h2 class="operatii__intro">Executăm pentru partenerii noștri servicii de:</h2>
 
-    <div class="row g-4">
-      <div class="col-12 col-lg-4">
-        <div class="card h-100 border-0 shadow-sm serviciu-partener">
-          <div class="card-body d-flex flex-column">
-            <h3 class="h4 text-uppercase fw-bold mb-3">Ștanțare, folio și emboss</h3>
-            <p class="mb-4">Ștanțare și imprimare folio pe mașină automată de ultimă generație, la 10.000 de coli pe oră.</p>
-            <div class="ratio ratio-4x3 overflow-hidden mb-3">
-              <img src="/uploads/gallery/box3.webp" alt="Cutie cu folio auriu și emboss" class="object-fit-cover" loading="lazy">
-            </div>
-            <a class="btn btn-link px-0 fw-semibold text-uppercase mt-auto banda-alternanta__actiune"
-               href="/servicii/stantare-folio-embos">Vezi serviciul<svg class="sageata" width="18" height="14" viewBox="0 0 18 14" aria-hidden="true" focusable="false"><path d="M10.5 1 16.5 7l-6 6M0 7h16" fill="none" stroke="currentColor" stroke-width="2"/></svg></a>
-          </div>
-        </div>
-      </div>
+    <ul class="operatii">
+      <li class="operatie">
+        <!--
+          Toată coloana este butonul, nu doar un rând de sub ea: clientul a cerut
+          ca serviciul să fie „accesat prin click", iar o țintă de mărimea
+          coloanei se nimerește și cu degetul, nu doar cu mouse-ul.
+        -->
+        <h3 class="operatie__titlu">
+          <button class="operatie__declansator" type="button"
+                  data-bs-toggle="offcanvas" data-bs-target="#sertar-oferta" aria-controls="sertar-oferta"
+                  data-serviciu="stantare-folio-embos"
+                  data-serviciu-nume="Ștanțare, folio și emboss">Ștanțare, <br>folio și emboss</button>
+        </h3>
+        <p class="operatie__text">Ștanțare și imprimare folio pe mașină automată de ultimă
+          generație — 10.000 de coli pe oră.</p>
+        <span class="operatie__poza">
+          <img src="/uploads/gallery/box3.webp" alt="Cutie neagră cu folio auriu și emboss" loading="lazy">
+        </span>
+        <span class="operatie__indemn">Cere ofertă<svg class="sageata" width="18" height="14" viewBox="0 0 18 14" aria-hidden="true" focusable="false"><path d="M10.5 1 16.5 7l-6 6M0 7h16" fill="none" stroke="currentColor" stroke-width="2"/></svg></span>
+      </li>
 
-      <div class="col-12 col-lg-4">
-        <div class="card h-100 border-0 shadow-sm serviciu-partener">
-          <div class="card-body d-flex flex-column">
-            <h3 class="h4 text-uppercase fw-bold mb-3">Lipire cutii</h3>
-            <p class="mb-4">Lipire cu duze, la cald și la rece, și aplicare automată de bandă dublu adezivă.</p>
-            <div class="ratio ratio-4x3 overflow-hidden mb-3">
-              <img src="/uploads/gallery/box2.webp" alt="Cutii de cosmetice lipite automat" class="object-fit-cover" loading="lazy">
-            </div>
-            <a class="btn btn-link px-0 fw-semibold text-uppercase mt-auto banda-alternanta__actiune"
-               href="/servicii/lipire-cutii">Vezi serviciul<svg class="sageata" width="18" height="14" viewBox="0 0 18 14" aria-hidden="true" focusable="false"><path d="M10.5 1 16.5 7l-6 6M0 7h16" fill="none" stroke="currentColor" stroke-width="2"/></svg></a>
-          </div>
-        </div>
-      </div>
+      <li class="operatie">
+        <h3 class="operatie__titlu">
+          <button class="operatie__declansator" type="button"
+                  data-bs-toggle="offcanvas" data-bs-target="#sertar-oferta" aria-controls="sertar-oferta"
+                  data-serviciu="lipire-cutii"
+                  data-serviciu-nume="Lipire cutii">Lipire <br>cutii</button>
+        </h3>
+        <p class="operatie__text">Lipire cu duze, la cald și la rece, și aplicare automată de
+          bandă dublu adezivă.</p>
+        <span class="operatie__poza">
+          <img src="/uploads/gallery/box2.webp" alt="Cutii de cosmetice lipite automat" loading="lazy">
+        </span>
+        <span class="operatie__indemn">Cere ofertă<svg class="sageata" width="18" height="14" viewBox="0 0 18 14" aria-hidden="true" focusable="false"><path d="M10.5 1 16.5 7l-6 6M0 7h16" fill="none" stroke="currentColor" stroke-width="2"/></svg></span>
+      </li>
 
-      <div class="col-12 col-lg-4">
-        <div class="card h-100 border-0 shadow-sm serviciu-partener">
-          <div class="card-body d-flex flex-column">
-            <h3 class="h4 text-uppercase fw-bold mb-3">Aplicare ferestre</h3>
-            <p class="mb-4">Aplicare automată de ferestre din folie PVC pentru ambalaje.</p>
-            <div class="ratio ratio-4x3 overflow-hidden mb-3">
-              <img src="/uploads/gallery/alimtenar.webp" alt="Cutie cu fereastră din folie PVC" class="object-fit-cover" loading="lazy">
-            </div>
-            <a class="btn btn-link px-0 fw-semibold text-uppercase mt-auto banda-alternanta__actiune"
-               href="/servicii/aplicare-ferestre">Vezi serviciul<svg class="sageata" width="18" height="14" viewBox="0 0 18 14" aria-hidden="true" focusable="false"><path d="M10.5 1 16.5 7l-6 6M0 7h16" fill="none" stroke="currentColor" stroke-width="2"/></svg></a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- Serviciile pentru clienți finali -->
-<section class="py-5 bg-body-tertiary">
-  <div class="container">
-    <h2 class="display-5 fw-normal mb-0">Servicii pentru clienți</h2>
-  </div>
-</section>
-
-<section class="py-5">
-  <div class="container">
-    <div class="row g-4">
-      <div class="col-12 col-md-6 col-lg-4">
-        <a href="/servicii/tipar-offset" class="card h-100 text-decoration-none border-0 shadow-sm categorie">
-          <div class="ratio ratio-16x9">
-            <img src="/uploads/gallery/serviciu-tipar-offset.webp" alt="Tipar offset" class="object-fit-cover" loading="lazy">
-          </div>
-          <div class="card-body">
-            <h2 class="h5 mb-2">Tipar offset</h2>
-            <p class="text-secondary small mb-0">Tiparul offset dă rezultate maxime în principal în cazul tirajelor medii și mari. Executăm tipar offset cu utilaje performante, pâ…</p>
-          </div>
-        </a>
-      </div>
-      <div class="col-12 col-md-6 col-lg-4">
-        <a href="/servicii/tipar-digital" class="card h-100 text-decoration-none border-0 shadow-sm categorie">
-          <div class="ratio ratio-16x9">
-            <img src="/uploads/gallery/serviciu-tipar-digital.webp" alt="Tipar digital" class="object-fit-cover" loading="lazy">
-          </div>
-          <div class="card-body">
-            <h2 class="h5 mb-2">Tipar digital</h2>
-            <p class="text-secondary small mb-0">Modalitate de tipărire excelentă mai ales pentru tirajele mici și foarte mici. Necesită un timp de execuție foarte scurt, iar cali…</p>
-          </div>
-        </a>
-      </div>
-      <div class="col-12 col-md-6 col-lg-4">
-        <a href="/servicii/ambalaje" class="card h-100 text-decoration-none border-0 shadow-sm categorie">
-          <div class="ratio ratio-16x9">
-            <img src="/uploads/gallery/serviciu-ambalaje.webp" alt="Ambalaje" class="object-fit-cover" loading="lazy">
-          </div>
-          <div class="card-body">
-            <h2 class="h5 mb-2">Ambalaje</h2>
-            <p class="text-secondary small mb-0">Suntem specializați în producerea ambalajelor pentru produse alimentare, pharma și cosmetice, textile și industriale, cu finisaje …</p>
-          </div>
-        </a>
-      </div>
-      <div class="col-12 col-md-6 col-lg-4">
-        <a href="/servicii/creatie-si-design" class="card h-100 text-decoration-none border-0 shadow-sm categorie">
-          <div class="ratio ratio-16x9">
-            <img src="/uploads/gallery/serviciu-creatie-si-design.webp" alt="Creație și design" class="object-fit-cover" loading="lazy">
-          </div>
-          <div class="card-body">
-            <h2 class="h5 mb-2">Creație și design</h2>
-            <p class="text-secondary small mb-0">Un design profesionist asigură dimensiunea estetică atât de necesară oricărui produs. Oferim servicii de machetare, concepție graf…</p>
-          </div>
-        </a>
-      </div>
-      <div class="col-12 col-md-6 col-lg-4">
-        <a href="/servicii/separatie-de-culoare-pe-placi-offset-kodak" class="card h-100 text-decoration-none border-0 shadow-sm categorie">
-          <div class="ratio ratio-16x9">
-            <img src="/uploads/gallery/serviciu-separatie-de-culoare-pe-placi-offset-kodak.webp" alt="Separație de culoare pe plăci offset (Kodak)" class="object-fit-cover" loading="lazy">
-          </div>
-          <div class="card-body">
-            <h2 class="h5 mb-2">Separație de culoare pe plăci offset (Kodak)</h2>
-            <p class="text-secondary small mb-0">Oferim clienților noștri — tipografii — servicii de separație de culoare pe plăci offset, în tehnologie Chemistry Free.…</p>
-          </div>
-        </a>
-      </div>
-      <div class="col-12 col-md-6 col-lg-4">
-        <a href="/servicii/servicii-de-stantare" class="card h-100 text-decoration-none border-0 shadow-sm categorie">
-          <div class="ratio ratio-16x9">
-            <img src="/uploads/gallery/box3.webp" alt="Ștanțare" class="object-fit-cover" loading="lazy">
-          </div>
-          <div class="card-body">
-            <h2 class="h5 mb-2">Ștanțare</h2>
-            <p class="text-secondary small mb-0">Oferim servicii de ștanțare automată, în formatele 70×100 cm și 50×70 cm.…</p>
-          </div>
-        </a>
-      </div>
-      <div class="col-12 col-md-6 col-lg-4">
-        <a href="/servicii/inscriptionare-folio-emboss" class="card h-100 text-decoration-none border-0 shadow-sm categorie">
-          <div class="ratio ratio-16x9">
-            <img src="/uploads/gallery/serviciu-inscriptionare-folio-emboss.webp" alt="Inscripționare Folio / Emboss" class="object-fit-cover" loading="lazy">
-          </div>
-          <div class="card-body">
-            <h2 class="h5 mb-2">Inscripționare Folio / Emboss</h2>
-            <p class="text-secondary small mb-0">Se recomandă clienților care doresc să scoată în evidență un element al lucrării, printr-un finisaj cu relief sau folie metalizată…</p>
-          </div>
-        </a>
-      </div>
-      <div class="col-12 col-md-6 col-lg-4">
-        <a href="/servicii/gravura-laser" class="card h-100 text-decoration-none border-0 shadow-sm categorie">
-          <div class="ratio ratio-16x9">
-            <img src="/uploads/gallery/serviciu-gravura-laser.webp" alt="Gravură laser" class="object-fit-cover" loading="lazy">
-          </div>
-          <div class="card-body">
-            <h2 class="h5 mb-2">Gravură laser</h2>
-            <p class="text-secondary small mb-0">Cu ajutorul tehnologiei laser realizăm gravarea până la formatul maxim de 600×400 mm, cu utilaje profesionale EPILOG.…</p>
-          </div>
-        </a>
-      </div>
-      <div class="col-12 col-md-6 col-lg-4">
-        <a href="/servicii/asistenta" class="card h-100 text-decoration-none border-0 shadow-sm categorie">
-          <div class="ratio ratio-16x9">
-            <img src="/uploads/gallery/serviciu-asistenta.webp" alt="Asistență" class="object-fit-cover" loading="lazy">
-          </div>
-          <div class="card-body">
-            <h2 class="h5 mb-2">Asistență</h2>
-            <p class="text-secondary small mb-0">Vă oferim asistență în pregătirea corectă a documentelor ce vor fi tipărite sau a materialelor furnizate pentru execuția designulu…</p>
-          </div>
-        </a>
-      </div>
-    </div>
+      <li class="operatie">
+        <h3 class="operatie__titlu">
+          <button class="operatie__declansator" type="button"
+                  data-bs-toggle="offcanvas" data-bs-target="#sertar-oferta" aria-controls="sertar-oferta"
+                  data-serviciu="aplicare-ferestre"
+                  data-serviciu-nume="Aplicare ferestre">Aplicare <br>ferestre</button>
+        </h3>
+        <p class="operatie__text">Aplicare automată de ferestre din folie PVC pentru
+          ambalaje.</p>
+        <span class="operatie__poza">
+          <img src="/uploads/gallery/alimtenar.webp" alt="Cutie cu fereastră din folie PVC" loading="lazy">
+        </span>
+        <span class="operatie__indemn">Cere ofertă<svg class="sageata" width="18" height="14" viewBox="0 0 18 14" aria-hidden="true" focusable="false"><path d="M10.5 1 16.5 7l-6 6M0 7h16" fill="none" stroke="currentColor" stroke-width="2"/></svg></span>
+      </li>
+    </ul>
   </div>
 </section>
 
 <!--
-  Legătura către catalog. Serviciul spune ce facem, produsele arată ce iese —
-  în modelul exonia drumul este același: serviciu, apoi produse.
+  Sertarul de ofertă.
+
+  Unul singur pentru toate trei coloanele, nu câte unul de fiecare: titlul și
+  serviciul se schimbă din scriptul paginii, după coloana care l-a deschis.
+  Trei sertare identice ar fi însemnat trei formulare cu aceleași „id"-uri de
+  câmp în aceeași pagină, ceea ce strică legătura dintre etichetă și câmp.
+
+  Markup-ul îl urmează pe cel din paginile de produs, ca formularul să fie
+  recunoscut de „sertar-oferta.js", care trimite la /api/cerere-oferta.
 -->
-<section id="produse-legate" class="py-5">
-  <div class="container text-center">
-    <h2 class="display-5 fw-normal mb-3">Toate produsele, într-un singur loc</h2>
-    <p class="lead mx-auto mb-4">Ambalaje, etichete și tipărituri executate în hala noastră.</p>
-    <a href="/produse" class="btn btn-primary fw-semibold px-4">Vezi produsele</a>
+<div class="offcanvas offcanvas-end sertar-oferta" tabindex="-1" id="sertar-oferta" aria-labelledby="sertar-oferta-titlu">
+  <div class="offcanvas-header align-items-start">
+    <div>
+      <p class="text-secondary small mb-1">Ofertă de preț pentru:</p>
+      <h2 class="h5 mb-0" id="sertar-oferta-titlu"><span data-sertar-nume>serviciul ales</span></h2>
+    </div>
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Închide"></button>
   </div>
-</section>
+  <div class="offcanvas-body">
+    <p>Completați formularul cu datele dumneavoastră de contact și vă răspundem cu o ofertă și un termen.</p>
+
+    <form class="sertar-oferta__formular" novalidate data-produs="">
+      <div class="mb-3">
+        <label class="form-label" for="oferta-nume">Nume și prenume <span aria-hidden="true">*</span></label>
+        <input class="form-control" id="oferta-nume" name="name" type="text" autocomplete="name" required>
+      </div>
+      <div class="mb-3">
+        <label class="form-label" for="oferta-firma">Companie</label>
+        <input class="form-control" id="oferta-firma" name="company" type="text" autocomplete="organization">
+      </div>
+      <div class="mb-3">
+        <label class="form-label" for="oferta-email">E-mail <span aria-hidden="true">*</span></label>
+        <input class="form-control" id="oferta-email" name="email" type="email" autocomplete="email" required>
+      </div>
+      <div class="mb-3">
+        <label class="form-label" for="oferta-telefon">Telefon</label>
+        <input class="form-control" id="oferta-telefon" name="phone" type="tel" autocomplete="tel">
+      </div>
+      <div class="mb-3">
+        <label class="form-label" for="oferta-mesaj">Ce tiraj vă interesează? Aveți întrebări?</label>
+        <textarea class="form-control" id="oferta-mesaj" name="message" rows="4"></textarea>
+      </div>
+
+      <!-- Capcană pentru roboți: ascunsă de ochi, nu și de completarea automată. -->
+      <div class="sertar-oferta__capcana" aria-hidden="true">
+        <label for="oferta-website">Nu completați acest câmp</label>
+        <input id="oferta-website" name="website" type="text" tabindex="-1" autocomplete="off">
+      </div>
+
+      <div class="form-check mb-3">
+        <input class="form-check-input" id="oferta-acord" name="consent" type="checkbox" required>
+        <label class="form-check-label small" for="oferta-acord">
+          Sunt de acord ca datele de mai sus să fie folosite pentru a-mi răspunde la această cerere.
+        </label>
+      </div>
+
+      <p class="sertar-oferta__raspuns" role="status" aria-live="polite"></p>
+
+      <button class="btn btn-primary fw-semibold w-100" type="submit">
+        Trimite solicitarea
+        <svg class="sageata" width="18" height="14" viewBox="0 0 18 14" aria-hidden="true" focusable="false"><path d="M10.5 1 16.5 7l-6 6M0 7h16" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+      </button>
+    </form>
+  </div>
+</div>
