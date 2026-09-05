@@ -100,12 +100,10 @@
 }
 .categorie .card-body { border-top: 3px solid var(--fill-brand); }
 
-/* Logourile de certificare: gri în repaus, culoare la interacțiune. */
-.certificare { max-height: 88px; width: auto; filter: grayscale(1); opacity: .75; transition: filter .18s ease, opacity .18s ease; }
-.certificare:hover { filter: none; opacity: 1; }
+/* „.certificare" a plecat odată cu rubrica de certificări, ștearsă la punctul 23. */
 
 @media (prefers-reduced-motion: reduce) {
-  .categorie, .certificare { transition: none; }
+  .categorie { transition: none; }
   .categorie:hover { transform: none; }
 }
 
@@ -174,16 +172,16 @@
   max-height: 100%;
   object-fit: contain;
   /*
-   * Gri la 82%, nu la 78% ca înainte: mărirea cerută de client aduce cu ea și
-   * mai multă culoare pe ecran, iar nouăsprezece palete diferite una lângă
-   * alta se bat între ele. Culoarea revine la trecerea cu mouse-ul.
+   * În culoare, la opacitate deplină.
+   *
+   * Erau gri la 82%, ca nouăsprezece palete diferite să nu se bată între ele —
+   * o preferință de design a mea, care contrazicea însă litera cererii:
+   * clientul a scris „mărite astfel încât ele să fie vizibile". Grija rămâne
+   * întemeiată, dar nu e a mea de rezolvat împotriva lui; dacă banda iese prea
+   * zgomotoasă, o discutăm cu el.
    */
-  filter: grayscale(1);
-  opacity: .82;
-  transition: filter .18s ease, opacity .18s ease;
+  opacity: 1;
 }
-
-.carusel-clienti__element:hover img { filter: none; opacity: 1; }
 
 /* Butonul de oprire, pus de scriptul paginii. */
 .carusel-clienti-comanda {
