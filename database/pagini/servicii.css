@@ -88,9 +88,14 @@
   line-height: 1.12;
   text-transform: uppercase;
   letter-spacing: -.01em;
-  /* Titlul iese prin golul din latura de sus, deci nu respectă chenarul. */
-  margin: 0 0 1.5rem -.5rem;
-  padding-right: .5rem;
+  /*
+   * Titlul iese prin golul din latura de sus, dar nu trece peste linia din
+   * stânga: în machetă începe la circa 9% din lățimea chenarului, adică
+   * retras de ea. Distanța până la linia de sub el este mică — 13px la un
+   * chenar de 293, sub 5% — deci marginea de jos rămâne strânsă.
+   */
+  margin: 0 0 .6rem 0;
+  padding: 0 .5rem 0 1.25rem;
 }
 
 .operatie__text {
@@ -113,9 +118,19 @@
   grid-column: 1 / -1;
   /* Începe în rândul care mai e înăuntrul chenarului și iese sub el. */
   grid-row: 3 / 5;
-  /* Retrasă de marginea stângă a chenarului, ca în machetă. */
-  padding-left: 3.5rem;
-  padding-right: 1rem;
+  /*
+   * Centrată în chenar, la circa trei sferturi din lățimea lui — măsurat pe
+   * coloana întâi a machetei, singura așezată îngrijit: 207px de fotografie
+   * într-un chenar de 284, cu 12% gol în stânga și 15% în dreapta.
+   */
+  display: flex;
+  justify-content: center;
+  padding: 0 1rem;
+}
+
+.operatie__poza img {
+  width: 76%;
+  min-width: 190px;
 }
 
 .operatie__poza img {
@@ -123,13 +138,6 @@
   width: 100%;
   aspect-ratio: 4 / 3;
   object-fit: cover;
-}
-
-.operatie__indemn {
-  grid-column: 1 / -1;
-  grid-row: 5;
-  padding-left: 2rem;
-  padding-top: 1rem;
 }
 
 /*
@@ -176,44 +184,38 @@
   box-shadow: 0 0 0 2px var(--surface), var(--focus-ring);
 }
 
-/*
- * Îndemnul de jos. Nu este o legătură separată — toată coloana deschide
- * sertarul — deci arată ca un semn, nu ca un buton în plus.
- */
-.operatie__indemn {
-  display: inline-flex;
-  align-items: center;
-  gap: .5rem;
-  margin-left: 1rem;
-  font-size: .8125rem;
-  font-weight: 700;
-  letter-spacing: .06em;
-  text-transform: uppercase;
-  color: var(--text-brand);
-}
-
-.operatie__indemn .sageata {
-  transition: transform .18s ease;
-}
-
 .operatie__declansator:hover .operatie__titlu,
 .operatie__declansator:focus-visible .operatie__titlu {
   color: var(--text-brand);
 }
 
-.operatie__declansator:hover .operatie__text,
-.operatie__declansator:hover .operatie__poza,
-.operatie__declansator:focus-visible .operatie__text,
-.operatie__declansator:focus-visible .operatie__poza {
+/*
+ * Răspunsul la trecerea cu mouse-ul și la focalizare.
+ *
+ * Chenarul e desenat pe pseudo-elementele coloanei, nu pe text și pe
+ * fotografie, deci se colorează de acolo. Regulile de dinainte căutau textul
+ * ca descendent al butonului — el este frate cu butonul, deci nu prindeau
+ * nimic.
+ */
+.operatie:hover::before,
+.operatie:hover::after,
+.operatie:has(.operatie__declansator:focus-visible)::before,
+.operatie:has(.operatie__declansator:focus-visible)::after {
   border-color: var(--fill-brand);
 }
 
-.operatie__declansator:hover .sageata,
-.operatie__declansator:focus-visible .sageata {
-  transform: translateX(4px);
+.operatie:hover .operatie__titlu {
+  color: var(--text-brand);
+}
+
+.operatie__declansator,
+.operatie::before,
+.operatie::after {
+  transition: color .18s ease, border-color .18s ease;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .operatie__indemn .sageata { transition: none; }
-  .operatie__declansator:hover .sageata { transform: none; }
+  .operatie__declansator,
+  .operatie::before,
+  .operatie::after { transition: none; }
 }
