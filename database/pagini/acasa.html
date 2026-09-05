@@ -24,11 +24,25 @@
   </div>
   <div class="container position-relative hero-continut">
     <div class="row">
-      <div class="col-12 text-center text-white align-self-center">
-        <h1 class="display-3 fw-medium mb-3">Tipografie pe piața prahoveană din 2004</h1>
-        <p class="h4 fw-normal mb-4">Tipar offset și digital, ambalaje cu finisaje superioare, termene scurte.</p>
-        <a href="/servicii" class="btn btn-primary fw-semibold px-4 me-2">Vezi serviciile</a>
-        <a href="/contact" class="btn btn-outline-light fw-semibold px-4">Cere ofertă</a>
+      <!--
+        Mesajele care se schimbă peste film.
+
+        În pagină stă o singură pereche titlu/subtitlu — prima. Celelalte două
+        vin din blocul JSON de mai jos, iar scriptul schimbă doar textul.
+        Motivul e că trei titluri „h1" în pagină ar încurca și motoarele de
+        căutare, și cititoarele de ecran, care ar citi trei titluri de nivel
+        unu unde există un singur titlu de pagină.
+
+        Înălțimea blocului e rezervată din CSS pentru cel mai lung dintre cele
+        trei; fără asta pagina saltă la fiecare schimbare.
+      -->
+      <div class="col-12 text-center text-white align-self-center hero-mesaje">
+        <div class="hero-mesaje__text">
+          <h1 class="display-3 fw-medium mb-3 hero-mesaje__titlu">Producem ambalaje sustenabile personalizate din hârtie și carton</h1>
+          <p class="h4 fw-normal mb-0 hero-mesaje__subtitlu">Cauți un partener de încredere pentru producția de ambalaje?</p>
+        </div>
+        <a href="/servicii" class="btn btn-primary fw-semibold px-4 me-2 mt-4">Vezi serviciile</a>
+        <a href="/contact" class="btn btn-outline-light fw-semibold px-4 mt-4">Cere ofertă</a>
       </div>
     </div>
   </div>
@@ -38,7 +52,18 @@
     O imagine în mișcare pornită singur, mai lungă de cinci secunde, trebuie să
     poată fi oprită de vizitator (WCAG 2.2.2). Butonul se arată doar dacă
     filmul chiar pornește, deci îl adaugă scriptul paginii, nu markup-ul.
+    Același buton oprește și rotirea mesajelor.
   -->
+  <script type="application/json" id="hero-mesaje-date">
+  [
+    ["Producem ambalaje sustenabile personalizate din hârtie și carton",
+     "Cauți un partener de încredere pentru producția de ambalaje?"],
+    ["Tipar și finisaje de lux",
+     "La GRAFOANAYTIS, detaliile fac diferența dintre un simplu print și o operă de artă."],
+    ["Ambalaje de înaltă calitate, durabile și inovatoare",
+     "Nu crea doar un produs, creează o dorință. Personalizează-ți ambalajele de lux acum!"]
+  ]
+  </script>
 </section>
 
 <!--
@@ -137,256 +162,142 @@
   </div>
 </section>
 
-<!-- Utilaje — secțiune cerută suplimentar față de model -->
-<section id="utilaje" class="py-5">
-  <div class="container">
-    <h2 class="display-5 fw-normal text-center mb-2">Utilaje</h2>
-    <p class="text-center text-secondary mb-4">Tipar offset până la 50×70 cm și tipar digital pe tehnologie XEROX.</p>
-    <div class="row g-4">
-      <div class="col-12 col-md-6 col-lg-4">
-        <div class="card h-100 border-0 shadow-sm">
-          <div class="ratio ratio-16x9">
-            <img src="/uploads/gallery/utilaj-offset.webp" alt="Tipar offset" class="card-img-top object-fit-cover" loading="lazy">
-          </div>
-          <div class="card-body">
-            <h3 class="h5 mb-1">Tipar offset</h3>
-            <p class="text-secondary small mb-0">Format maxim 50×70 cm, pe o gamă variată de suporturi.</p>
-          </div>
-        </div>
-      </div>
-      <div class="col-12 col-md-6 col-lg-4">
-        <div class="card h-100 border-0 shadow-sm">
-          <div class="ratio ratio-16x9">
-            <img src="/uploads/gallery/utilaj-digital.webp" alt="Tipar digital XEROX" class="card-img-top object-fit-cover" loading="lazy">
-          </div>
-          <div class="card-body">
-            <h3 class="h5 mb-1">Tipar digital XEROX</h3>
-            <p class="text-secondary small mb-0">Tiraje mici, timp de execuție scurt, finisări multiple.</p>
-          </div>
-        </div>
-      </div>
-      <div class="col-12 col-md-6 col-lg-4">
-        <div class="card h-100 border-0 shadow-sm">
-          <div class="ratio ratio-16x9">
-            <img src="/uploads/gallery/utilaj-stantare.webp" alt="Ștanțare automată" class="card-img-top object-fit-cover" loading="lazy">
-          </div>
-          <div class="card-body">
-            <h3 class="h5 mb-1">Ștanțare automată</h3>
-            <p class="text-secondary small mb-0">Formate 70×100 cm și 50×70 cm.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- Categorii de produse -->
-<section id="categorii" class="py-5 bg-body-tertiary">
-  <div class="container">
-    <h2 class="display-5 fw-normal text-center mb-4">Ce producem</h2>
-    <div class="row g-4">
-      <div class="col-6 col-lg-3">
-        <a href="/servicii/tipar-offset" class="card h-100 text-decoration-none border-0 shadow-sm categorie">
-          <div class="ratio ratio-1x1">
-            <img src="/uploads/gallery/serviciu-tipar-offset.webp" alt="Tipar offset" class="object-fit-cover" loading="lazy">
-          </div>
-          <div class="card-body text-center">
-            <h3 class="h5 mb-0">Tipar offset</h3>
-          </div>
-        </a>
-      </div>
-      <div class="col-6 col-lg-3">
-        <a href="/servicii/tipar-digital" class="card h-100 text-decoration-none border-0 shadow-sm categorie">
-          <div class="ratio ratio-1x1">
-            <img src="/uploads/gallery/serviciu-tipar-digital.webp" alt="Tipar digital" class="object-fit-cover" loading="lazy">
-          </div>
-          <div class="card-body text-center">
-            <h3 class="h5 mb-0">Tipar digital</h3>
-          </div>
-        </a>
-      </div>
-      <div class="col-6 col-lg-3">
-        <a href="/servicii/ambalaje" class="card h-100 text-decoration-none border-0 shadow-sm categorie">
-          <div class="ratio ratio-1x1">
-            <img src="/uploads/gallery/serviciu-ambalaje.webp" alt="Ambalaje" class="object-fit-cover" loading="lazy">
-          </div>
-          <div class="card-body text-center">
-            <h3 class="h5 mb-0">Ambalaje</h3>
-          </div>
-        </a>
-      </div>
-      <div class="col-6 col-lg-3">
-        <a href="/servicii/servicii-de-stantare" class="card h-100 text-decoration-none border-0 shadow-sm categorie">
-          <div class="ratio ratio-1x1">
-            <img src="/uploads/gallery/box3.webp" alt="Ștanțare" class="object-fit-cover" loading="lazy">
-          </div>
-          <div class="card-body text-center">
-            <h3 class="h5 mb-0">Ștanțare</h3>
-          </div>
-        </a>
-      </div>
-      <div class="col-6 col-lg-3">
-        <a href="/servicii/inscriptionare-folio-emboss" class="card h-100 text-decoration-none border-0 shadow-sm categorie">
-          <div class="ratio ratio-1x1">
-            <img src="/uploads/gallery/serviciu-inscriptionare-folio-emboss.webp" alt="Folio / Emboss" class="object-fit-cover" loading="lazy">
-          </div>
-          <div class="card-body text-center">
-            <h3 class="h5 mb-0">Folio / Emboss</h3>
-          </div>
-        </a>
-      </div>
-      <div class="col-6 col-lg-3">
-        <a href="/servicii/gravura-laser" class="card h-100 text-decoration-none border-0 shadow-sm categorie">
-          <div class="ratio ratio-1x1">
-            <img src="/uploads/gallery/serviciu-gravura-laser.webp" alt="Gravură laser" class="object-fit-cover" loading="lazy">
-          </div>
-          <div class="card-body text-center">
-            <h3 class="h5 mb-0">Gravură laser</h3>
-          </div>
-        </a>
-      </div>
-      <div class="col-6 col-lg-3">
-        <a href="/servicii/creatie-si-design" class="card h-100 text-decoration-none border-0 shadow-sm categorie">
-          <div class="ratio ratio-1x1">
-            <img src="/uploads/gallery/serviciu-creatie-si-design.webp" alt="Creație și design" class="object-fit-cover" loading="lazy">
-          </div>
-          <div class="card-body text-center">
-            <h3 class="h5 mb-0">Creație și design</h3>
-          </div>
-        </a>
-      </div>
-      <div class="col-6 col-lg-3">
-        <a href="/servicii/separatie-de-culoare-pe-placi-offset-kodak" class="card h-100 text-decoration-none border-0 shadow-sm categorie">
-          <div class="ratio ratio-1x1">
-            <img src="/uploads/gallery/serviciu-separatie-de-culoare-pe-placi-offset-kodak.webp" alt="Separație de culoare" class="object-fit-cover" loading="lazy">
-          </div>
-          <div class="card-body text-center">
-            <h3 class="h5 mb-0">Separație de culoare</h3>
-          </div>
-        </a>
-      </div>
-    </div>
-  </div>
-</section>
-
 <!-- Clienți. Logo-urile vin cu fundal alb turnat de la client, deci plăcile
      albe pe fundal gri fac din asta un element de design, nu un defect. -->
 <section id="clienti" class="py-5">
   <div class="container">
-    <h2 class="display-5 fw-normal text-center mb-2">Ne-au ales</h2>
+    <h2 class="display-5 fw-normal text-center mb-2">Clienții noștri</h2>
     <p class="text-center text-secondary mb-4">Companii pentru care tipărim, de la retail și energie până la sănătate și cultură.</p>
-    <div class="row g-3 align-items-center justify-content-center">
-      <div class="col-6 col-md-3 col-lg-2">
-        <div class="client-placa">
-          <img src="/uploads/gallery/client-lidl.webp" alt="Lidl" loading="lazy">
-        </div>
-      </div>
-      <div class="col-6 col-md-3 col-lg-2">
-        <div class="client-placa">
-          <img src="/uploads/gallery/client-petrom.webp" alt="Petrom" loading="lazy">
-        </div>
-      </div>
-      <div class="col-6 col-md-3 col-lg-2">
-        <div class="client-placa">
-          <img src="/uploads/gallery/client-selgros.webp" alt="Selgros" loading="lazy">
-        </div>
-      </div>
-      <div class="col-6 col-md-3 col-lg-2">
-        <div class="client-placa">
-          <img src="/uploads/gallery/client-regina-maria.webp" alt="Regina Maria" loading="lazy">
-        </div>
-      </div>
-      <div class="col-6 col-md-3 col-lg-2">
-        <div class="client-placa">
-          <img src="/uploads/gallery/client-afi-europe.webp" alt="AFI Europe România" loading="lazy">
-        </div>
-      </div>
-      <div class="col-6 col-md-3 col-lg-2">
-        <div class="client-placa">
-          <img src="/uploads/gallery/client-aeroporturi-bucuresti.webp" alt="Aeroporturi București" loading="lazy">
-        </div>
-      </div>
-      <div class="col-6 col-md-3 col-lg-2">
-        <div class="client-placa">
-          <img src="/uploads/gallery/client-apa-nova.webp" alt="Apa Nova" loading="lazy">
-        </div>
-      </div>
-      <div class="col-6 col-md-3 col-lg-2">
-        <div class="client-placa">
-          <img src="/uploads/gallery/client-conpet.webp" alt="Conpet" loading="lazy">
-        </div>
-      </div>
-      <div class="col-6 col-md-3 col-lg-2">
-        <div class="client-placa">
-          <img src="/uploads/gallery/client-pandora.webp" alt="Pandora" loading="lazy">
-        </div>
-      </div>
-      <div class="col-6 col-md-3 col-lg-2">
-        <div class="client-placa">
-          <img src="/uploads/gallery/client-arabesque.webp" alt="Arabesque" loading="lazy">
-        </div>
-      </div>
-      <div class="col-6 col-md-3 col-lg-2">
-        <div class="client-placa">
-          <img src="/uploads/gallery/client-upetrom.webp" alt="Upetrom" loading="lazy">
-        </div>
-      </div>
-      <div class="col-6 col-md-3 col-lg-2">
-        <div class="client-placa">
-          <img src="/uploads/gallery/client-electrica.webp" alt="Electrica Furnizare" loading="lazy">
-        </div>
-      </div>
-      <div class="col-6 col-md-3 col-lg-2">
-        <div class="client-placa">
-          <img src="/uploads/gallery/client-bricostore.webp" alt="Bricostore" loading="lazy">
-        </div>
-      </div>
-      <div class="col-6 col-md-3 col-lg-2">
-        <div class="client-placa">
-          <img src="/uploads/gallery/client-biovitality.webp" alt="BioVitality" loading="lazy">
-        </div>
-      </div>
-      <div class="col-6 col-md-3 col-lg-2">
-        <div class="client-placa">
-          <img src="/uploads/gallery/client-gfr.webp" alt="Grup Feroviar Român" loading="lazy">
-        </div>
-      </div>
-      <div class="col-6 col-md-3 col-lg-2">
-        <div class="client-placa">
-          <img src="/uploads/gallery/client-gvs.webp" alt="GVS" loading="lazy">
-        </div>
-      </div>
-      <div class="col-6 col-md-3 col-lg-2">
-        <div class="client-placa">
-          <img src="/uploads/gallery/client-delice.webp" alt="Delice" loading="lazy">
-        </div>
-      </div>
-      <div class="col-6 col-md-3 col-lg-2">
-        <div class="client-placa">
-          <img src="/uploads/gallery/client-muzeul-bucovinei.webp" alt="Muzeul Național al Bucovinei" loading="lazy">
-        </div>
-      </div>
-      <div class="col-6 col-md-3 col-lg-2">
-        <div class="client-placa">
-          <img src="/uploads/gallery/client-corpul-politistilor.webp" alt="Corpul Național al Polițiștilor" loading="lazy">
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
+    <!--
+      Banda derulantă.
 
-<!-- Certificări. ANPC și InfoCons nu apar aici: sunt autorități de protecție
-     a consumatorului, nu certificări ale tipografiei, și stau în subsol. -->
-<section id="certificari" class="py-5">
-  <div class="container">
-    <h2 class="display-5 fw-normal text-center mb-4">Certificări și apartenențe</h2>
-    <div class="row g-4 justify-content-center align-items-center">
-      <div class="col-6 col-md-3 text-center">
-        <img src="/uploads/gallery/afas-logo.png" alt="Membru AFAS" class="img-fluid certificare" loading="lazy">
-      </div>
-      <div class="col-6 col-md-3 text-center">
-        <img src="/uploads/gallery/autoritate-iscir.webp" alt="ISCIR" class="img-fluid certificare" loading="lazy">
-      </div>
+      Lista este scrisă de două ori: prima poartă numele firmelor, a doua e un
+      duplicat pentru cititoarele de ecran invizibil. Fără duplicat, banda ar
+      lăsa un gol alb la fiecare rotire; cu el, translația de exact jumătate
+      din lățime se închide în buclă fără salt.
+
+      Rotirea se oprește la trecerea cu mouse-ul și la focalizarea din
+      tastatură, ca sigla privită să nu fugă, și se oprește de tot pentru cine
+      a cerut mai puțină mișcare din sistemul de operare. Butonul de oprire îl
+      pune scriptul paginii, ca la filmul din hero (WCAG 2.2.2).
+    -->
+    <div class="carusel-clienti" data-carusel-clienti>
+      <ul class="carusel-clienti__banda">
+        <li class="carusel-clienti__element">
+          <img src="/uploads/gallery/client-lidl.webp" alt="Lidl" loading="lazy">
+        </li>
+        <li class="carusel-clienti__element">
+          <img src="/uploads/gallery/client-petrom.webp" alt="Petrom" loading="lazy">
+        </li>
+        <li class="carusel-clienti__element">
+          <img src="/uploads/gallery/client-selgros.webp" alt="Selgros" loading="lazy">
+        </li>
+        <li class="carusel-clienti__element">
+          <img src="/uploads/gallery/client-regina-maria.webp" alt="Regina Maria" loading="lazy">
+        </li>
+        <li class="carusel-clienti__element">
+          <img src="/uploads/gallery/client-afi-europe.webp" alt="AFI Europe România" loading="lazy">
+        </li>
+        <li class="carusel-clienti__element">
+          <img src="/uploads/gallery/client-aeroporturi-bucuresti.webp" alt="Aeroporturi București" loading="lazy">
+        </li>
+        <li class="carusel-clienti__element">
+          <img src="/uploads/gallery/client-apa-nova.webp" alt="Apa Nova" loading="lazy">
+        </li>
+        <li class="carusel-clienti__element">
+          <img src="/uploads/gallery/client-conpet.webp" alt="Conpet" loading="lazy">
+        </li>
+        <li class="carusel-clienti__element">
+          <img src="/uploads/gallery/client-pandora.webp" alt="Pandora" loading="lazy">
+        </li>
+        <li class="carusel-clienti__element">
+          <img src="/uploads/gallery/client-arabesque.webp" alt="Arabesque" loading="lazy">
+        </li>
+        <li class="carusel-clienti__element">
+          <img src="/uploads/gallery/client-upetrom.webp" alt="Upetrom" loading="lazy">
+        </li>
+        <li class="carusel-clienti__element">
+          <img src="/uploads/gallery/client-electrica.webp" alt="Electrica Furnizare" loading="lazy">
+        </li>
+        <li class="carusel-clienti__element">
+          <img src="/uploads/gallery/client-bricostore.webp" alt="Bricostore" loading="lazy">
+        </li>
+        <li class="carusel-clienti__element">
+          <img src="/uploads/gallery/client-biovitality.webp" alt="BioVitality" loading="lazy">
+        </li>
+        <li class="carusel-clienti__element">
+          <img src="/uploads/gallery/client-gfr.webp" alt="Grup Feroviar Român" loading="lazy">
+        </li>
+        <li class="carusel-clienti__element">
+          <img src="/uploads/gallery/client-gvs.webp" alt="GVS" loading="lazy">
+        </li>
+        <li class="carusel-clienti__element">
+          <img src="/uploads/gallery/client-delice.webp" alt="Delice" loading="lazy">
+        </li>
+        <li class="carusel-clienti__element">
+          <img src="/uploads/gallery/client-muzeul-bucovinei.webp" alt="Muzeul Național al Bucovinei" loading="lazy">
+        </li>
+        <li class="carusel-clienti__element">
+          <img src="/uploads/gallery/client-corpul-politistilor.webp" alt="Corpul Național al Polițiștilor" loading="lazy">
+        </li>
+        <li class="carusel-clienti__element" aria-hidden="true">
+          <img src="/uploads/gallery/client-lidl.webp" alt="" loading="lazy">
+        </li>
+        <li class="carusel-clienti__element" aria-hidden="true">
+          <img src="/uploads/gallery/client-petrom.webp" alt="" loading="lazy">
+        </li>
+        <li class="carusel-clienti__element" aria-hidden="true">
+          <img src="/uploads/gallery/client-selgros.webp" alt="" loading="lazy">
+        </li>
+        <li class="carusel-clienti__element" aria-hidden="true">
+          <img src="/uploads/gallery/client-regina-maria.webp" alt="" loading="lazy">
+        </li>
+        <li class="carusel-clienti__element" aria-hidden="true">
+          <img src="/uploads/gallery/client-afi-europe.webp" alt="" loading="lazy">
+        </li>
+        <li class="carusel-clienti__element" aria-hidden="true">
+          <img src="/uploads/gallery/client-aeroporturi-bucuresti.webp" alt="" loading="lazy">
+        </li>
+        <li class="carusel-clienti__element" aria-hidden="true">
+          <img src="/uploads/gallery/client-apa-nova.webp" alt="" loading="lazy">
+        </li>
+        <li class="carusel-clienti__element" aria-hidden="true">
+          <img src="/uploads/gallery/client-conpet.webp" alt="" loading="lazy">
+        </li>
+        <li class="carusel-clienti__element" aria-hidden="true">
+          <img src="/uploads/gallery/client-pandora.webp" alt="" loading="lazy">
+        </li>
+        <li class="carusel-clienti__element" aria-hidden="true">
+          <img src="/uploads/gallery/client-arabesque.webp" alt="" loading="lazy">
+        </li>
+        <li class="carusel-clienti__element" aria-hidden="true">
+          <img src="/uploads/gallery/client-upetrom.webp" alt="" loading="lazy">
+        </li>
+        <li class="carusel-clienti__element" aria-hidden="true">
+          <img src="/uploads/gallery/client-electrica.webp" alt="" loading="lazy">
+        </li>
+        <li class="carusel-clienti__element" aria-hidden="true">
+          <img src="/uploads/gallery/client-bricostore.webp" alt="" loading="lazy">
+        </li>
+        <li class="carusel-clienti__element" aria-hidden="true">
+          <img src="/uploads/gallery/client-biovitality.webp" alt="" loading="lazy">
+        </li>
+        <li class="carusel-clienti__element" aria-hidden="true">
+          <img src="/uploads/gallery/client-gfr.webp" alt="" loading="lazy">
+        </li>
+        <li class="carusel-clienti__element" aria-hidden="true">
+          <img src="/uploads/gallery/client-gvs.webp" alt="" loading="lazy">
+        </li>
+        <li class="carusel-clienti__element" aria-hidden="true">
+          <img src="/uploads/gallery/client-delice.webp" alt="" loading="lazy">
+        </li>
+        <li class="carusel-clienti__element" aria-hidden="true">
+          <img src="/uploads/gallery/client-muzeul-bucovinei.webp" alt="" loading="lazy">
+        </li>
+        <li class="carusel-clienti__element" aria-hidden="true">
+          <img src="/uploads/gallery/client-corpul-politistilor.webp" alt="" loading="lazy">
+        </li>
+      </ul>
     </div>
   </div>
 </section>

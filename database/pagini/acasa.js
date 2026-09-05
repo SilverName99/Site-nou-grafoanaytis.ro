@@ -168,4 +168,156 @@
 
     observator.observe(film);
   })();
+
+  /* ── Mesajele care se schimbă peste film (pct. 3) ────────────────────── */
+
+  (function mesajeleDinHero() {
+    var cutie = document.querySelector('.hero-mesaje');
+    var date = document.getElementById('hero-mesaje-date');
+    if (!cutie || !date) {
+      return;
+    }
+
+    var mesaje;
+    try {
+      mesaje = JSON.parse(date.textContent);
+    } catch (e) {
+      /* Un JSON stricat nu trebuie să lase pagina fără titlu: rămâne primul. */
+      return;
+    }
+    if (!Array.isArray(mesaje) || mesaje.length < 2) {
+      return;
+    }
+
+    var text = cutie.querySelector('.hero-mesaje__text');
+    var titlu = cutie.querySelector('.hero-mesaje__titlu');
+    var subtitlu = cutie.querySelector('.hero-mesaje__subtitlu');
+    if (!text || !titlu || !subtitlu) {
+      return;
+    }
+
+
+    /*
+     * Cine a cerut mai puțină mișcare rămâne cu primul mesaj. Nu e o
+     * degradare: mesajele sunt variații ale aceleiași oferte, nu informații
+     * diferite, deci nu se pierde nimic.
+     */
+    if (miscareRedusa) {
+      return;
+    }
+
+    /*
+     * Rezervarea de înălțime, măsurată în pagina reală.
+     *
+     * Trece pe rând fiecare mesaj, notează cât ocupă blocul, apoi îl fixează
+     * pe cel mai înalt. Măsurătoarea se face fără tranziție, într-un singur
+     * cadru, deci nu se vede. Se reface la redimensionare, fiindcă numărul de
+     * rânduri depinde de lățime.
+     */
+    function rezervaInaltimea() {
+      var tOrig = titlu.textContent;
+      var sOrig = subtitlu.textContent;
+      var maxim = 0;
+
+      text.style.minHeight = '';
+      for (var i = 0; i < mesaje.length; i++) {
+        titlu.textContent = mesaje[i][0];
+        subtitlu.textContent = mesaje[i][1];
+        maxim = Math.max(maxim, text.offsetHeight);
+      }
+
+      titlu.textContent = tOrig;
+      subtitlu.textContent = sOrig;
+      text.style.minHeight = maxim + 'px';
+    }
+
+    rezervaInaltimea();
+
+    var ceasDeRedimensionare = null;
+    window.addEventListener('resize', function () {
+      window.clearTimeout(ceasDeRedimensionare);
+      ceasDeRedimensionare = window.setTimeout(rezervaInaltimea, 200);
+    });
+
+    var pozitie = 0;
+    var ceas = null;
+
+    function arata(index) {
+      cutie.setAttribute('data-in-schimbare', '');
+      window.setTimeout(function () {
+        titlu.textContent = mesaje[index][0];
+        subtitlu.textContent = mesaje[index][1];
+        cutie.removeAttribute('data-in-schimbare');
+      }, 400);
+    }
+
+    function porneste() {
+      ceas = window.setInterval(function () {
+        pozitie = (pozitie + 1) % mesaje.length;
+        arata(pozitie);
+      }, 6000);
+    }
+
+    function opreste() {
+      window.clearInterval(ceas);
+      ceas = null;
+    }
+
+    porneste();
+
+    /* Fila ascunsă nu are cui să rotească mesaje. */
+    document.addEventListener('visibilitychange', function () {
+      if (document.hidden) {
+        opreste();
+      } else if (!ceas) {
+        porneste();
+      }
+    });
+
+    /* Butonul filmului oprește și mesajele: e aceeași mișcare, pentru privitor. */
+    cutie.closest('#hero').addEventListener('click', function (e) {
+      if (e.target.closest('.hero-video-comanda')) {
+        if (ceas) { opreste(); } else { porneste(); }
+      }
+    });
+  })();
+
+  /* ── Banda de sigle (pct. 22) ─────────────────────────────────────────── */
+
+  (function bandaDeClienti() {
+    var carusel = document.querySelector('[data-carusel-clienti]');
+    if (!carusel) {
+      return;
+    }
+
+    /*
+     * O mișcare pornită singură, mai lungă de cinci secunde, trebuie să poată
+     * fi oprită de vizitator — WCAG 2.2.2, aceeași regulă ca la filmul de
+     * fundal. Butonul se construiește din script, nu din markup: dacă banda nu
+     * se mișcă (mai puțină mișcare cerută din sistem), nu apare deloc.
+     */
+    if (miscareRedusa) {
+      return;
+    }
+
+    var buton = document.createElement('button');
+    buton.type = 'button';
+    buton.className = 'carusel-clienti-comanda';
+    buton.textContent = 'Oprește derularea';
+    buton.setAttribute('aria-pressed', 'false');
+
+    buton.addEventListener('click', function () {
+      var oprit = carusel.hasAttribute('data-oprit');
+      if (oprit) {
+        carusel.removeAttribute('data-oprit');
+      } else {
+        carusel.setAttribute('data-oprit', '');
+      }
+      buton.textContent = oprit ? 'Oprește derularea' : 'Pornește derularea';
+      buton.setAttribute('aria-pressed', oprit ? 'false' : 'true');
+    });
+
+    carusel.insertAdjacentElement('afterend', buton);
+  })();
+
 })();

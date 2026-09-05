@@ -109,32 +109,145 @@
   .categorie:hover { transform: none; }
 }
 
-/* Banda de clienți */
-.client-placa {
+/* ── Banda de clienți ─────────────────────────────────────────────
+   Punctul 22 din revizie: siglele se derulează singure, în buclă, și se
+   măresc ca să se poată citi. Plăcile de dinainte, de 84px, stăteau într-o
+   grilă fixă; acum sunt elemente de bandă, la 120px.
+   ───────────────────────────────────────────────────────────────── */
+
+.carusel-clienti {
+  overflow: hidden;
+  /*
+   * Capetele se sting în fundal, ca siglele să nu apară și să dispară tăiate
+   * drept la marginea ecranului. „mask" nu e susținut peste tot; unde lipsește,
+   * banda arată doar cu margini nete — nimic nu se strică.
+   */
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+          mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+}
+
+.carusel-clienti__banda {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  list-style: none;
+  margin: 0;
+  padding: .5rem 0;
+  width: max-content;
+  /*
+   * Durata e legată de numărul de sigle, nu aleasă la ochi: 19 sigle × 2,2s
+   * dau o viteză la care ochiul apucă să citească fiecare siglă. Translația e
+   * de exact 50%, adică lungimea primei liste — acolo duplicatul se suprapune
+   * perfect peste original și bucla nu se vede.
+   */
+  animation: carusel-clienti 42s linear infinite;
+}
+
+@keyframes carusel-clienti {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+/* Sigla privită nu trebuie să fugă de sub cursor sau de sub focalizare. */
+.carusel-clienti:hover .carusel-clienti__banda,
+.carusel-clienti:focus-within .carusel-clienti__banda,
+.carusel-clienti[data-oprit] .carusel-clienti__banda {
+  animation-play-state: paused;
+}
+
+.carusel-clienti__element {
+  flex: 0 0 auto;
   background: #fff;
   border: 1px solid var(--line);
   border-radius: 8px;
-  padding: 14px;
-  height: 84px;
+  padding: 16px;
+  /* 120px în loc de 84: clientul a cerut sigle vizibile. */
+  height: 120px;
+  width: 200px;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: border-color .18s ease, transform .18s ease;
 }
-.client-placa img {
+
+.carusel-clienti__element img {
   max-width: 100%;
   max-height: 100%;
   object-fit: contain;
-  /* Logo-uri din industrii diferite, cu culori care se bat între ele. În gri
-     citești firmele ca pe o listă; culoarea revine la interacțiune. */
+  /*
+   * Gri la 82%, nu la 78% ca înainte: mărirea cerută de client aduce cu ea și
+   * mai multă culoare pe ecran, iar nouăsprezece palete diferite una lângă
+   * alta se bat între ele. Culoarea revine la trecerea cu mouse-ul.
+   */
   filter: grayscale(1);
-  opacity: .78;
+  opacity: .82;
   transition: filter .18s ease, opacity .18s ease;
 }
-.client-placa:hover { border-color: var(--fill-brand); transform: translateY(-2px); }
-.client-placa:hover img { filter: none; opacity: 1; }
+
+.carusel-clienti__element:hover img { filter: none; opacity: 1; }
+
+/* Butonul de oprire, pus de scriptul paginii. */
+.carusel-clienti-comanda {
+  display: block;
+  margin: 1rem auto 0;
+  padding: .35rem .9rem;
+  border: 1px solid var(--line-forte, var(--line));
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--ink-muted);
+  font-size: .8125rem;
+  cursor: pointer;
+}
+
+.carusel-clienti-comanda:hover { color: var(--text-brand); border-color: var(--fill-brand); }
+
+/*
+ * Cine a cerut mai puțină mișcare din sistem primește banda oprită, nu
+ * ascunsă: siglele rămân toate acolo, doar că stau pe loc și se pot parcurge
+ * prin derulare laterală.
+ */
+@media (prefers-reduced-motion: reduce) {
+  .carusel-clienti__banda { animation: none; }
+  .carusel-clienti { overflow-x: auto; }
+  .carusel-clienti__element img { transition: none; }
+}
+
+/* ── Mesajele care se schimbă peste film ──────────────────────────
+   Punctul 3 din revizie.
+   ───────────────────────────────────────────────────────────────── */
+
+/*
+ * Înălțimea rezervată.
+ *
+ * Cele trei titluri au lungimi foarte diferite — cel mai lung ocupă patru
+ * rânduri pe ecran lat, cel mai scurt unul singur — deci fără rezervare pagina
+ * saltă cu câteva sute de pixeli la fiecare schimbare.
+ *
+ * Rezervarea nu e scrisă aici, ci măsurată de script în pagina reală, la
+ * încărcare și la fiecare redimensionare. Scrisă în CSS ar fi însemnat șase
+ * valori ghicite, câte două pe fiecare prag, care s-ar strica la prima
+ * schimbare de text — iar clientul va mai schimba textele.
+ *
+ * Când mesajul afișat e mai scurt decât cel mai lung, textul stă centrat pe
+ * verticală în spațiul rezervat, nu lipit de sus cu un gol dedesubt.
+ */
+.hero-mesaje__text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* Trecerea dintre mesaje: stingere scurtă, fără mișcare pe orizontală. */
+.hero-mesaje__titlu,
+.hero-mesaje__subtitlu {
+  transition: opacity .4s ease;
+}
+
+.hero-mesaje[data-in-schimbare] .hero-mesaje__titlu,
+.hero-mesaje[data-in-schimbare] .hero-mesaje__subtitlu {
+  opacity: 0;
+}
 
 @media (prefers-reduced-motion: reduce) {
-  .client-placa, .client-placa img { transition: none; }
-  .client-placa:hover { transform: none; }
+  .hero-mesaje__titlu,
+  .hero-mesaje__subtitlu { transition: none; }
 }
