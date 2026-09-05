@@ -1034,7 +1034,7 @@ final class AdminController
                     'SELECT p.id, p.name, p.sku, p.category, p.category_id, c.name AS category_name, p.slug, p.price, p.vat_percent, p.vat_included, p.sale_price, p.sale_price_periods_json, p.discount_badge_mode, p.bbd_enabled, p.bbd_entries_json, p.post_cart_note_enabled, p.post_cart_note_text, p.stock, p.out_of_stock, p.weight_grams, p.image_url, p.is_active,
                             p.product_template_id, pt.name AS product_template_name,
                             p.short_description, p.description, p.product_highlights, p.similar_products_json,
-                            p.gallery_images_json, p.badge_popular, p.badge_best_seller, p.badge_seasonal
+                            p.gallery_images_json, p.badge_popular, p.badge_best_seller, p.badge_seasonal, p.sort_order
                      FROM products p
                      LEFT JOIN product_categories c ON c.id = p.category_id
                      LEFT JOIN product_templates pt ON pt.id = p.product_template_id
@@ -1115,6 +1115,7 @@ final class AdminController
                 $product['badge_popular'] = (int) ($product['badge_popular'] ?? 0) === 1 ? 1 : 0;
                 $product['badge_best_seller'] = (int) ($product['badge_best_seller'] ?? 0) === 1 ? 1 : 0;
                 $product['badge_seasonal'] = (int) ($product['badge_seasonal'] ?? 0) === 1 ? 1 : 0;
+                $product['sort_order'] = max(0, (int) ($product['sort_order'] ?? 0));
                 $product['out_of_stock'] = (int) ($product['out_of_stock'] ?? 0) === 1 ? 1 : 0;
                 $pricing = $this->resolveProductPricing(
                     (float) ($product['price'] ?? 0.0),
@@ -3990,11 +3991,17 @@ final class AdminController
         $badgePopular = isset($_POST['badge_popular']) ? 1 : 0;
         $badgeBest = isset($_POST['badge_best_seller']) ? 1 : 0;
         $badgeSeason = isset($_POST['badge_seasonal']) ? 1 : 0;
+        /*
+         * Ordinea în catalog. Un câmp gol nu înseamnă „prima poziție", ci
+         * „nestabilită": de aceea trece prin (int) abia după ce a fost curățat,
+         * iar negativul se taie la zero.
+         */
+        $ordineCatalog = max(0, (int) trim((string) ($_POST['sort_order'] ?? 0)));
         $stmt = $db->prepare(
             'INSERT INTO products (
-                name, sku, category, category_id, product_template_id, slug, short_description, description, product_highlights, price, vat_percent, vat_included, sale_price, sale_price_periods_json, discount_badge_mode, bbd_enabled, bbd_entries_json, post_cart_note_enabled, post_cart_note_text, stock, out_of_stock, weight_grams, image_url, gallery_images_json, similar_products_json, badge_popular, badge_best_seller, badge_seasonal, is_active
+                name, sku, category, category_id, product_template_id, slug, short_description, description, product_highlights, price, vat_percent, vat_included, sale_price, sale_price_periods_json, discount_badge_mode, bbd_enabled, bbd_entries_json, post_cart_note_enabled, post_cart_note_text, stock, out_of_stock, weight_grams, image_url, gallery_images_json, similar_products_json, badge_popular, badge_best_seller, badge_seasonal, sort_order, is_active
              ) VALUES (
-                :name, :sku, :category, :category_id, :product_template_id, :slug, :short_description, :description, :product_highlights, :price, :vat_percent, :vat_included, :sale_price, :sale_price_periods_json, :discount_badge_mode, :bbd_enabled, :bbd_entries_json, :post_cart_note_enabled, :post_cart_note_text, :stock, :out_of_stock, :weight_grams, :image_url, :gallery_images_json, :similar_products_json, :badge_popular, :badge_best_seller, :badge_seasonal, :is_active
+                :name, :sku, :category, :category_id, :product_template_id, :slug, :short_description, :description, :product_highlights, :price, :vat_percent, :vat_included, :sale_price, :sale_price_periods_json, :discount_badge_mode, :bbd_enabled, :bbd_entries_json, :post_cart_note_enabled, :post_cart_note_text, :stock, :out_of_stock, :weight_grams, :image_url, :gallery_images_json, :similar_products_json, :badge_popular, :badge_best_seller, :badge_seasonal, :sort_order, :is_active
              )'
         );
         $stmt->execute([
@@ -4026,6 +4033,7 @@ final class AdminController
             'badge_popular' => $badgePopular,
             'badge_best_seller' => $badgeBest,
             'badge_seasonal' => $badgeSeason,
+            'sort_order' => $ordineCatalog,
             'is_active' => $isActive,
         ]);
         $productId = (int) $db->lastInsertId();
@@ -4126,6 +4134,12 @@ final class AdminController
         $badgePopular = isset($_POST['badge_popular']) ? 1 : 0;
         $badgeBest = isset($_POST['badge_best_seller']) ? 1 : 0;
         $badgeSeason = isset($_POST['badge_seasonal']) ? 1 : 0;
+        /*
+         * Ordinea în catalog. Un câmp gol nu înseamnă „prima poziție", ci
+         * „nestabilită": de aceea trece prin (int) abia după ce a fost curățat,
+         * iar negativul se taie la zero.
+         */
+        $ordineCatalog = max(0, (int) trim((string) ($_POST['sort_order'] ?? 0)));
         $stmt = $db->prepare(
             'UPDATE products
              SET name = :name,
@@ -4156,6 +4170,7 @@ final class AdminController
                  badge_popular = :badge_popular,
                  badge_best_seller = :badge_best_seller,
                  badge_seasonal = :badge_seasonal,
+                 sort_order = :sort_order,
                  is_active = :is_active
              WHERE id = :id AND deleted_at IS NULL'
         );
@@ -4196,6 +4211,7 @@ final class AdminController
             'badge_popular' => $badgePopular,
             'badge_best_seller' => $badgeBest,
             'badge_seasonal' => $badgeSeason,
+            'sort_order' => $ordineCatalog,
             'is_active' => $isActive,
         ]);
         \App\Support\ProductCategories::sync(

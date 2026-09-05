@@ -103,7 +103,34 @@ $adaugate = 0;
 $actualizate = 0;
 $sarite = 0;
 
+/**
+ * Calea unei fotografii de produs.
+ *
+ * Cele mai multe sunt încărcate de client în galerie și se scriu cu numele
+ * fișierului. Fotografiile venite de la el prin alt canal — dintr-un PDF, de
+ * pildă — stau în „/assets", fiindcă „public/uploads" este ignorat de git și
+ * n-ar ajunge pe server la „git pull". Pe acelea le scriem cu calea întreagă,
+ * iar semnul de la început le deosebește.
+ */
+function caleFotografie(string $fisier): string
+{
+    return str_starts_with($fisier, '/') ? $fisier : '/uploads/gallery/' . $fisier;
+}
+
+$pozitie = 0;
+
 foreach ($date['produse'] as $produs) {
+    /*
+     * Ordinea din catalog este ordinea din fișierul ăsta.
+     *
+     * Clientul a dat lista numerotată, iar o listă numerotată ținută în două
+     * locuri — o dată aici, o dată într-o coloană scrisă de mână — se
+     * desincronizează la prima mutare. Numerotarea din zece în zece lasă loc
+     * pentru un produs strecurat între altele două din dashboard, fără să
+     * trebuiască renumerotat tot.
+     */
+    $pozitie += 10;
+
     $stmt = $db->prepare('SELECT id FROM products WHERE slug = ? LIMIT 1');
     $stmt->execute([$produs['slug']]);
     $id = $stmt->fetchColumn();
@@ -114,10 +141,7 @@ foreach ($date['produse'] as $produs) {
         continue;
     }
 
-    $galerie = array_map(
-        static fn (string $f): string => '/uploads/gallery/' . $f,
-        $produs['galerie']
-    );
+    $galerie = array_map('caleFotografie', $produs['galerie']);
 
     /*
      * Prima categorie din listă este familia produsului: ea intră în
@@ -132,7 +156,7 @@ foreach ($date['produse'] as $produs) {
         'short_description' => $produs['subtitlu'],
         'description' => $produs['descriere'],
         'product_highlights' => $produs['aplicabilitate'],
-        'image_url' => '/uploads/gallery/' . $produs['imagine'],
+        'image_url' => caleFotografie($produs['imagine']),
         'gallery_images_json' => json_encode($galerie, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE),
         'category_id' => $familie,
         /*
@@ -144,6 +168,7 @@ foreach ($date['produse'] as $produs) {
         'product_template_id' => $idSablon,
         /* Site de prezentare: nu se afișează prețuri, se cere ofertă. */
         'price' => 0,
+        'sort_order' => $pozitie,
         'is_active' => 1,
     ];
 

@@ -415,6 +415,14 @@
                                 </div>
                                 <small class="muted">Selectează până la 12 produse similare.</small>
                             </div>
+                            <div class="field">
+                                <label for="p_sort_order">Ordinea în catalog</label>
+                                <input type="number" name="sort_order" id="p_sort_order" min="0" step="10" value="0">
+                                <small class="muted">Numărul mai mic urcă produsul. 0 înseamnă
+                                „nestabilită": produsul merge la coada listei. Produsele semănate
+                                din git sunt numerotate din zece în zece, ca să încapă unul nou
+                                între ele.</small>
+                            </div>
                             <div class="field full">
                                 <label>Badge-uri produs</label>
                                 <div class="product-badge-flags">
@@ -1121,6 +1129,8 @@
             if (badgePopular) badgePopular.checked = Number(product.badge_popular || 0) === 1;
             if (badgeBest) badgeBest.checked = Number(product.badge_best_seller || 0) === 1;
             if (badgeSeason) badgeSeason.checked = Number(product.badge_seasonal || 0) === 1;
+            const ordine = document.getElementById('p_sort_order');
+            if (ordine) ordine.value = Number(product.sort_order || 0);
             if (outOfStockInput instanceof HTMLInputElement) {
                 outOfStockInput.checked = Number(product.out_of_stock || 0) === 1;
             }

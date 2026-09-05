@@ -35,6 +35,11 @@ $db->exec($schema);
 
 // Backward-compatible safety for local DBs initialized before latest schema.
 try {
+    $db->exec('ALTER TABLE products ADD COLUMN sort_order INT NOT NULL DEFAULT 0 AFTER badge_seasonal');
+} catch (Throwable) {
+    // Column already exists.
+}
+try {
     $db->exec('ALTER TABLE orders ADD COLUMN coupon_code VARCHAR(100) DEFAULT NULL AFTER discount_total');
 } catch (Throwable) {
     // Column already exists.

@@ -3821,7 +3821,16 @@ HTML;
 
     private function requestShopCatalogSort(): string
     {
-        return $this->normalizeShopCatalogSort((string) ($_GET['sort'] ?? 'alpha_asc'));
+        /*
+         * Implicit, catalogul se arată în ordinea cerută de client.
+         *
+         * Era „alfabetică": o alegere bună cât timp nu exista o ordine anume,
+         * fiindcă „ordinea din bază" înseamnă, de fapt, ordinea în care au fost
+         * introduse produsele. La punctul 15 clientul a dat lista lui,
+         * numerotată, iar ea nu este alfabetică — cutiile de cofetărie stau
+         * primele, etichetele autoadezive ultimele.
+         */
+        return $this->normalizeShopCatalogSort((string) ($_GET['sort'] ?? 'catalog'));
     }
 
     /**
@@ -5265,14 +5274,15 @@ CSS;
     {
         $sort = trim(strtolower($sort));
         return match ($sort) {
-            'alpha_asc', 'featured', 'price_asc', 'price_desc' => $sort,
-            default => 'alpha_asc',
+            'catalog', 'alpha_asc', 'featured', 'price_asc', 'price_desc' => $sort,
+            default => 'catalog',
         };
     }
 
     private function shopCatalogSortOptions(): array
     {
         return [
+            'catalog' => 'Ordinea din catalog',
             'alpha_asc' => 'Alfabetică',
             'featured' => 'Popularitate',
             'price_asc' => 'Preț: mic → mare',
@@ -5294,6 +5304,8 @@ CSS;
             $rightSold = (int) ($right['sold_qty'] ?? 0);
             $leftName = trim((string) ($left['name'] ?? ''));
             $rightName = trim((string) ($right['name'] ?? ''));
+            $leftOrder = (int) ($left['sort_order'] ?? 0);
+            $rightOrder = (int) ($right['sort_order'] ?? 0);
             $leftBest = (int) ($left['badge_best_seller'] ?? $left['label_best_seller'] ?? 0);
             $rightBest = (int) ($right['badge_best_seller'] ?? $right['label_best_seller'] ?? 0);
             $leftPopular = (int) ($left['badge_popular'] ?? $left['label_popular'] ?? 0);
@@ -5310,6 +5322,24 @@ CSS;
             if ($sort === 'price_desc') {
                 $cmp = $rightPrice <=> $leftPrice;
                 return $cmp !== 0 ? $cmp : ($rightId <=> $leftId);
+            }
+            if ($sort === 'catalog') {
+                /*
+                 * Ordinea cerută de client, curată: fără popularitate, fără
+                 * vânzări, fără insigne. Un produs fără poziție merge la coadă,
+                 * unde se așază după nume, ca lista să nu-și schimbe ordinea de
+                 * la o încărcare la alta.
+                 */
+                if ($leftOrder !== $rightOrder) {
+                    if ($leftOrder === 0) {
+                        return 1;
+                    }
+                    if ($rightOrder === 0) {
+                        return -1;
+                    }
+                    return $leftOrder <=> $rightOrder;
+                }
+                return strcasecmp($leftName, $rightName);
             }
             $cmp = $rightSold <=> $leftSold;
             if ($cmp !== 0) {
@@ -5478,7 +5508,7 @@ CSS;
                 $params['category_filter2'] = $categoryFilter;
             }
             try {
-                $sql = 'SELECT id, name, slug, short_description, product_highlights, category, price, sale_price, sale_price_periods_json, discount_badge_mode, bbd_enabled, bbd_entries_json, post_cart_note_enabled, post_cart_note_text, out_of_stock, image_url, gallery_images_json, similar_products_json, badge_popular, badge_best_seller, badge_seasonal FROM products WHERE ' . $whereSql . ' ORDER BY id DESC' . $limitSql;
+                $sql = 'SELECT id, name, slug, short_description, product_highlights, category, price, sale_price, sale_price_periods_json, discount_badge_mode, bbd_enabled, bbd_entries_json, post_cart_note_enabled, post_cart_note_text, out_of_stock, image_url, gallery_images_json, similar_products_json, badge_popular, badge_best_seller, badge_seasonal, sort_order FROM products WHERE ' . $whereSql . ' ORDER BY id DESC' . $limitSql;
                 $stmt = $db->prepare($sql);
                 $stmt->execute($params);
                 $rows = $stmt->fetchAll();

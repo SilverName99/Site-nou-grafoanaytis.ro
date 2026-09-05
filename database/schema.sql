@@ -73,6 +73,9 @@ CREATE TABLE IF NOT EXISTS products (
     badge_popular TINYINT(1) NOT NULL DEFAULT 0,
     badge_best_seller TINYINT(1) NOT NULL DEFAULT 0,
     badge_seasonal TINYINT(1) NOT NULL DEFAULT 0,
+    -- Ordinea în catalog, cerută de client. 0 înseamnă „nestabilită": acele
+    -- produse merg la coadă, în ordinea în care au fost adăugate.
+    sort_order INT NOT NULL DEFAULT 0,
     is_active TINYINT(1) NOT NULL DEFAULT 1,
     deleted_at DATETIME DEFAULT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
