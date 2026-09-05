@@ -88,7 +88,7 @@
   line-height: 1.12;
   text-transform: uppercase;
   /* Majusculele stau prea strâns una în alta; puțin aer între ele. */
-  letter-spacing: .025em;
+  letter-spacing: .055em;
   /*
    * Titlul iese prin golul din latura de sus, dar nu trece peste linia din
    * stânga: în machetă începe la circa 9% din lățimea chenarului, adică
