@@ -11,6 +11,11 @@ declare(strict_types=1);
  *
  *   php scripts/seed-design.php
  *   php scripts/seed-design.php --suprascrie
+ *
+ * Suprascrierea poate fi limitată la o singură setare, ca schimbarea unui rând
+ * din antet să nu ceară rescrierea meniului și a subsolului odată cu el:
+ *
+ *   php scripts/seed-design.php --suprascrie --doar=design_header_html
  */
 
 require_once __DIR__ . '/../bootstrap.php';
@@ -35,6 +40,20 @@ if (!$db instanceof PDO) {
 }
 
 $suprascrie = in_array('--suprascrie', $argv, true);
+
+/*
+ * Setarea pe care o vizează rularea, dacă s-a cerut una anume.
+ *
+ * Fără ea, singura cale de a corecta un rând din antet pe un site pornit era
+ * „--suprascrie" peste tot — adică și peste meniul și subsolul pe care
+ * clientul poate să le fi ajustat între timp din Design Site.
+ */
+$doar = '';
+foreach ($argv as $arg) {
+    if (str_starts_with((string) $arg, '--doar=')) {
+        $doar = substr((string) $arg, strlen('--doar='));
+    }
+}
 
 $meniu = [
     ['Acasă', '/'],
@@ -94,7 +113,7 @@ $header = <<<HTML
       -->
       <a class="antet-sigle__partener" href="/certificari"
          title="Membru fondator al Asociației Furnizorilor de Ambalaje Sustenabile">
-        <img src="/uploads/gallery/afas-logo.png" height="44"
+        <img src="/assets/img/certificari/afas-logo.png" height="44"
              alt="AFAS — Asociația Furnizorilor de Ambalaje Sustenabile">
       </a>
     </div>
@@ -209,6 +228,16 @@ $comutatoare = [
      */
     'presentation_mode_enabled' => '1',
 ];
+
+if ($doar !== '' && !array_key_exists($doar, $continut) && !array_key_exists($doar, $comutatoare)) {
+    fwrite(STDERR, "Setarea „{$doar}” nu este scrisă de acest script.\n");
+    exit(1);
+}
+
+if ($doar !== '') {
+    $continut = array_intersect_key($continut, [$doar => true]);
+    $comutatoare = array_intersect_key($comutatoare, [$doar => true]);
+}
 
 $existente = Settings::all($db);
 $deScris = $comutatoare;

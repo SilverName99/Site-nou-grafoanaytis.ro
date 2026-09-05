@@ -1,24 +1,152 @@
+<!--
+  Certificări — Grafoanaytis
+
+  Refăcută după macheta trimisă de client (punctele 17 și 18 din revizie):
+  titlul și textul centrate, un rând cu cele patru certificate, iar sub ele
+  banda de sigle, exact cum a trimis-o.
+
+  Imaginile stau în /assets/img/certificari/, nu în /uploads/gallery/, fiindcă
+  „public/uploads" este ignorat de git: puse acolo, n-ar ajunge pe server la
+  „git pull" și ar trebui încărcate de mână, pe rând, din dashboard.
+
+  Certificatele sunt exporturi CorelDRAW cu o singură imagine rastru CMYK la
+  300 dpi înăuntru — nu documente vectoriale — deci rezoluția de aici este
+  exact cea nativă, fără mărire inventată.
+-->
+
 <section class="py-5 bg-body-tertiary">
-  <div class="container">
+  <div class="container text-center">
     <h1 class="display-5 fw-normal mb-2">Certificări și apartenențe</h1>
-    <p class="lead mb-0">Calitatea producției noastre este susținută de standarde recunoscute
-    și de apartenența la organizații de profil.</p>
+    <p class="lead mb-0 mx-auto" style="max-width: 56ch;">Calitatea producției noastre este
+    susținută de standarde recunoscute și de apartenența la organizații de profil.</p>
   </div>
 </section>
 
 <section class="py-5">
   <div class="container">
-    <div class="row g-4 justify-content-center align-items-center">
-      <div class="col-6 col-md-3 text-center">
-        <img src="/uploads/gallery/afas-logo.png" alt="Membru AFAS" class="img-fluid certificare" loading="lazy">
-        <p class="small text-secondary mt-2 mb-0">Membru AFAS</p>
-      </div>
-      <div class="col-6 col-md-3 text-center">
-        <img src="/uploads/gallery/autoritate-iscir.webp" alt="ISCIR" class="img-fluid certificare" loading="lazy">
-        <p class="small text-secondary mt-2 mb-0">ISCIR</p>
-      </div>
-      <!-- Restul certificărilor se adaugă din Dashboard → Galerie, după ce
-           clientul le trimite. Se păstrează același tipar de card. -->
+
+    <ul class="certificate">
+      <li class="certificat">
+        <button class="certificat__deschide" type="button" data-bs-toggle="modal" data-bs-target="#cert-iso"
+                aria-label="Deschide certificatul ISO 9001 la mărime citibilă">
+          <img src="/assets/img/certificari/cert-iso-9001-evalcertprod.webp"
+               alt="Certificat ISO 9001:2015 emis de Eval Cert Prod SRL pentru Grafoanaytis SRL"
+               width="697" height="960" loading="lazy">
+        </button>
+        <p class="certificat__nume">Sistem de management al calității</p>
+        <p class="certificat__detaliu">SR EN ISO 9001:2015 · Eval Cert Prod<br>
+        nr. SCS.24.G.0111.06/Q · valabil până la 14.03.2027</p>
+      </li>
+
+      <li class="certificat">
+        <button class="certificat__deschide" type="button" data-bs-toggle="modal" data-bs-target="#cert-eurocert-1"
+                aria-label="Deschide certificatul EUROCERT de conformitate la mărime citibilă">
+          <img src="/assets/img/certificari/cert-eurocert-conformitate-4069.webp"
+               alt="Certificat de conformitate EUROCERT, atestat 10.16.4069"
+               width="623" height="960" loading="lazy">
+        </button>
+        <p class="certificat__nume">Conformitatea produselor tipografice</p>
+        <p class="certificat__detaliu">EN ISO/CEI 17067:2013 · EUROCERT<br>
+        atestat 10.16.4069 · valabil până la 31.05.2029</p>
+      </li>
+
+      <li class="certificat">
+        <button class="certificat__deschide" type="button" data-bs-toggle="modal" data-bs-target="#cert-eurocert-2"
+                aria-label="Deschide certificatul EUROCERT de proces la mărime citibilă">
+          <img src="/assets/img/certificari/cert-eurocert-proces-4068.webp"
+               alt="Certificat de conformitate EUROCERT pentru procesul de tipărire digitală, atestat 10.16.4068"
+               width="625" height="960" loading="lazy">
+        </button>
+        <p class="certificat__nume">Procesul de tipărire digitală</p>
+        <p class="certificat__detaliu">Hârtie și carton, 60–350 g/mp, inclusiv ambalaje pentru
+        farma și cosmetice · EUROCERT<br>atestat 10.16.4068 · valabil până la 31.05.2029</p>
+      </li>
+
+      <li class="certificat">
+        <button class="certificat__deschide" type="button" data-bs-toggle="modal" data-bs-target="#cert-infocons"
+                aria-label="Deschide certificatul Marca Încrederii la mărime citibilă">
+          <img src="/assets/img/certificari/cert-infocons-marca-increderii.webp"
+               alt="Certificat de utilizare a mărcii programului Marca Încrederii, emis de InfoCons"
+               width="1100" height="1568" loading="lazy">
+        </button>
+        <p class="certificat__nume">Marca Încrederii</p>
+        <p class="certificat__detaliu">Servicii de tipărire, clasa 3007 · InfoCons<br>
+        seria 015646 · din 30.01.2025, pe 60 de luni</p>
+      </li>
+    </ul>
+
+    <!--
+      Banda de sigle, pusă întreagă, așa cum a trimis-o clientul și cum apare
+      în macheta lui — nu tăiată în patru și recompusă.
+    -->
+    <div class="banda-sigle">
+      <img src="/assets/img/certificari/banda-sigle.webp"
+           alt="EUROCERT · Certificare ISO 9001 Eval Cert Prod · AFAS, Asociația Furnizorilor de Ambalaje Sustenabile · marca-incredereii.ro"
+           width="1600" height="357" loading="lazy">
     </div>
+
+    <p class="text-center text-secondary small mt-4 mb-0">Apasă pe orice certificat ca să-l vezi
+    la mărime citibilă.</p>
   </div>
 </section>
+
+<!-- Ferestrele de mărire. Bootstrap este deja încărcat în pagină, deci nu adaugă nimic. -->
+<div class="modal fade" id="cert-iso" tabindex="-1" aria-labelledby="cert-iso-titlu" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title h5" id="cert-iso-titlu">Certificat ISO 9001:2015</h2>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Închide"></button>
+      </div>
+      <div class="modal-body text-center">
+        <img src="/assets/img/certificari/cert-iso-9001-evalcertprod.webp" class="img-fluid"
+             alt="Certificat ISO 9001:2015 emis de Eval Cert Prod SRL pentru Grafoanaytis SRL">
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="cert-eurocert-1" tabindex="-1" aria-labelledby="cert-eurocert-1-titlu" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title h5" id="cert-eurocert-1-titlu">Certificat de conformitate EUROCERT</h2>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Închide"></button>
+      </div>
+      <div class="modal-body text-center">
+        <img src="/assets/img/certificari/cert-eurocert-conformitate-4069.webp" class="img-fluid"
+             alt="Certificat de conformitate EUROCERT, atestat 10.16.4069">
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="cert-eurocert-2" tabindex="-1" aria-labelledby="cert-eurocert-2-titlu" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title h5" id="cert-eurocert-2-titlu">Certificat de proces EUROCERT</h2>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Închide"></button>
+      </div>
+      <div class="modal-body text-center">
+        <img src="/assets/img/certificari/cert-eurocert-proces-4068.webp" class="img-fluid"
+             alt="Certificat de conformitate EUROCERT pentru procesul de tipărire digitală, atestat 10.16.4068">
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="cert-infocons" tabindex="-1" aria-labelledby="cert-infocons-titlu" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title h5" id="cert-infocons-titlu">Marca Încrederii</h2>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Închide"></button>
+      </div>
+      <div class="modal-body text-center">
+        <img src="/assets/img/certificari/cert-infocons-marca-increderii.webp" class="img-fluid"
+             alt="Certificat de utilizare a mărcii programului Marca Încrederii, emis de InfoCons">
+      </div>
+    </div>
+  </div>
+</div>

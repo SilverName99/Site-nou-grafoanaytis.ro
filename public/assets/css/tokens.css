@@ -233,9 +233,19 @@ h1, h2, h3, h4, h5, h6, .navbar-brand, .btn {
   max-width: 54ch;
 }
 
-/* Fără asta, un text centrat rămâne lipit la stânga când primește max-width. */
+/*
+ * Fără asta, un text centrat rămâne lipit la stânga când primește max-width.
+ *
+ * Regula acoperea doar paragraful dintr-un container centrat, nu și paragraful
+ * pe care stă chiar el „text-center" — caz în care textul se centra în cutia
+ * lui de 54ch, iar cutia rămânea lipită la stânga. Se vedea ca un text
+ * necentrat, deși clasa era pusă. Contează acum: revizia clientului cere
+ * centrare în mai multe locuri.
+ */
 .custom-page-content .text-center p,
-.custom-page-content .text-center .lead {
+.custom-page-content .text-center .lead,
+.custom-page-content p.text-center,
+.custom-page-content .lead.text-center {
   margin-inline: auto;
 }
 
