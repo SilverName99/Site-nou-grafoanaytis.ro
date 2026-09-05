@@ -89,10 +89,59 @@
 .text-brand { color: var(--text-brand); }
 .text-brand-lg { color: var(--text-brand-large); }
 
+/*
+ * Semnul de focalizare, în două inele.
+ *
+ * Un contur de o singură culoare nu poate merge peste tot. Cel închis dă
+ * 14,66:1 pe pagina albă, dar 1,21:1 în subsolul întunecat și 1,54:1 pe banda
+ * de brand — adică dispare exact acolo unde e mai des apăsat cu tastatura.
+ * (Cu portocaliul dădea 3,51:1 în subsol; schimbarea de culoare l-a stins.)
+ *
+ * Soluția nu e o a treia culoare, ci două inele lipite: unul deschis, în
+ * culoarea suprafeței, desenat lipit de element, și conturul închis imediat în
+ * afara lui. Pe fundal alb se vede cel închis; pe fundal închis se vede cel
+ * deschis — 17,74:1 în subsol, 9,49:1 pe banda de brand. Unul dintre ele
+ * contrastează întotdeauna, fără să știm dinainte pe ce stă elementul.
+ */
 :where(a, button, [tabindex]):focus-visible {
   outline: 2px solid var(--brand-900);
   outline-offset: 2px;
-  box-shadow: var(--focus-ring);
+  box-shadow: 0 0 0 2px var(--surface), var(--focus-ring);
+}
+
+/*
+ * Elementele pe care Bootstrap le stinge, reluate cu specificitate de clasă.
+ *
+ * Bootstrap pune „outline: 0" pe „.btn" și pe „.nav-link" la focalizare și se
+ * bizuie pe umbra lui — care la butoane nu se desenează deloc, iar la meniu e
+ * albastrul lui implicit, nu al nostru. Regula generală de mai sus nu-i poate
+ * corecta: „:where()" are specificitate zero, deci pierde în fața oricărei
+ * reguli de clasă. Rezultatul era că butoanele — „Cere ofertă" printre ele,
+ * cel mai apăsat element de pe site — nu aveau niciun semn de focalizare la
+ * navigarea cu tastatura. Nu e o urmare a schimbării de culoare, era așa
+ * dinainte; s-a văzut abia când am măsurat conturul.
+ *
+ * Videoclipul intră în aceeași listă: cu comenzile native, este element
+ * focalizabil, iar conturul implicit al browserului dă 2:1 pe banda de brand.
+ */
+.btn:focus-visible,
+.nav-link:focus-visible,
+video:focus-visible {
+  outline: 2px solid var(--brand-900);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 2px var(--surface), var(--focus-ring);
+}
+
+/* Pe fundal închis inelul interior trebuie să fie deschis, nu alb-pe-alb. */
+footer.bg-dark :where(a, button, [tabindex]):focus-visible,
+footer.bg-dark .btn:focus-visible,
+footer.bg-dark .nav-link:focus-visible,
+.bg-brand :where(a, button, [tabindex]):focus-visible,
+.bg-brand .btn:focus-visible,
+.bg-brand .nav-link:focus-visible,
+.bg-brand video:focus-visible {
+  outline-color: var(--surface);
+  box-shadow: 0 0 0 2px var(--brand-900), var(--focus-ring);
 }
 
 /*
