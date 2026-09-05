@@ -27,37 +27,120 @@
 .operatii {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 2rem;
+  gap: 2.5rem;
   list-style: none;
   margin: 0;
   padding: 0;
 }
 
-/* „relative" ancorează butonul întins peste coloană. */
-.operatie { position: relative; }
-
 @media (max-width: 991.98px) {
-  .operatii { grid-template-columns: 1fr; gap: 2.5rem; }
+  .operatii { grid-template-columns: 1fr; gap: 3.5rem; }
+}
+
+/*
+ * Chenarul, măsurat din macheta clientului.
+ *
+ * Nu este un colț și nici un card, ci un dreptunghi căruia îi lipsește
+ * jumătatea stângă a laturii de sus — pe acolo iese titlul. Măsurat pe machetă:
+ * chenar de 284×293, latura de sus pornește de la exact jumătatea lățimii,
+ * latura dreaptă coboară de la înălțimea ei, iar fotografia stă PESTE latura de
+ * jos și o acoperă, ieșind sub chenar.
+ *
+ * Desenat din două pseudo-elemente așezate în grilă, nu poziționate absolut:
+ * așa liniile urmează singure înălțimea titlului și a textului, care diferă de
+ * la o coloană la alta și de la o lățime de ecran la alta. Cu poziționare
+ * absolută ar fi trebuit ghicite patru valori, care s-ar fi stricat la prima
+ * schimbare de text.
+ */
+.operatie {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  /* rândurile: titlu, text, cât intră poza în chenar, restul pozei, îndemn */
+  grid-template-rows: auto auto 2.75rem auto auto;
+  padding-left: 1.5rem;
+}
+
+.operatie::before {
+  content: '';
+  grid-column: 1 / -1;
+  grid-row: 1 / 4;
+  border-left: 1px solid var(--ink);
+  border-bottom: 1px solid var(--ink);
+  /* Primul copil, deci desenat sub fotografie: exact ca în machetă, unde
+     fotografia taie latura de jos. */
+}
+
+.operatie::after {
+  content: '';
+  grid-column: 2 / -1;
+  grid-row: 2 / 4;
+  border-top: 1px solid var(--ink);
+  border-right: 1px solid var(--ink);
 }
 
 .operatie__titlu {
+  grid-column: 1 / -1;
+  grid-row: 1;
   font-family: inherit;
-  font-size: clamp(1.5rem, 1.1rem + 1.4vw, 2.125rem);
+  font-size: clamp(1.5rem, 1.1rem + 1.3vw, 2rem);
   font-weight: 700;
   line-height: 1.12;
   text-transform: uppercase;
   letter-spacing: -.01em;
-  margin-bottom: 1.25rem;
+  /* Titlul iese prin golul din latura de sus, deci nu respectă chenarul. */
+  margin: 0 0 1.5rem -.5rem;
+  padding-right: .5rem;
+}
+
+.operatie__text {
+  grid-column: 1 / -1;
+  grid-row: 2;
+  color: var(--ink-muted);
+  line-height: 1.6;
+  /*
+   * Aerul din machetă. Acolo chenarul este aproape pătrat — 284 pe 293 — iar
+   * textul stă în treimea de jos, cu gol deasupra. Golul îl dă marginea de sus
+   * a acestui paragraf, nu o înălțime fixă pusă pe chenar: așa rămâne la fel
+   * și când textul are două rânduri, și când are patru.
+   */
+  margin: 0;
+  padding: 4rem 1.25rem 3.5rem 1rem;
+  min-height: 11rem;
+}
+
+.operatie__poza {
+  grid-column: 1 / -1;
+  /* Începe în rândul care mai e înăuntrul chenarului și iese sub el. */
+  grid-row: 3 / 5;
+  /* Retrasă de marginea stângă a chenarului, ca în machetă. */
+  padding-left: 3.5rem;
+  padding-right: 1rem;
+}
+
+.operatie__poza img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+}
+
+.operatie__indemn {
+  grid-column: 1 / -1;
+  grid-row: 5;
+  padding-left: 2rem;
+  padding-top: 1rem;
 }
 
 /*
  * Butonul stă în titlu, dar apasă toată coloana.
  *
  * Clientul a cerut ca serviciul să fie „accesat prin click". Varianta naivă —
- * un buton care înghite tot conținutul — ar fi scos cele trei servicii din
- * structura de titluri a paginii. Aici butonul rămâne înăuntrul titlului, deci
- * „h3" se păstrează, iar suprafața de apăsat se întinde peste coloană printr-un
- * strat transparent. Fiind buton adevărat, răspunde și la Enter, și la Space.
+ * un buton care înghite tot conținutul coloanei — ar fi scos cele trei servicii
+ * din structura de titluri a paginii. Aici butonul rămâne înăuntrul titlului,
+ * deci „h3" se păstrează, iar suprafața de apăsat se întinde peste coloană
+ * printr-un strat transparent. Fiind buton adevărat, răspunde și la Enter, și
+ * la Space.
  */
 .operatie__declansator {
   padding: 0;
@@ -65,6 +148,15 @@
   background: none;
   text-align: left;
   font: inherit;
+  /*
+   * Majusculele se repetă aici, nu se moștenesc.
+   *
+   * Bootstrap are „button { text-transform: none; }" în reboot, iar o regulă
+   * aplicată direct pe element bate moștenirea oricât de specific ar fi
+   * selectorul părintelui. Fără rândul ăsta titlurile ies scrise normal, deși
+   * „.operatie__titlu" cere majuscule.
+   */
+  text-transform: uppercase;
   color: var(--ink);
   cursor: pointer;
 }
@@ -82,37 +174,6 @@
   outline: 2px solid var(--brand-900);
   outline-offset: 6px;
   box-shadow: 0 0 0 2px var(--surface), var(--focus-ring);
-}
-
-/*
- * Chenarul în formă de colț.
- *
- * În machetă linia pornește de sub titlu, merge spre dreapta, cotește în jos
- * și coboară pe lângă text și fotografie — un colț de pagină, nu un card. Se
- * desenează din două margini pe un element gol, nu din pseudo-elemente, ca să
- * poată crește odată cu conținutul.
- */
-.operatie__text {
-  display: block;
-  border-left: 1px solid var(--ink);
-  border-top: 1px solid var(--ink);
-  padding: 1.25rem 1rem 1.5rem;
-  color: var(--ink-muted);
-  line-height: 1.6;
-  max-width: 34ch;
-}
-
-.operatie__poza {
-  display: block;
-  border-left: 1px solid var(--ink);
-  padding: 0 1rem 1.25rem;
-}
-
-.operatie__poza img {
-  display: block;
-  width: 100%;
-  aspect-ratio: 4 / 3;
-  object-fit: cover;
 }
 
 /*
