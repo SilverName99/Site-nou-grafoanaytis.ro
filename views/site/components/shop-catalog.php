@@ -220,6 +220,17 @@ if ($sortOptions === []) {
 }
 .shop-catalog-v2__filters-head{display:none;}
 .shop-catalog-v2__filters-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:20px;}
+/*
+ * Categoriile pe patru coloane.
+ *
+ * Grila de mai sus are patru coloane, dar un singur copil — toată lista de
+ * categorii stătea într-una singură și cobora cu cincisprezece rânduri.
+ * „columns" le curge pe patru, iar curgerea e pe coloane, nu pe rânduri, deci
+ * ordinea alfabetică se citește de sus în jos, cum se așteaptă ochiul.
+ */
+.shop-catalog-v2__filter-col{grid-column:1 / -1;columns:4;column-gap:24px;}
+.shop-catalog-v2__filter-col h4{column-span:all;}
+.shop-catalog-v2__filter-col label{break-inside:avoid;}
 .shop-catalog-v2__filter-col{position:relative;padding-right:14px;}
 .shop-catalog-v2__filter-col:not(:last-child){border-right:1px solid #d1d5db;}
 .shop-catalog-v2__filter-col h4{margin:0 0 10px;font:700 11px/1 "DM Sans",Arial,sans-serif;letter-spacing:.04em;color:#111827;}
@@ -280,6 +291,7 @@ if ($sortOptions === []) {
 @media (max-width:1100px){
   .shop-catalog-v2__grid{grid-template-columns:repeat(2,minmax(0,1fr));}
   .shop-catalog-v2__filters-grid{grid-template-columns:repeat(2,minmax(0,1fr));}
+  .shop-catalog-v2__filter-col{columns:2;}
   .shop-catalog-v2__filter-col:nth-child(2n){border-right:0;padding-right:0;}
 }
 @media (min-width:681px){
@@ -303,6 +315,7 @@ if ($sortOptions === []) {
     border:0;background:none;color:#111827;font:400 30px/1 Arial,sans-serif;line-height:1;cursor:pointer;padding:2px 4px;
   }
   .shop-catalog-v2__filters-grid{grid-template-columns:1fr;}
+  .shop-catalog-v2__filter-col{columns:1;}
   .shop-catalog-v2__filter-col{border-right:0;padding-right:0;}
   .shop-catalog-v2__sort-btn{font-size:13px;border:1px solid #9bd1b7;padding:8px 14px;border-radius:999px;color:#0f7b53;}
   .shop-catalog-v2__sort-menu{min-width:190px;padding:6px;}

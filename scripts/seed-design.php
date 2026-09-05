@@ -103,19 +103,26 @@ $header = <<<HTML
 <nav class="navbar navbar-expand-xl bg-white border-bottom sticky-top" aria-label="Navigare principală">
   <div class="container">
     <div class="antet-sigle">
+      <!--
+        Sigla nouă (punctul 2 din revizie). Fișierul îl încarcă clientul în
+        galerie; „onerror" lasă numele firmei ca text dacă lipsește, ca antetul
+        să nu rămână gol.
+      -->
       <a class="navbar-brand fw-bold me-0" href="/">
-        <img src="/uploads/gallery/logo-grafoanaytis-alb-bk.png" alt="Grafoanaytis — offset &amp; digital solutions" height="44"
-             onerror="this.replaceWith(document.createTextNode('Grafoanaytis'))">
+        <img src="/uploads/gallery/grafo-logo-nou.png" alt="Grafoanaytis — printing and packaging solutions" height="44"
+             onerror="this.onerror=null;this.src='/assets/img/sigla/grafoanaytis.png'">
       </a>
       <!--
-        Sigla asociației, cerută de client lângă sigla firmei. Duce la pagina de
-        certificări, unde se vede la mărime citibilă: în antet, rândurile de text
-        din siglă ajung la câțiva pixeli înălțime.
+        Mențiunea de membru fondator, scoasă la vedere (punctul 31).
+        Stătea doar în atributul „title", adică o vedea numai cine ținea
+        cursorul pe siglă — pe telefon, nimeni. În macheta clientului este
+        scrisă pe două rânduri, lângă emblemă.
       -->
-      <a class="antet-sigle__partener" href="/certificari"
-         title="Membru fondator al Asociației Furnizorilor de Ambalaje Sustenabile">
-        <img src="/assets/img/certificari/afas-logo.png" height="44"
-             alt="AFAS — Asociația Furnizorilor de Ambalaje Sustenabile">
+      <a class="antet-sigle__partener" href="/certificari">
+        <span class="antet-sigle__mentiune" aria-hidden="true">Membru<br>fondator</span>
+        <img src="/uploads/gallery/afas-logo-nou.png" height="44"
+             alt="Membru fondator al Asociației Furnizorilor de Ambalaje Sustenabile"
+             onerror="this.onerror=null;this.src='/assets/img/certificari/afas-logo.png'">
       </a>
     </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#meniu-principal"
@@ -132,40 +139,63 @@ $header = <<<HTML
 HTML;
 
 $footer = <<<'HTML'
-<footer class="bg-dark text-white text-opacity-75 py-5 mt-5">
-  <div class="container">
-    <div class="row g-4">
-      <div class="col-12 col-md-5">
-        <p class="h5 text-white mb-2">Grafoanaytis</p>
-        <p class="mb-0">Tipografie pe piața prahoveană din 2004. Tipar offset și digital,
-        ambalaje cu finisaje superioare.</p>
+<!--
+  Subsolul, după modelul exonia (punctul 30 din revizie).
+
+  Sigla centrată sus, sub ea un singur rând cu adresa, e-mailul și telefonul,
+  apoi rândul de jos cu drepturile de autor, socializarea și creditul de
+  webdesign. Coloana de navigare și programul de lucru au ieșit: modelul nu le
+  are, iar clientul a cerut copia lui.
+
+  Datele de contact sunt cele din documentul de prezentare al firmei: două
+  numere, atribuite pe nume, adresa din Ploiești și adresa de e-mail.
+-->
+<footer class="subsol bg-dark text-white text-opacity-75 py-5 mt-5">
+  <div class="container text-center">
+
+    <a class="subsol__sigla" href="/">
+      <img src="/assets/img/sigla/grafoanaytis-alb.png" alt="Grafoanaytis — printing and packaging solutions" height="46">
+    </a>
+
+    <ul class="subsol__contact">
+      <li>Ploiești, Strada Văleni nr. 141</li>
+      <li><a class="link-light" href="mailto:grafoanaytis@yahoo.com">grafoanaytis@yahoo.com</a></li>
+      <li><a class="link-light" href="tel:+40722374275">+40 722 374 275</a> <span class="subsol__nume">Cornel Moise</span></li>
+      <li><a class="link-light" href="tel:+40746244067">+40 746 244 067</a> <span class="subsol__nume">Sorin Dumitrașcu</span></li>
+    </ul>
+
+    <div class="subsol__jos">
+      <p class="subsol__drepturi">&copy; {{an}} Grafoanaytis. Toate drepturile rezervate.</p>
+
+      <!--
+        Socializarea. Deocamdată doar Instagram: este singurul cont pe care
+        firma îl trece în propriul material de prezentare. Facebook, YouTube și
+        LinkedIn se adaugă când primim adresele — o pictogramă care nu duce
+        nicăieri e mai rea decât una lipsă.
+      -->
+      <a class="subsol__retea" href="https://www.instagram.com/grafo_anaytis" target="_blank" rel="noopener"
+         aria-label="Grafoanaytis pe Instagram">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+          <rect x="3" y="3" width="18" height="18" rx="5"/>
+          <circle cx="12" cy="12" r="4"/>
+          <circle cx="17.2" cy="6.8" r="1.1" fill="currentColor" stroke="none"/>
+        </svg>
+      </a>
+
+      <!--
+        Autorități de protecție a consumatorului. Nu sunt certificări ale
+        tipografiei, de aceea stau aici, nu în pagina de certificări.
+      -->
+      <div class="subsol__autoritati">
+        <a href="https://anpc.ro" target="_blank" rel="noopener">
+          <img src="/uploads/gallery/autoritate-anpc.webp" alt="ANPC — Autoritatea Națională pentru Protecția Consumatorilor" height="30" loading="lazy">
+        </a>
+        <a href="https://infocons.ro" target="_blank" rel="noopener">
+          <img src="/uploads/gallery/autoritate-infocons.webp" alt="InfoCons — Protecția consumatorilor" height="30" loading="lazy">
+        </a>
       </div>
-      <div class="col-6 col-md-3">
-        <p class="text-white fw-semibold mb-2">Navigare</p>
-        <ul class="list-unstyled mb-0">
-          <li><a class="link-light link-underline-opacity-0 link-underline-opacity-100-hover" href="/companie">Companie</a></li>
-          <li><a class="link-light link-underline-opacity-0 link-underline-opacity-100-hover" href="/servicii">Servicii</a></li>
-          <li><a class="link-light link-underline-opacity-0 link-underline-opacity-100-hover" href="/utilaje">Utilaje</a></li>
-          <li><a class="link-light link-underline-opacity-0 link-underline-opacity-100-hover" href="/certificari">Certificări</a></li>
-        </ul>
-      </div>
-      <div class="col-12 col-md-4">
-        <p class="text-white fw-semibold mb-2">Contact</p>
-        <p class="mb-1">Str. Văleni nr. 141 (incinta Romfarmachim)<br>Ploiești, România</p>
-        <p class="mb-1"><a class="link-light" href="tel:0244510507">0244 510 507</a></p>
-        <p class="mb-1"><a class="link-light" href="mailto:grafoanaytis@yahoo.com">grafoanaytis@yahoo.com</a></p>
-        <p class="mb-0">Luni – Vineri, 08:00 – 16:00</p>
-      </div>
-    </div>
-    <hr class="border-secondary my-4">
-    <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
-      <p class="small mb-0">&copy; {{an}} Grafoanaytis. Toate drepturile rezervate.</p>
-      <!-- Autorități de protecție a consumatorului. Nu sunt certificări ale
-           tipografiei, de aceea stau aici, nu în secțiunea de certificări. -->
-      <div class="d-flex align-items-center gap-3">
-        <img src="/uploads/gallery/autoritate-anpc.webp" alt="ANPC" height="34" loading="lazy">
-        <img src="/uploads/gallery/autoritate-infocons.webp" alt="InfoCons" height="34" loading="lazy">
-      </div>
+
+      <p class="subsol__credit">Webdesign <a class="link-light" href="https://andaxi.ro" target="_blank" rel="noopener">Andaxi Web Solutions</a></p>
     </div>
   </div>
 </footer>
