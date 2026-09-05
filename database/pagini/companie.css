@@ -191,12 +191,12 @@
 
 .cronologie::before {
   left: 0;
-  background: linear-gradient(90deg, var(--fill-brand) 0%, rgba(255, 184, 119, 0) 100%);
+  background: linear-gradient(90deg, var(--fill-brand) 0%, rgba(31, 61, 157, 0) 100%);
 }
 
 .cronologie::after {
   right: 0;
-  background: linear-gradient(270deg, var(--fill-brand) 0%, rgba(255, 184, 119, 0) 100%);
+  background: linear-gradient(270deg, var(--fill-brand) 0%, rgba(31, 61, 157, 0) 100%);
 }
 
 /* Săgețile de pe margini */
@@ -212,15 +212,22 @@
   border: 1px solid var(--ink);
   border-radius: 0;
   background: var(--fill-brand);
-  color: var(--ink);
+  /*
+   * Alb, nu „--ink". Săgeata avea text închis fiindcă umplerea era portocaliul
+   * pal; pe albastru aceeași pereche cade la 1,63:1, adică o săgeată care nu se
+   * mai vede. Alb pe albastru: 9,49:1.
+   */
+  color: var(--on-fill-brand);
   font-size: 1.5rem;
   line-height: 1;
   cursor: pointer;
 }
 
+/* La hover se inversează: fundal închis, semn în tenta palidă a brandului — 9,36:1.
+   „--fill-brand" pe „--ink" ar da 1,63:1, din același motiv ca mai sus. */
 .cronologie__sageata:hover:not(:disabled) {
   background: var(--ink);
-  color: var(--fill-brand);
+  color: var(--brand-200);
 }
 
 .cronologie__sageata:disabled {

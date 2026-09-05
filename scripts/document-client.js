@@ -20,7 +20,7 @@ const caleIntrare = process.argv[2] || 'lipsuri.json';
 const caleIesire = process.argv[3] || 'Grafoanaytis-de-completat.docx';
 const date = JSON.parse(fs.readFileSync(caleIntrare, 'utf8'));
 
-const PORTOCALIU = 'FFB877';
+const ALBASTRU = '1F3D9D';
 const INCHIS = '1E1A17';
 const GRI = 'F3F4F6';
 const LATIME = 9360;            // lățimea utilă a paginii A4, în DXA
@@ -94,9 +94,9 @@ function capDeTabel(a, b, c) {
     tableHeader: true,
     cantSplit: true,
     children: [
-      celula([p(a, { bold: true, size: 20, after: 0 })], { latime: 2400, fundal: PORTOCALIU }),
-      celula([p(b, { bold: true, size: 20, after: 0 })], { latime: 3600, fundal: PORTOCALIU }),
-      celula([p(c, { bold: true, size: 20, after: 0 })], { latime: 3360, fundal: PORTOCALIU }),
+      celula([p(a, { bold: true, size: 20, after: 0 })], { latime: 2400, fundal: ALBASTRU }),
+      celula([p(b, { bold: true, size: 20, after: 0 })], { latime: 3600, fundal: ALBASTRU }),
+      celula([p(c, { bold: true, size: 20, after: 0 })], { latime: 3360, fundal: ALBASTRU }),
     ],
   });
 }
@@ -113,7 +113,7 @@ const copii = [];
 copii.push(
   new Paragraph({
     spacing: { after: 80 },
-    border: { bottom: { style: BorderStyle.SINGLE, size: 18, color: PORTOCALIU } },
+    border: { bottom: { style: BorderStyle.SINGLE, size: 18, color: ALBASTRU } },
     children: [new TextRun({ text: 'GRAFOANAYTIS', bold: true, size: 44, color: INCHIS })],
   }),
   p('Ce mai avem nevoie pentru site', { size: 32, bold: true, after: 240 }),

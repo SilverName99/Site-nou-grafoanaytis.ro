@@ -8,13 +8,14 @@
 
     Culoarea este scrisă literal fiindcă fișierul este încărcat ca imagine de
     fundal, iar un SVG folosit ca imagine nu vede variabilele paginii. Este
-    tokenul brand-500 din tokens.css; la o schimbare de brand se schimbă și aici.
+    tokenul brand-600 din tokens.css; la o schimbare de brand se schimbă și aici.
 
-    Transparența de 0,32 dă un contrast de 1,23:1 față de alb. Desenul de fundal
-    al modelului stă la 1,16:1; portocaliul fiind mai cald decât galbenul lor,
-    la aceeași luminanță s-ar vedea mai tare, deci pragul e ales puțin sub el.
+    Transparența ține contrastul, nu opacitatea: desenul trebuie să rămână la
+    1,25:1 față de alb, cât stătea și în portocaliu. Albastrul fiind mult mai
+    închis, aceeași transparență de 0,32 l-ar urca la 1,70:1 — un desen discret
+    ar deveni grafic în prim-plan. La 0,14 ajunge înapoi la 1,25:1.
   -->
-  <g fill="none" stroke="#FFA553" stroke-width="1.6" stroke-opacity=".32"
+  <g fill="none" stroke="#2E4DAD" stroke-width="1.6" stroke-opacity=".14"
      vector-effect="non-scaling-stroke">
     <!-- nodul de sus-stânga: colț de coală ridicat -->
     <path d="M-70 34 L86 132 L-40 214"/>

@@ -529,7 +529,8 @@ if ($sortOptions === []) {
   height: 36px;
   border-radius: 0;
   background: var(--fill-brand);
-  color: var(--ink);
+  /* Săgeata era desenată închis pe portocaliu pal; pe albastru trebuie albă. */
+  color: var(--on-fill-brand);
 }
 
 .shop-catalog-v2 .bv-popular-card__bubble {

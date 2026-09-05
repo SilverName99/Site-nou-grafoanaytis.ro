@@ -1,29 +1,34 @@
 /*
  * Tokeni de culoare — grafoanaytis.ro
  *
- * Culoarea de brand este portocaliul pal #FFB877, aleasă în locul galbenului
- * #ffd300 din modelul exonia.ro.
+ * Culoarea de brand este albastrul #1F3D9D, cerut de client în locul
+ * portocaliului pal #FFB877 cu care a fost construit site-ul.
  *
- * Toată paleta pleacă din --brand-400. Spre deosebire de tema modelului, unde
- * galbenul apare scris direct în CSS în mai multe locuri (triunghiuri, iconițe),
- * aici culoarea există într-un singur loc, deci o schimbare viitoare de nuanță
- * se face modificând aceste variabile.
+ * Schimbarea nu e o simplă înlocuire de nuanță, ci desface un ocol. Portocaliul
+ * dădea 1,70:1 pe alb, deci nu putea fi niciodată culoare de text; de aceea
+ * umplerea și textul erau roluri separate, cu nuanțe diferite, iar pe fundal de
+ * brand textul era negru. Albastrul dă 9,49:1 pe alb și tot 9,49:1 sub alb —
+ * merge deopotrivă ca text și ca umplere, deci rolurile se pot uni, iar textul
+ * de pe fundalul de brand trece pe alb.
  *
- * Contrastele de mai jos sunt măsurate, nu estimate.
+ * Toată paleta pleacă din --brand-700, treapta pe care stă exact culoarea
+ * clientului. Contrastele de mai jos sunt măsurate, nu estimate.
  */
 
 :root {
-  /* Scala de brand */
-  --brand-050: #FFF3E7;
-  --brand-100: #FFE5CE;
-  --brand-200: #FFD5AF;
-  --brand-300: #FFC591;
-  --brand-400: #FFB877;  /* culoarea de brand */
-  --brand-500: #FFA553;
-  --brand-600: #FF9330;
-  --brand-700: #FF7D07;
-  --brand-800: #DD6A00;
-  --brand-900: #B45600;
+  /* Scala de brand. Nuanța (225,7°) e cea a culorii cerute; variază doar
+     luminozitatea, iar spre capătul deschis scade și saturația, ca tentele
+     palide să nu iasă țipătoare. */
+  --brand-050: #F1F3F9;
+  --brand-100: #DCE1F1;
+  --brand-200: #BFC9E8;
+  --brand-300: #9AAADD;
+  --brand-400: #6F87D2;
+  --brand-500: #4161C8;
+  --brand-600: #2E4DAD;
+  --brand-700: #1F3D9D;  /* culoarea de brand */
+  --brand-800: #18307C;
+  --brand-900: #12245C;
 
   /* Neutre */
   --ink:        #212529;
@@ -33,34 +38,34 @@
   --surface-alt:#F8F9FA;
 
   /*
-   * Roluri. Portocaliul deschis este suficient de luminos încât să nu poată fi
-   * folosit ca text pe alb: #FFB877 pe alb dă doar 1,70:1. De aceea umplerea și
-   * textul sunt roluri separate, cu nuanțe diferite.
+   * Roluri. Albastrul e destul de închis încât aceeași treaptă să meargă și ca
+   * umplere, și ca text — ceea ce portocaliul nu putea. Treptele 800 și 900
+   * rămân deasupra ca stări de hover și de apăsare.
    */
 
-  /* Umplere: bandă/buton portocaliu cu text închis deasupra — 9,09:1 */
-  --fill-brand:      var(--brand-400);
-  --fill-brand-hover:var(--brand-500);
-  --fill-brand-active:var(--brand-600);
-  --on-fill-brand:   var(--ink);
+  /* Umplere: bandă/buton albastru cu text alb deasupra — 9,49:1 */
+  --fill-brand:      var(--brand-700);
+  --fill-brand-hover:var(--brand-800);
+  --fill-brand-active:var(--brand-900);
+  --on-fill-brand:   #FFFFFF;
 
-  /* Text mare și titluri pe fundal alb — 3,42:1 (prag 3,0 pentru text mare) */
-  --text-brand-large: var(--brand-800);
+  /* Text mare și titluri pe fundal alb — 9,49:1 (prag 3,0 pentru text mare) */
+  --text-brand-large: var(--brand-700);
 
-  /* Linkuri și text mic pe fundal alb — 4,92:1 (prag 4,5) */
-  --text-brand:       var(--brand-900);
+  /* Linkuri și text mic pe fundal alb — 9,49:1 (prag 4,5) */
+  --text-brand:       var(--brand-700);
   --text-brand-hover: var(--brand-800);
 
   /* Contur de focus vizibil pe ambele fundaluri */
-  --focus-ring: 0 0 0 0.25rem rgba(255, 184, 119, 0.55);
+  --focus-ring: 0 0 0 0.25rem rgba(31, 61, 157, 0.45);
 }
 
 /* Punte către Bootstrap 5, ca utilitarele .btn-primary / .bg-primary să preia brandul. */
 :root {
-  --bs-primary: var(--brand-400);
-  --bs-primary-rgb: 255, 184, 119;
+  --bs-primary: var(--brand-700);
+  --bs-primary-rgb: 31, 61, 157;
   --bs-link-color: var(--text-brand);
-  --bs-link-color-rgb: 180, 86, 0;
+  --bs-link-color-rgb: 31, 61, 157;
   --bs-link-hover-color: var(--text-brand-hover);
 }
 
@@ -74,12 +79,12 @@
   --bs-btn-active-color: var(--on-fill-brand);
   --bs-btn-active-bg: var(--fill-brand-active);
   --bs-btn-active-border-color: var(--fill-brand-active);
-  --bs-btn-focus-shadow-rgb: 255, 184, 119;
+  --bs-btn-focus-shadow-rgb: 31, 61, 157;
 }
 
 /* Secțiunile pe fundal de brand (ex. banda video de pe prima pagină). */
 .bg-brand { background-color: var(--fill-brand); color: var(--on-fill-brand); }
-.bg-brand a:not(.btn) { color: var(--ink); text-decoration: underline; }
+.bg-brand a:not(.btn) { color: var(--on-fill-brand); text-decoration: underline; }
 
 .text-brand { color: var(--text-brand); }
 .text-brand-lg { color: var(--text-brand-large); }
@@ -128,7 +133,7 @@ h1, h2, h3, h4, h5, h6, .navbar-brand, .btn {
 /*
  * Pagina curentă. Modelul o colorează cu galbenul de brand, ceea ce pe fundal
  * alb dă un contrast de circa 1,6:1 — sub orice prag de lizibilitate. Aici
- * semnalul îl dau greutatea 800 și portocaliul închis, care trece pragul AA.
+ * semnalul îl dau greutatea 800 și albastrul de brand, la 9,49:1.
  */
 .navbar-nav .nav-link.active {
   font-weight: 800;
@@ -203,13 +208,15 @@ h1, h2, h3, h4, h5, h6, .navbar-brand, .btn {
 /*
  * Subsolul.
  *
- * Modelul folosește un negru cald; .bg-dark din Bootstrap este un gri-albastru
- * rece, care sub portocaliu arată murdar. Culoarea se schimbă prin variabila
- * Bootstrap, nu în markup: subsolul este editabil din dashboard, iar o regulă
- * pusă în markup s-ar pierde la prima editare.
+ * Negrul era cald — 30,26,23 — fiindcă gri-albastrul rece al lui .bg-dark arăta
+ * murdar sub portocaliu. Sub albastru motivul dispare, ba chiar se inversează:
+ * un negru cald sub un brand rece dezacordează. Trece pe neutru, ușor răcit
+ * spre nuanța brandului. Culoarea se schimbă prin variabila Bootstrap, nu în
+ * markup: subsolul este editabil din dashboard, iar o regulă pusă în markup
+ * s-ar pierde la prima editare.
  */
 footer.bg-dark {
-  --bs-dark-rgb: 30, 26, 23;
+  --bs-dark-rgb: 22, 24, 30;
 }
 
 /*
@@ -470,8 +477,7 @@ a[href^="tel:"] {
  * Banda de comunicare a proiectului.
  *
  * Modelul trimis de client scrie textul cu majuscule, îngroșat și subliniat, pe
- * două rânduri. Aici păstrăm forma, dar pe fundalul de brand și cu text închis:
- * negru pe portocaliu dă 9,09:1, față de 3,4:1 cât ar da albastrul din model.
+ * două rânduri. Păstrăm forma, pe fundalul de brand, cu text alb: 9,49:1.
  *
  * Sublinierea rămâne, fiindcă banda este o legătură: fără ea, singurul semn că
  * se poate apăsa ar fi cursorul, care pe telefon nu există.
