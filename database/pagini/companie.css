@@ -46,9 +46,146 @@
   z-index: 1;
 }
 
-/* Titlurile lungi se rup echilibrat, nu cu un cuvânt singur pe ultimul rând. */
-.titlu-companie {
+/*
+ * Antetul are acum și un îndemn sub titlu, nu doar titlul.
+ *
+ * Titlul este pe trei cuvinte cu punct între ele, deci se rupe oricum bine;
+ * îndemnul are nevoie de o limită de lățime, altfel se întinde pe toată
+ * pagina și se citește greu sub un titlu centrat.
+ */
+.antet-pagina h1 {
   text-wrap: balance;
+}
+
+.antet-pagina__indemn {
+  max-width: 46ch;
+  /* Sub un titlu de 72px, „lead"-ul de 20px se pierde. */
+  font-size: clamp(1.125rem, 1rem + .4vw, 1.5rem);
+}
+
+/*
+ * Antetul crește cu textul.
+ *
+ * Regula de mai sus îi dă înălțime fixă, cu plafon 412px, scrisă pentru un
+ * antet cu titlu singur. Titlul de acum se rupe pe două rânduri pe ecran
+ * mediu, iar sub el mai vine un rând de îndemn: cu înălțime plafonată, textul
+ * ar fi ieșit din fotografie. Aici plafonul devine minim, deci antetul se
+ * întinde cât îi trebuie și rămâne la fel de înalt când textul încape.
+ */
+.antet-pagina {
+  height: auto;
+  max-height: none;
+  min-height: min(50vh, 412px);
+  padding: 3.5rem 0;
+}
+
+/* ── Textele paginii ─────────────────────────────────────────────────── */
+
+/*
+ * Paragrafele de deschidere ale secțiunilor stau la mărimea unui subtitlu,
+ * dar pe rânduri de lungime normală: peste ~62 de semne pe rând, ochiul
+ * pierde începutul rândului următor.
+ */
+.companie__deschidere,
+.companie__intro {
+  max-width: 62ch;
+}
+
+/*
+ * Fraza care introduce lista de măsuri stă între un titlu de 48px și blocuri
+ * de proză de 16px. La mărimea prozei se lipea de ele și părea deja prima
+ * măsură; puțin mai mare, se citește ca ce este: o introducere.
+ */
+.companie__intro {
+  font-size: 1.125rem;
+  line-height: 1.6;
+}
+
+/*
+ * Măsurile — trei la tehnologie, două la economia circulară.
+ *
+ * Lista își pierde bulinele, dar nu și rolul: rămâne „ul", deci un cititor de
+ * ecran anunță câte măsuri urmează. Coloanele se rup singure sub 992px.
+ */
+.companie__masuri {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.companie__masuri--doua {
+  grid-template-columns: repeat(2, 1fr);
+  max-width: 60rem;
+}
+
+@media (max-width: 991.98px) {
+  .companie__masuri,
+  .companie__masuri--doua { grid-template-columns: 1fr; gap: 1.75rem; }
+}
+
+/*
+ * Linia din capul fiecărei măsuri ține locul bulinei scoase: fără ea, trei
+ * blocuri de text alăturate par un singur paragraf rupt în coloane.
+ */
+.companie__masura {
+  padding-top: 1.25rem;
+  border-top: 2px solid var(--fill-brand);
+}
+
+/* ── Capacitatea de producție ────────────────────────────────────────── */
+
+.capacitate__descriere {
+  max-width: 52ch;
+}
+
+.capacitate__eticheta {
+  letter-spacing: .08em;
+}
+
+/*
+ * Cele trei cifre, așezate ca în pagina „Producție" a prezentării: numele
+ * operației deasupra, cifra sub el, toate trei pe un rând.
+ *
+ * „dl" cu perechi învelite în „div" — așa fiecare pereche rămâne o cutie de
+ * grilă, iar legătura termen–definiție se păstrează.
+ */
+.capacitate__cifre {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem 1rem;
+  /* Trei cifre pe toată lățimea containerului s-ar fi rărit prea mult. */
+  max-width: 46rem;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.capacitate__cifra dt {
+  font-weight: 400;
+  color: var(--ink-muted);
+  margin-bottom: .25rem;
+}
+
+.capacitate__cifra dd {
+  margin: 0;
+  font-size: clamp(1.5rem, 1.1rem + 1vw, 2.125rem);
+  font-weight: 600;
+  line-height: 1.15;
+  color: var(--text-brand-large);
+}
+
+/* Unitatea nu este cifra: rămâne mică și în greutatea textului obișnuit. */
+.capacitate__cifra dd span {
+  display: block;
+  font-size: .875rem;
+  font-weight: 400;
+  color: var(--ink-muted);
+}
+
+@media (max-width: 575.98px) {
+  .capacitate__cifre { grid-template-columns: 1fr; gap: 1rem; }
 }
 
 .evolutie__intro {

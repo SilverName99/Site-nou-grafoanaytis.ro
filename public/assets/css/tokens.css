@@ -502,6 +502,41 @@ a[href^="tel:"] {
   margin-bottom: 1rem;
 }
 
+/*
+ * Benzile cu text lung, de la punctele 25 și 26 din revizie.
+ *
+ * Corpul benzii este scris pentru două-trei rânduri, la 28px. Textele noi ale
+ * clientului au patru paragrafe și, la aceeași mărime, ar fi umplut peste
+ * douăzeci de rânduri într-o coloană de jumătate de ecran — un zid, nu o
+ * bandă de prezentare. Coborâte la 24px pe ecran lat rămân tot mai mari decât
+ * proza obișnuită a paginii, dar se citesc pe rânduri de lungime normală.
+ *
+ * Interlinia urcă odată cu ele: 1,2 este potrivit pentru un titlu-frază de
+ * 28px, nu pentru patru paragrafe de proză.
+ */
+.banda-alternanta .banda-alternanta__corp--lung p:not(.small) {
+  font-size: clamp(1.0625rem, .95rem + .35vw, 1.5rem);
+  line-height: 1.45;
+  margin-bottom: .9rem;
+}
+
+.banda-alternanta .banda-alternanta__corp--lung p:last-child {
+  margin-bottom: 0;
+}
+
+/*
+ * Titlul de bandă cu mai mult de un cuvânt.
+ *
+ * „.display-2" ajunge la 72px pe ecran lat. Acolo încape „Experiență", dar nu
+ * și „Sustenabilitate": singur, cuvântul măsoară mai mult decât coloana de
+ * text și ar ieși peste fotografie. Regula de aici îl ține la 52px, unde
+ * intră întreg, fără să atingă benzile cu titlu scurt.
+ */
+.banda-alternanta__titlu--lung {
+  font-size: clamp(2rem, 1.2rem + 2.6vw, 3.25rem);
+  line-height: 1.1;
+}
+
 .banda-alternanta__actiune {
   gap: .5rem;
 }

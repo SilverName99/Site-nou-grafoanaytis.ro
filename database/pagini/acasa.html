@@ -80,8 +80,21 @@
     <div class="row">
       <div class="col-12 col-md-6 banda-alternanta__text align-self-center">
         <h2 class="display-2 fw-normal text-brand-lg mb-3 banda-alternanta__titlu">Experiență</h2>
-        <div class="h3 fw-normal banda-alternanta__corp">
-          <p>Grafoanaytis activează pe piața prahoveană din 2004 și oferă clienților servicii de tipar offset și digital. Ne dorim să fim cunoscuți prin calitatea produselor, termenele scurte de execuție și modul flexibil de colaborare.</p>
+        <!--
+          Textul este cel trimis de client la punctul 25, rupt în patru
+          paragrafe după cele patru idei ale lui: începutul, intrarea pe
+          ambalaje, ce producem azi, unde am ajuns în 2026. Într-un singur bloc
+          ar fi ieșit un zid de douăzeci și ceva de rânduri lângă fotografie.
+
+          Formele corectate — „a fost posibil", „printr-o politică",
+          „întreaga gamă", „excelent" — sunt cele din PREZENTARE.pdf, unde
+          același text apare scris corect.
+        -->
+        <div class="fw-normal banda-alternanta__corp banda-alternanta__corp--lung">
+          <p>GRAFOANAYTIS și-a început activitatea în anul 2004, specializată în tipar comercial, offset și digital și a evoluat diversificând permanent gama de produse tipografice. Acest lucru a fost posibil printr-o politică permanentă de investiții în tehnologie și specializarea personalului.</p>
+          <p>Din anul 2010 am început producția de ambalaje, prin achiziționarea primelor echipamente automate de ștanțare și lipire.</p>
+          <p>Producem întreaga gamă de lucrări tipografice (de la cărți și reviste la agende și calendare) alături de ambalaje personalizate pentru farma și suplimente alimentare, pentru produse cosmetice, industria alimentară și produse textile.</p>
+          <p>În anul 2026 am implementat cea mai modernă tehnologie de producție a ambalajelor care ne permite să oferim clienților termene scurte de execuție și un excelent raport calitate-preț. Atenția deosebită acordată nevoilor clienților și calității produselor a fost motorul dezvoltării companiei.</p>
         </div>
         <a href="/companie" class="btn btn-link px-0 fw-semibold text-uppercase banda-alternanta__actiune">Despre noi<svg class="sageata" width="18" height="14" viewBox="0 0 18 14" aria-hidden="true" focusable="false"><path d="M10.5 1 16.5 7l-6 6M0 7h16" fill="none" stroke="currentColor" stroke-width="2"/></svg></a>
       </div>
@@ -97,25 +110,47 @@
 </section>
 
 <!-- Fotografie lipită de marginea stângă, text dreapta (alternanță) -->
-<section id="abordare" class="banda-alternanta banda-alternanta--foto-stanga bg-body-tertiary">
+<section id="inovare" class="banda-alternanta banda-alternanta--foto-stanga bg-body-tertiary">
   <div class="container">
     <div class="row">
       <div class="col-12 col-md-6 banda-alternanta__foto order-md-first">
         <div class="banda-alternanta__cadru">
-          <img src="/uploads/gallery/abordare.webp" alt="Control de calitate în tipografie" loading="lazy">
+          <!--
+            Fotografia de dinainte, „abordare.webp", nu există nici în galerie,
+            nici în depozit: jumătatea de bandă rămânea goală. În locul ei stă
+            mașina automată de ștanțat din PREZENTARE.pdf — chiar utilajul din
+            2026 despre care vorbește textul de alături. Fiind în „/assets", nu
+            în „/uploads", pleacă odată cu codul la „git pull".
+          -->
+          <img src="/assets/img/productie/masina-stantat-automata.webp"
+               alt="Mașină automată de ștanțat Huatai, în hala Grafoanaytis"
+               width="742" height="555" loading="lazy">
         </div>
       </div>
       <div class="col-12 col-md-6 banda-alternanta__text align-self-center">
-        <h2 class="display-2 fw-normal text-brand-lg mb-3 banda-alternanta__titlu">Precizie</h2>
-        <div class="h3 fw-normal banda-alternanta__corp">
-          <p>Suntem specializați în producerea ambalajelor pentru produse alimentare, pharma și cosmetice, textile și industriale, cu finisaje superioare: lăcuire, plastifiere, emboss și folio. Capacitățile de producție ne permit tiraje medii și mari în cel mai scurt timp.</p>
+        <!--
+          Titlul are trei cuvinte în loc de unul, deci nu mai încape la 72px în
+          jumătatea de ecran: „Sustenabilitate" singur ar fi ieșit din coloană.
+          Clasa „--lung" îl coboară la 52px pe ecran lat, unde intră întreg.
+        -->
+        <h2 class="display-2 fw-normal text-brand-lg mb-3 banda-alternanta__titlu banda-alternanta__titlu--lung">Inovare și<br>Sustenabilitate</h2>
+        <div class="fw-normal banda-alternanta__corp banda-alternanta__corp--lung">
+          <p>Credem că performanța în tipar nu se mai măsoară doar în claritatea culorilor sau în viteza de execuție, ci și în amprenta pe care o lăsăm asupra planetei. De aceea, am transformat sustenabilitatea și inovația în pilonii centrali ai activității noastre zilnice.</p>
+          <p>Producția de ambalaje sustenabile se concentrează pe utilizarea de materiale reciclabile, biodegradabile sau din resurse regenerabile pentru a reduce impactul asupra mediului.</p>
+          <p>Tipărim inteligent, inovăm constant și protejăm resursele pentru generațiile viitoare.</p>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- Cifrele companiei -->
+<!--
+  Cifrele companiei.
+
+  Punctul 24 din revizie spune că pentru rubrica asta clientul trimite un
+  design separat, deci aici rămân doar cifrele pe care le-a confirmat deja.
+  A treia, pe care nu ne-a dat-o nimeni, este marcată, nu inventată.
+-->
 <section id="cifre" class="py-5">
   <div class="container">
     <h2 class="display-5 fw-normal text-center mb-4">Cifrele companiei</h2>
@@ -129,7 +164,7 @@
         <p class="text-uppercase fw-semibold small text-secondary">cm, format maxim offset</p>
       </div>
       <div class="col-12 col-lg-4">
-        <p class="display-3 fw-semibold text-brand-lg mb-0">[N]</p>
+        <p class="display-3 fw-semibold text-brand-lg mb-0">[DE COMPLETAT]</p>
         <p class="text-uppercase fw-semibold small text-secondary">clienți deserviți</p>
       </div>
     </div>

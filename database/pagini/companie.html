@@ -1,61 +1,108 @@
 <!--
   Companie — grafoanaytis.ro
 
-  Structura urmează pagina „Compania noastră" a modelului exonia.ro: antet pe
-  toată lățimea cu titlul centrat, două coloane de text, o bandă cu cifre, o
-  cronologie derulabilă, apoi viziune, misiune, echipă, avantaje și contact.
+  Refăcută după punctele 28 și 29 din revizie. Clientul a cerut ca pagina „să
+  se înlocuiască în întregime": textul vechi — cine suntem, viziune, misiune,
+  editură, echipă, avantaje, chemarea la acțiune — a fost scos, iar în locul
+  lui a intrat textul trimis de el, despre dezvoltare durabilă.
 
-  Textele marcate [DE COMPLETAT] sunt cele pe care nu le avem de la client.
-  Restul sunt preluate din grafoanaytis.ro și din comunicatul de presă al
-  proiectului 332198, deci sunt afirmațiile lui, nu invenții.
+  Două lucruri nu vin din punctul 29:
+
+  - cronologia firmei, păstrată la cererea explicită a clientului („nu
+    renunțăm și la cronologia firmei"). Anii și textele sunt acum cele reale,
+    din PREZENTARE.pdf, nu marcaje [DE COMPLETAT];
+  - fotografia mașinii de ștanțat, tot din PREZENTARE.pdf, de pe pagina în
+    care apar și cifrele de producție.
+
+  Nu mai există niciun [DE COMPLETAT] pe pagina asta.
 -->
 
-<!-- Antetul paginii: fotografie pe toată lățimea, titlu centrat -->
+<!-- Antetul paginii: fotografie pe toată lățimea, titlul cerut la punctul 28 -->
 <header id="antet-pagina" class="antet-pagina">
-  <img class="antet-pagina__fundal" src="/uploads/gallery/companie-hero.webp"
-       alt="Hala de producție Grafoanaytis" loading="eager" fetchpriority="high">
+  <img class="antet-pagina__fundal" src="/uploads/gallery/grafoanaytis.jpg"
+       alt="Tipograf verificând cu lupa o coală tipărită, în hala Grafoanaytis"
+       width="1600" height="855" loading="eager" fetchpriority="high">
   <div class="container antet-pagina__continut">
-    <h1 class="display-2 fw-medium text-white text-center mb-0">Companie</h1>
+    <h1 class="display-2 fw-medium text-white text-center mb-3">Inovează. Tipărește. Protejează.</h1>
+    <p class="lead text-white text-center mb-0 mx-auto antet-pagina__indemn">Alătură-te misiunii
+    noastre pentru un viitor mai verde!</p>
   </div>
 </header>
 
-<!-- Cine suntem: două coloane de text, ca la model -->
-<section id="cine-suntem" class="py-5">
+<!-- Dezvoltare durabilă -->
+<section id="dezvoltare-durabila" class="py-5">
   <div class="container">
-    <div class="row g-4 g-lg-5 pt-3">
-      <div class="col-12 col-lg-6">
-        <h2 class="display-3 fw-normal text-brand-lg mb-4 titlu-companie">Oameni, hârtie<br>și termene ținute</h2>
-        <p>Grafoanaytis activează pe piața prahoveană din 2004 și oferă clienților săi servicii de tipar offset și digital. Ne dorim să fim cunoscuți în special prin calitatea produselor, termenele scurte de execuție și modul flexibil de colaborare cu clienții.</p>
-        <p>Politica tipografiei noastre este să stabilim împreună cu fiecare client strategiile și produsele potrivite nevoilor lui de promovare și să construim o colaborare reciproc avantajoasă cu partenerii noștri.</p>
-      </div>
-      <div class="col-12 col-lg-6">
-        <p>Suntem specializați în producerea ambalajelor pentru produse alimentare, pharma și cosmetice, textile și industriale, cu finisaje superioare care includ lăcuire, plastifiere, emboss și folio. Capacitățile de producție ne permit realizarea tirajelor medii și mari în cel mai scurt timp.</p>
-        <p>Sediul și hala de producție se află în Ploiești, Str. Văleni nr. 141, în incinta Romfarmachim.</p>
-        <p>[DE COMPLETAT: un paragraf despre echipă și despre modul de lucru cu clienții]</p>
-      </div>
-    </div>
+    <h2 class="display-5 fw-normal text-brand-lg mb-4">Dezvoltare durabilă</h2>
+    <p class="h4 fw-normal lh-base mb-0 companie__deschidere">Scopul nostru este să găsim cele mai
+    eficiente soluții care să răspundă nevoilor clienților. Am implementat tehnologii moderne care
+    ne permit obținerea unei game variate de produse de cea mai înaltă calitate.</p>
   </div>
 </section>
 
-<!-- Fotografie plus cifrele companiei, ca banda de tehnologie a modelului -->
-<section id="capacitate" class="pb-5">
+<!-- Tehnologie -->
+<section id="tehnologie" class="py-5 bg-body-tertiary">
   <div class="container">
-    <div class="row g-4 g-lg-5 align-items-center">
-      <div class="col-12 col-lg-6">
-        <div class="ratio ratio-4x3 overflow-hidden">
-          <img src="/uploads/gallery/companie-productie.webp" alt="Tipar offset în hala Grafoanaytis"
-               class="object-fit-cover" loading="lazy">
-        </div>
-      </div>
-      <div class="col-12 col-lg-6">
-        <h2 class="display-4 fw-normal text-brand-lg mb-3">Capacitate de producție</h2>
-        <p class="h4 fw-normal lh-base mb-4">Tipar offset până la formatul 50×70 cm și tipar digital pe tehnologie XEROX, cu finisare în aceeași hală.</p>
-        <p class="display-3 fw-semibold mb-0">50×70</p>
-        <p class="text-uppercase fw-semibold small text-secondary mb-4">cm, format maxim offset</p>
-        <p class="display-3 fw-semibold mb-0">7</p>
-        <p class="text-uppercase fw-semibold small text-secondary mb-0">echipamente noi, proiect 332198</p>
-      </div>
-    </div>
+    <h2 class="display-5 fw-normal text-brand-lg mb-3">Tehnologie de ultimă generație pentru un tipar verde</h2>
+    <p class="mb-5 companie__intro">Inovația ne permite să reducem impactul ecologic fără a face
+    niciun compromis în privința calității. Prin investiții constante în echipamente moderne, am
+    optimizat întregul flux de producție:</p>
+
+    <!--
+      Cele trei măsuri stau într-o listă, nu în trei coloane oarecare: sunt o
+      enumerare, iar cititorul cu sintetizator vocal aude câte sunt înainte de
+      a le parcurge.
+    -->
+    <ul class="companie__masuri">
+      <li class="companie__masura">
+        <h3 class="h5 text-brand-lg">Echipamente eficiente energetic</h3>
+        <p class="mb-0">Utilizăm utilaje de tipar digital și offset de ultimă generație, care reduc
+        considerabil consumul de energie electrică și emisiile de CO<sub>2</sub>.</p>
+      </li>
+      <li class="companie__masura">
+        <h3 class="h5 text-brand-lg">Tehnologie Computer-to-Plate (CTP)</h3>
+        <p class="mb-0">Am eliminat complet procesele chimice tradiționale din etapa de prepress,
+        reducând consumul de apă și generarea de deșeuri toxice.</p>
+      </li>
+      <li class="companie__masura">
+        <h3 class="h5 text-brand-lg">Automatizare și precizie</h3>
+        <p class="mb-0">Software-ul avansat de calibrare a culorilor minimizează pierderile de
+        material la pornirea fiecărui tiraj. Astfel, fiecare coală de hârtie este folosită la
+        potențialul maxim.</p>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<!-- Economie circulară -->
+<section id="economie-circulara" class="py-5">
+  <div class="container">
+    <h2 class="display-5 fw-normal text-brand-lg mb-3">Economie circulară și managementul deșeurilor</h2>
+    <p class="mb-5 companie__intro">Sustenabilitatea înseamnă și responsabilitate până la capăt. În
+    tipografia noastră, deșeurile nu sunt doar aruncate, ci reintroduse în circuitul economic:</p>
+
+    <ul class="companie__masuri companie__masuri--doua">
+      <li class="companie__masura">
+        <h3 class="h5 text-brand-lg">Colectare selectivă strictă</h3>
+        <p class="mb-0">Toate resturile de hârtie, carton, plăci de aluminiu și ambalaje sunt
+        sortate și predate către centre specializate de reciclare.</p>
+      </li>
+      <li class="companie__masura">
+        <h3 class="h5 text-brand-lg">Optimizarea formatelor</h3>
+        <p class="mb-0">Calculăm layout-urile de tipar astfel încât pierderile de margine să fie
+        minime, reducând la sursă volumul de deșeuri.</p>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<!-- Partenerul tău pentru un brand responsabil -->
+<section id="brand-responsabil" class="py-5 bg-body-tertiary">
+  <div class="container">
+    <h2 class="display-5 fw-normal text-brand-lg mb-3">Partenerul tău pentru un brand responsabil</h2>
+    <p class="h4 fw-normal lh-base mb-0 companie__deschidere">Alegând serviciile noastre de tipar,
+    alegi să transmiți mesajul brandului tău într-un mod etic și curat. Fie că este vorba despre
+    ambalaje inovatoare, cataloage corporate sau materiale publicitare, transformăm viziunea ta în
+    realitate, respectând natura.</p>
   </div>
 </section>
 
@@ -64,11 +111,15 @@
 
   Se derulează pe orizontală: cu degetul, cu mouse-ul ținut apăsat, cu săgețile
   de pe margini sau cu tastele săgeți când banda are focus.
+
+  Anii și textele sunt cele din pagina „Dezvoltare" a PREZENTARE.pdf, cuvânt cu
+  cuvânt.
 -->
 <section id="evolutie" class="bg-brand py-5">
   <div class="container">
-    <h2 class="display-4 fw-normal text-center mb-3">Evoluția noastră</h2>
-    <p class="text-center mx-auto mb-4 evolutie__intro">De la o tipografie locală la un furnizor de ambalaje și tipărituri pentru clienți din industrie, administrație și cultură.</p>
+    <h2 class="display-4 fw-normal text-center mb-3">Dezvoltare</h2>
+    <p class="text-center mx-auto mb-4 evolutie__intro">De la primele mașini de tipar offset la
+    linia automată de ștanțat, lipit și aplicare a ferestrelor.</p>
   </div>
 
   <div class="cronologie">
@@ -81,42 +132,33 @@
         <li class="cronologie__oprire">
           <span class="cronologie__punct" aria-hidden="true"></span>
           <p class="cronologie__an">2004</p>
-          <p class="cronologie__text">Grafoanaytis începe activitatea pe piața prahoveană, cu servicii de tipar offset și digital.</p>
+          <p class="cronologie__text">Primele mașini de tipar offset și digital.</p>
         </li>
         <li class="cronologie__oprire">
           <span class="cronologie__punct" aria-hidden="true"></span>
-          <p class="cronologie__an">2006</p>
-          <p class="cronologie__text">Se înființează Editura Grafoanaytis, care publică manuale, albume, reviste și lucrări de specialitate.</p>
+          <p class="cronologie__an">2007</p>
+          <p class="cronologie__text">Dezvoltarea primelor soluții de ambalare personalizată.</p>
         </li>
         <li class="cronologie__oprire">
           <span class="cronologie__punct" aria-hidden="true"></span>
-          <p class="cronologie__an">[AN]</p>
-          <p class="cronologie__text">[DE COMPLETAT: mutarea în hala din Str. Văleni nr. 141 sau altă etapă importantă]</p>
+          <p class="cronologie__an">2010</p>
+          <p class="cronologie__text">Prima mașină de ștanțat automată.</p>
         </li>
         <li class="cronologie__oprire">
           <span class="cronologie__punct" aria-hidden="true"></span>
-          <p class="cronologie__an">[AN]</p>
-          <p class="cronologie__text">[DE COMPLETAT: prima mașină offset de format 50×70 sau altă investiție importantă]</p>
+          <p class="cronologie__an">2014</p>
+          <p class="cronologie__text">Retehnologizarea tiparului.</p>
         </li>
         <li class="cronologie__oprire">
           <span class="cronologie__punct" aria-hidden="true"></span>
-          <p class="cronologie__an">[AN]</p>
-          <p class="cronologie__text">[DE COMPLETAT: intrarea pe zona de ambalaje pentru pharma și cosmetice]</p>
-        </li>
-        <li class="cronologie__oprire">
-          <span class="cronologie__punct" aria-hidden="true"></span>
-          <p class="cronologie__an">[AN]</p>
-          <p class="cronologie__text">[DE COMPLETAT: aderarea la AFAS, ca membru fondator]</p>
-        </li>
-        <li class="cronologie__oprire">
-          <span class="cronologie__punct" aria-hidden="true"></span>
-          <p class="cronologie__an">2025</p>
-          <p class="cronologie__text">Se semnează contractul de finanțare 602/28.11.2025 pentru proiectul „Dezvoltarea activității GRAFOANAYTIS SRL prin achiziția de echipamente”.</p>
+          <p class="cronologie__an">2020</p>
+          <p class="cronologie__text">Achiziționarea primei linii automate de imprimare folio la cald.</p>
         </li>
         <li class="cronologie__oprire">
           <span class="cronologie__punct" aria-hidden="true"></span>
           <p class="cronologie__an">2026</p>
-          <p class="cronologie__text">Șapte echipamente noi intră în producție, alături de măsuri de eficiență energetică și de economie circulară.</p>
+          <p class="cronologie__text">Punerea în producție a mașinilor automate de ștanțat, lipit și
+          aplicare automată a ferestrelor pentru cutii.</p>
         </li>
       </ol>
     </div>
@@ -127,141 +169,37 @@
   </div>
 </section>
 
-<!-- Viziune și misiune, una lângă alta -->
 <!--
-  Viziunea și misiunea stau în secțiuni separate, nu în două coloane ale
-  aceleiași secțiuni: altfel inventarul de goluri le confundă între ele, iar
-  clientul primește marcajul viziunii trecut la misiune.
+  Capacitatea de producție, așezată ca în pagina „Producție" a prezentării:
+  numele mic deasupra, fraza despre utilaje sub el, apoi cele trei cifre pe un
+  rând — totul centrat, cum a cerut clientul („aranjat ca în dreapta").
 -->
-<section id="viziune" class="pt-5">
+<section id="capacitate" class="py-5">
   <div class="container">
-    <div class="row g-4 g-lg-5">
-      <div class="col-12 col-lg-6">
-        <h2 class="display-4 fw-normal text-brand-lg mb-3">Viziunea noastră</h2>
-        <p class="h5 fw-normal lh-base">[DE COMPLETAT: două-trei fraze despre unde vrea să ajungă tipografia în următorii ani]</p>
-      </div>
-    </div>
-  </div>
-</section>
+    <h2 class="display-4 fw-normal text-brand-lg text-center mb-5">Capacitate de producție</h2>
 
-<section id="misiune" class="py-5">
-  <div class="container">
-    <div class="row g-4 g-lg-5 justify-content-end">
-      <div class="col-12 col-lg-6">
-        <h2 class="display-4 fw-normal text-brand-lg mb-3">Misiunea noastră</h2>
-        <p class="h5 fw-normal lh-base">Să stabilim împreună cu fiecare client produsele potrivite nevoilor lui și să le livrăm la calitatea și în termenul promise. [DE COMPLETAT: dacă vreți altă formulare, o scrieți aici]</p>
-      </div>
-    </div>
-  </div>
-</section>
+    <p class="text-uppercase fw-semibold text-brand-lg text-center mb-2 capacitate__eticheta">Tehnologie modernă</p>
+    <p class="h4 fw-normal lh-base text-center mx-auto mb-5 capacitate__descriere">Mașini automate
+    (fabricație 2026), de mare productivitate pentru producerea ambalajelor și înnobilarea
+    tiparului.</p>
 
-<!-- Editura: o parte a activității pe care modelul nu o are -->
-<section id="editura" class="py-5 bg-body-tertiary">
-  <div class="container">
-    <div class="row g-4 g-lg-5 align-items-center">
-      <div class="col-12 col-lg-6">
-        <h2 class="display-4 fw-normal text-brand-lg mb-3">Editura Grafoanaytis</h2>
-        <p class="h5 fw-normal lh-base">Înființată în 2006, editura oferă clienților posibilitatea publicării unei game variate de lucrări, în condiții grafice deosebite. Fiind deopotrivă editură și tipografie, punem la dispoziție produsul finit într-un termen scurt și la prețul lui real.</p>
-        <p>Specialiștii noștri găsesc cele mai bune soluții pentru manuale, albume, reviste, lucrări de specialitate sau beletristică.</p>
+    <!--
+      Cifrele sunt perechi „ce" și „cât", deci o listă de definiții. Într-un
+      tabel ar fi cerut un cap de tabel pe care nu-l are.
+    -->
+    <dl class="capacitate__cifre">
+      <div class="capacitate__cifra">
+        <dt>Tipar</dt>
+        <dd>10.000 <span>coli/oră</span></dd>
       </div>
-      <div class="col-12 col-lg-6">
-        <div class="ratio ratio-4x3 overflow-hidden">
-          <img src="/uploads/gallery/editura.webp" alt="Lucrări tipărite de Editura Grafoanaytis"
-               class="object-fit-cover" loading="lazy">
-        </div>
+      <div class="capacitate__cifra">
+        <dt>Ștanțare</dt>
+        <dd>10.000 <span>coli/oră</span></dd>
       </div>
-    </div>
-  </div>
-</section>
-
-<!-- Echipa -->
-<section id="echipa" class="py-5">
-  <div class="container">
-    <h2 class="display-4 fw-normal text-center mb-2">Echipa</h2>
-    <p class="text-center text-secondary mb-4">[DE COMPLETAT: o frază despre echipă]</p>
-    <div class="row g-4">
-      <div class="col-6 col-md-4 col-lg-3">
-        <div class="ratio ratio-1x1 overflow-hidden mb-2">
-          <img src="/uploads/gallery/echipa-cornel-moise.webp" alt="Cornel Moise" class="object-fit-cover" loading="lazy">
-        </div>
-        <p class="h5 mb-0">Cornel Moise</p>
-        <p class="small text-secondary mb-0">[DE COMPLETAT: funcția]</p>
+      <div class="capacitate__cifra">
+        <dt>Formare și lipire</dt>
+        <dd>80.000 <span>cutii/oră</span></dd>
       </div>
-      <div class="col-6 col-md-4 col-lg-3">
-        <div class="ratio ratio-1x1 overflow-hidden mb-2">
-          <img src="/uploads/gallery/echipa-sorin-dumitrascu.webp" alt="Sorin Dumitrașcu" class="object-fit-cover" loading="lazy">
-        </div>
-        <p class="h5 mb-0">Sorin Dumitrașcu</p>
-        <p class="small text-secondary mb-0">[DE COMPLETAT: funcția]</p>
-      </div>
-      <div class="col-6 col-md-4 col-lg-3">
-        <div class="ratio ratio-1x1 overflow-hidden mb-2">
-          <img src="/uploads/gallery/echipa-cristina-moise.webp" alt="Cristina Moise" class="object-fit-cover" loading="lazy">
-        </div>
-        <p class="h5 mb-0">Cristina Moise</p>
-        <p class="small text-secondary mb-0">[DE COMPLETAT: funcția]</p>
-      </div>
-      <div class="col-6 col-md-4 col-lg-3">
-        <div class="ratio ratio-1x1 overflow-hidden mb-2">
-          <img src="/uploads/gallery/echipa-4.webp" alt="[DE COMPLETAT: numele]" class="object-fit-cover" loading="lazy">
-        </div>
-        <p class="h5 mb-0">[DE COMPLETAT: numele]</p>
-        <p class="small text-secondary mb-0">[DE COMPLETAT: funcția]</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- De ce noi: nouă motive, ca la model -->
-<section id="avantaje" class="py-5 bg-body-tertiary">
-  <div class="container">
-    <h2 class="display-4 fw-normal text-center mb-4">De ce să lucrați cu noi</h2>
-    <div class="row g-4">
-      <div class="col-12 col-md-6 col-lg-4">
-        <h3 class="h5 text-brand-lg">Analizăm cu atenție</h3>
-        <p class="mb-0">Pornim de la ce trebuie să facă produsul tipărit, nu de la ce mașină avem liberă.</p>
-      </div>
-      <div class="col-12 col-md-6 col-lg-4">
-        <h3 class="h5 text-brand-lg">Propunem soluții</h3>
-        <p class="mb-0">Stabilim împreună cu clientul produsele potrivite nevoilor lui de promovare.</p>
-      </div>
-      <div class="col-12 col-md-6 col-lg-4">
-        <h3 class="h5 text-brand-lg">Pregătim fișierele</h3>
-        <p class="mb-0">Separație de culoare pe plăci offset Kodak, creație și design, în casă.</p>
-      </div>
-      <div class="col-12 col-md-6 col-lg-4">
-        <h3 class="h5 text-brand-lg">Producem la noi</h3>
-        <p class="mb-0">Tipar offset și digital, ștanțare, folio, emboss, lăcuire și plastifiere în aceeași hală.</p>
-      </div>
-      <div class="col-12 col-md-6 col-lg-4">
-        <h3 class="h5 text-brand-lg">Livrăm repede</h3>
-        <p class="mb-0">Capacitățile de producție ne permit tiraje medii și mari în cel mai scurt timp.</p>
-      </div>
-      <div class="col-12 col-md-6 col-lg-4">
-        <h3 class="h5 text-brand-lg">Rămânem lângă proiect</h3>
-        <p class="mb-0">Asistență de la primul fișier până la livrarea tirajului.</p>
-      </div>
-      <div class="col-12 col-md-6 col-lg-4">
-        <h3 class="h5 text-brand-lg">Suntem flexibili</h3>
-        <p class="mb-0">Modul de colaborare se așază după cum lucrează clientul, nu invers.</p>
-      </div>
-      <div class="col-12 col-md-6 col-lg-4">
-        <h3 class="h5 text-brand-lg">Tipărim și publicăm</h3>
-        <p class="mb-0">Editură și tipografie în același loc, deci un singur interlocutor pentru o carte.</p>
-      </div>
-      <div class="col-12 col-md-6 col-lg-4">
-        <h3 class="h5 text-brand-lg">[DE COMPLETAT: al nouălea motiv — titlul]</h3>
-        <p class="mb-0">[DE COMPLETAT: al nouălea motiv — o frază de explicație]</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- Chemare la acțiune -->
-<section id="hai-sa-vorbim" class="py-5">
-  <div class="container text-center">
-    <h2 class="display-4 fw-normal mb-3">Hai să vorbim despre proiectul dumneavoastră</h2>
-    <p class="lead mx-auto mb-4">Trimiteți-ne ce aveți nevoie și vă răspundem cu o ofertă și un termen.</p>
-    <a href="/contact" class="btn btn-primary fw-semibold px-4">Cere ofertă</a>
+    </dl>
   </div>
 </section>
