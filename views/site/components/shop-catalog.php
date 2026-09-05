@@ -44,23 +44,17 @@ if ($sortOptions === []) {
       FILTRE
     </button>
 
-    <div class="shop-catalog-v2__sort-wrap">
-      <button type="button" class="shop-catalog-v2__sort-btn" data-shop-sort-toggle>
-        <?= htmlspecialchars((string) ($sortOptions[$sortKey] ?? 'Alfabetică'), ENT_QUOTES) ?>
-        <span class="shop-catalog-v2__sort-chevron" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M6 10l6 6 6-6"></path>
-          </svg>
-        </span>
-      </button>
-      <div class="shop-catalog-v2__sort-menu" data-shop-sort-menu>
-        <?php foreach ($sortOptions as $key => $label): ?>
-          <a class="shop-catalog-v2__sort-option <?= (string) $key === (string) $sortKey ? 'is-active' : '' ?>" href="<?= htmlspecialchars($baseUrl, ENT_QUOTES) ?>?sort=<?= rawurlencode((string) $key) ?><?= $activeCategory !== '' ? '&categorie=' . rawurlencode($activeCategory) : '' ?>">
-            <?= htmlspecialchars((string) $label, ENT_QUOTES) ?>
-          </a>
-        <?php endforeach; ?>
-      </div>
-    </div>
+    <?php
+    /*
+     * Punctul 14 din revizie: butonul de sortare din dreapta barei iese, filtrul
+     * din stânga rămâne. Pe un site de prezentare, fără prețuri afișate,
+     * „Preț: mic → mare" oricum nu spunea nimic.
+     *
+     * Sortarea rămâne în cod și continuă să funcționeze prin adresă
+     * (?sort=...), deci se poate readuce ștergând acest comentariu și punând
+     * markup-ul la loc; ce dispare este doar comanda din pagină.
+     */
+    ?>
   </div>
 
   <div class="shop-catalog-v2__filters-overlay" data-shop-filters-overlay></div>
@@ -156,16 +150,19 @@ if ($sortOptions === []) {
               <span class="bv-popular-card__reviews">(<?= $reviewsCount ?>)</span>
             </div>
 
+            <?php
+            /*
+             * Punctul 13 din revizie: pe site de prezentare, cardul nu mai are
+             * rândul „Cere ofertă". Nu rămâne însă nimic de apăsat pierdut —
+             * și fotografia, și denumirea duc la pagina produsului, unde
+             * cererea de ofertă are sertarul ei.
+             *
+             * Rândul de jos dispare cu totul în modul prezentare, nu rămâne gol:
+             * un „div" fără conținut ar fi lăsat un spațiu sub fiecare card.
+             */
+            ?>
+            <?php if (!$modPrezentare): ?>
             <div class="bv-popular-card__bottom">
-              <?php if ($modPrezentare): ?>
-                <?php /* Tot rândul este o legătură, nu doar textul: săgeata era desen, iar clicul pe ea nu ducea nicăieri. */ ?>
-                <a class="bv-popular-card__quote-link" href="/produs/<?= rawurlencode($slug) ?>" aria-label="Cere ofertă pentru <?= htmlspecialchars($name, ENT_QUOTES) ?>">
-                  <span class="bv-popular-card__quote">Cere ofertă</span>
-                  <span class="bv-popular-card__cart-btn" aria-hidden="true">
-                    <svg viewBox="0 0 18 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.5 1 16.5 7l-6 6M0 7h16"/></svg>
-                  </span>
-                </a>
-              <?php else: ?>
                 <p class="bv-popular-card__price">
                   <?= number_format($price, 2) ?> lei
                   <?php if ($hasSale && $basePrice > $price): ?>
@@ -181,8 +178,8 @@ if ($sortOptions === []) {
                     </button>
                   </form>
                 <?php endif; ?>
-              <?php endif; ?>
             </div>
+            <?php endif; ?>
           </div>
         </article>
       <?php endforeach; ?>

@@ -58,8 +58,9 @@ foreach ($argv as $arg) {
 $meniu = [
     ['Acasă', '/'],
     ['Companie', '/companie'],
-    ['Servicii', '/servicii'],
+    /* Punctul 9 din revizie: Produse înaintea Serviciilor. */
     ['Produse', '/produse'],
+    ['Servicii', '/servicii'],
     ['Utilaje', '/utilaje'],
     ['Certificări', '/certificari'],
     ['Contact', '/contact'],
@@ -205,7 +206,12 @@ JS;
  */
 $continut = [
     'design_header_html' => $header,
-    'design_menu_html' => '<a href="/">Acasă</a><a href="/companie">Companie</a><a href="/servicii">Servicii</a><a href="/utilaje">Utilaje</a><a href="/certificari">Certificări</a><a href="/contact">Contact</a>',
+    /*
+     * Meniul secundar, folosit de dashboard. Îi lipsea „Produse" cu totul, deși
+     * antetul o are — deci cele două liste spuneau lucruri diferite despre
+     * site. Acum urmează aceeași ordine ca antetul.
+     */
+    'design_menu_html' => '<a href="/">Acasă</a><a href="/companie">Companie</a><a href="/produse">Produse</a><a href="/servicii">Servicii</a><a href="/utilaje">Utilaje</a><a href="/certificari">Certificări</a><a href="/contact">Contact</a>',
     'design_footer_html' => $footer,
     'design_header_js' => $headerJs,
 ];
