@@ -329,6 +329,21 @@
      */
     carusel.classList.add('carusel-clienti--tragere');
 
+    /*
+     * Cele două proprietăți de care depinde mișcarea se scriu și din script,
+     * nu doar din foaia de stil.
+     *
+     * „overflow-x: auto" o face cutie derulabilă — fără ea, „scrollLeft" este
+     * mereu zero și banda stă pe loc, oricât de des i-am cere să se miște.
+     * „scroll-behavior: auto" o ferește de o derulare lină moștenită din altă
+     * parte, care ar înmuia fiecare cadru într-o animație anulată de următorul.
+     *
+     * Scrise aici, mișcarea nu se mai poate opri dintr-o foaie de stil rămasă
+     * în urmă în cache.
+     */
+    carusel.style.overflowX = 'auto';
+    carusel.style.scrollBehavior = 'auto';
+
     /* 98 de pixeli pe secundă: aceeași viteză ca animația de dinainte. */
     var VITEZA = 98 / 1000;
 

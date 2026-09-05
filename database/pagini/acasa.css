@@ -317,8 +317,14 @@
   color: var(--text-brand-large);
 }
 
-/* Unitatea nu este cifra: rămâne mică, sub ea. */
-.cifra dd span {
+/*
+ * Unitatea nu este cifra: rămâne mică, sub ea.
+ *
+ * Are clasă proprie, nu se scrie „.cifra dd span". Regula pe „span" a prins și
+ * cifra, de îndată ce aceasta a fost învelită în „span" ca să poată crește la
+ * derulare: 2004 se scria la 15px, cât unitatea, în loc de 52.
+ */
+.cifra__unitate {
   display: block;
   margin-top: .35rem;
   font-size: .9375rem;

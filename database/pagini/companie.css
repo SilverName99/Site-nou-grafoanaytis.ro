@@ -516,14 +516,21 @@
 
 .capacitate__cifra dd {
   margin: 0;
-  font-size: clamp(1.5rem, 1.1rem + 1vw, 2.125rem);
+  /* Aceeași scară ca la cifrele de pe Acasă: sunt faptele secțiunii. */
+  font-size: clamp(2rem, 1.4rem + 1.9vw, 3.25rem);
   font-weight: 600;
   line-height: 1.15;
   color: var(--text-brand-large);
 }
 
-/* Unitatea nu este cifra: rămâne mică și în greutatea textului obișnuit. */
-.capacitate__cifra dd span {
+/*
+ * Unitatea nu este cifra: rămâne mică și în greutatea textului obișnuit.
+ *
+ * Are clasă proprie, nu se scrie „.capacitate__cifra dd span": regula pe „span"
+ * a prins și cifra, de îndată ce aceasta a fost învelită în „span" ca să poată
+ * crește la derulare.
+ */
+.capacitate__unitate {
   display: block;
   font-size: .875rem;
   font-weight: 400;

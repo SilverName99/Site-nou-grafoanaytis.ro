@@ -1160,6 +1160,24 @@ html { scroll-behavior: smooth; }
   will-change: auto;
 }
 
+/*
+ * Fotografia benzilor apare doar stingându-se, fără urcare.
+ *
+ * Nu e o alegere de gust. Fotografia este poziționată absolut și se agață de
+ * secțiune, ca să iasă din container până în marginea ecranului. Un „transform"
+ * pus pe cadru — și la fel un „will-change: transform" — face din cadru
+ * blocul-container al oricărui descendent poziționat absolut: fotografia se
+ * ancorează brusc de el și se strânge la jumătate de jumătate, iar la sfârșitul
+ * animației sare înapoi la loc. Se vedea exact ca o redimensionare la încărcare.
+ *
+ * Aceeași grijă e nevoie oriunde un element cu copil poziționat absolut ar
+ * intra în lista de apariții.
+ */
+.are-aparitii .banda-alternanta__cadru.apare {
+  transform: none;
+  will-change: opacity;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .are-aparitii .apare {
     opacity: 1;
