@@ -333,7 +333,6 @@
     var VITEZA = 98 / 1000;
 
     var oprit = false;
-    var deasupra = false;
     var seTrage = false;
     var pornireX = 0;
     var pornireScroll = 0;
@@ -368,6 +367,25 @@
         trecut = 16;
       }
 
+      /*
+       * Starea „mouse deasupra" se citește din DOM, nu se ține minte.
+       *
+       * Prima variantă o ținea într-o variabilă, pusă pe „pointerenter" și
+       * scoasă pe „pointerleave". Iese greșit exact în drumul obișnuit al
+       * cititorului: treci cu mouse-ul peste bandă, derulezi mai departe,
+       * banda pleacă de sub cursor — și „pointerleave" nu mai vine niciodată,
+       * fiindcă mouse-ul n-a mișcat. Banda rămânea oprită până la reîncărcare.
+       *
+       * „matches(':hover')" nu poate rămâne în urmă: browserul îl recalculează
+       * odată cu poziția elementului.
+       *
+       * Focalizarea se citește cu „:focus-visible", nu cu „:focus": banda are
+       * „tabindex", deci o apucare cu mouse-ul o și focalizează, iar cu „:focus"
+       * ar fi rămas oprită după fiecare tragere. „:focus-visible" prinde doar
+       * focalizarea venită din tastatură, care chiar trebuie să oprească banda.
+       */
+      var deasupra = carusel.matches(':hover') || carusel.matches(':focus-visible');
+
       if (!oprit && !deasupra && !seTrage && !miscareRedusa && !document.hidden) {
         carusel.scrollLeft += VITEZA * trecut;
         normalizeaza();
@@ -377,16 +395,6 @@
     }
 
     window.requestAnimationFrame(cadru);
-
-    /* Sigla privită nu trebuie să fugă de sub cursor. */
-    carusel.addEventListener('pointerenter', function (e) {
-      if (e.pointerType !== 'touch') {
-        deasupra = true;
-      }
-    });
-    carusel.addEventListener('pointerleave', function () { deasupra = false; });
-    carusel.addEventListener('focusin', function () { deasupra = true; });
-    carusel.addEventListener('focusout', function () { deasupra = false; });
 
     /* ── Tragerea cu mâna ─────────────────────────────────────────────── */
 

@@ -147,6 +147,63 @@
   margin-bottom: .5rem;
 }
 
+/* ── Rândurile din „Economie circulară" ──────────────────────────────────
+   Aceleași informații ca măsurile de mai sus, altă formă: titlul rămâne în
+   stânga, iar cele două rânduri late trec pe lângă el.
+   ────────────────────────────────────────────────────────────────────── */
+
+@media (min-width: 992px) {
+  .companie__coloana-fixa {
+    position: sticky;
+    /* Sub antetul lipicios, care are 95px pe ecran lat. */
+    top: 7.5rem;
+  }
+}
+
+.companie__randuri {
+  list-style: none;
+  counter-reset: rand;
+  margin: 0;
+  padding: 0;
+}
+
+.companie__rand {
+  counter-increment: rand;
+  position: relative;
+  padding: 1.75rem 0 1.75rem 4.5rem;
+  border-top: 1px solid var(--line);
+}
+
+.companie__rand:last-child { border-bottom: 1px solid var(--line); }
+
+/*
+ * Numărul stă în stânga textului, nu deasupra lui ca la măsurile din secțiunea
+ * de deasupra — altfel cele două secțiuni ar fi arătat la fel cu alt titlu.
+ * Este desenat din CSS: lista este „ol", deci poziția se aude oricum.
+ */
+.companie__rand::before {
+  content: "0" counter(rand);
+  position: absolute;
+  left: 0;
+  top: 1.6rem;
+  font-size: 2rem;
+  font-weight: 300;
+  line-height: 1;
+  color: var(--brand-300);
+}
+
+.companie__rand-titlu {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text-brand-large);
+  margin-bottom: .5rem;
+}
+
+@media (max-width: 575.98px) {
+  .companie__rand { padding-left: 3.25rem; }
+  .companie__rand::before { font-size: 1.5rem; top: 1.85rem; }
+}
+
 /* ── Avantajele ──────────────────────────────────────────────────────── */
 
 /*
@@ -210,10 +267,19 @@
 }
 
 /* ── Cronologia ──────────────────────────────────────────────────────────
-   Bandă orizontală pe fundal deschis. Pe ecran lat cele șase opriri intră
-   toate, deci nu se derulează nimic; sub 1200px se derulează, iar scriptul
-   aprinde atunci săgețile.
+   După banda de la exonia: fundal colorat pe toată lățimea, banda centrată
+   în container, capetele stinse în fundal și derulare cu mâna.
+
+   Fundalul este cea mai deschisă treaptă a albastrului, nu albastrul de brand:
+   pe el, anii și textele rămân scrise în culorile obișnuite, deci se citesc.
+   Pe albastru plin ar fi trebuit totul alb, iar linia și bulinele — desenate
+   în culoarea textului — cădeau sub 2:1, cum s-a și întâmplat în prima
+   variantă.
    ────────────────────────────────────────────────────────────────────── */
+
+.evolutie {
+  background: var(--brand-050);
+}
 
 .cronologie {
   position: relative;
@@ -224,18 +290,20 @@
   overflow-y: hidden;
   scroll-behavior: smooth;
   scroll-snap-type: x proximity;
-  /* Bara de derulare a sistemului ar fi tăiat un rând din textul ultimei opriri. */
+  /* Bara de derulare a sistemului ar tăia un rând din textul ultimei opriri. */
   scrollbar-width: none;
   -ms-overflow-style: none;
+  /* Banda se apucă și se trage, ca la model. */
+  cursor: grab;
 }
 
 .cronologie__pista::-webkit-scrollbar { display: none; }
 
-/* Cât se trage cu mouse-ul, cursorul spune că banda se mișcă. */
 .cronologie__pista.se-trage {
   scroll-behavior: auto;
   cursor: grabbing;
   scroll-snap-type: none;
+  user-select: none;
 }
 
 /*
@@ -251,41 +319,27 @@
   display: flex;
   gap: 0;
   margin: 0;
-  padding: 0 1rem;
+  padding: 0;
   list-style: none;
 }
 
-@media (min-width: 992px) {
-  /* Loc pentru săgeți, când apar. */
-  .cronologie__lista { padding: 0 3.5rem; }
-}
-
 /*
- * Opririle sunt egale și se întind pe toată lățimea când încap.
+ * Opririle sunt mai înguste decât banda, dinadins.
  *
- * „flex: 1 0 15rem" în loc de „flex: 0 0 17rem": pe ecran lat cele șase umplu
- * banda fără gol la dreapta, iar pe ecran îngust nu coboară sub 15rem, deci
- * se derulează în loc să se strivească.
+ * La model se văd patru și jumătate din șase: jumătatea tăiată la margine
+ * spune, fără niciun cuvânt, că mai urmează. Cu șase opriri care încap toate,
+ * nimeni n-ar încerca să tragă de bandă.
  */
 .cronologie__oprire {
-  /*
-   * Crește, dar nu se strivește: pe ecran lat cele șase umplu banda fără gol
-   * la dreapta și fără derulare, iar pe telefon rămân la 12rem și se derulează
-   * în loc să se subțieze până la un cuvânt pe rând.
-   */
-  flex: 1 0 12rem;
+  flex: 0 0 clamp(13rem, 22vw, 17.5rem);
   scroll-snap-align: start;
   position: relative;
-  padding: 2.5rem 1.5rem 0 0;
+  padding: 2.75rem 1.75rem 0 0;
 }
 
 /*
- * Linia continuă care leagă opririle, cu bulina anului pe ea.
- *
- * Pe fundalul albastru de dinainte, linia și bulina erau desenate în culoarea
- * textului obișnuit: 1,9:1, adică o linie pe care trebuia s-o cauți. Aici sunt
- * albastru de brand pe alb — 8,3:1 bulina, 2,6:1 linia, care este decor, nu
- * informație: anul scris dedesubt spune totul și fără ea.
+ * Linia punctată care leagă opririle, cu bulina anului pe ea — ca la model.
+ * Este decor: anul scris dedesubt spune totul și fără ea.
  */
 .cronologie__oprire::before {
   content: "";
@@ -293,11 +347,11 @@
   left: 0;
   right: 0;
   top: .5rem;
-  height: 2px;
-  background: var(--brand-200);
+  height: 3px;
+  background-image: radial-gradient(circle, var(--brand-400) 1.5px, transparent 1.5px);
+  background-size: 9px 3px;
+  background-repeat: repeat-x;
 }
-
-.cronologie__oprire:last-child::before { right: 1.5rem; }
 
 .cronologie__oprire::after {
   content: "";
@@ -310,9 +364,9 @@
   background: var(--fill-brand);
 }
 
-/* Anul în curs: bulină plină cu inel, ca să se vadă unde am ajuns. */
+/* Anul în curs: bulină cu inel, ca să se vadă unde am ajuns. */
 .cronologie__oprire--acum::after {
-  box-shadow: 0 0 0 5px var(--brand-100);
+  box-shadow: 0 0 0 5px var(--brand-200);
 }
 
 .cronologie__an {
@@ -334,8 +388,8 @@
 }
 
 /*
- * Voalurile de la capete și săgețile există doar cât timp banda chiar se
- * derulează. Clasa o pune scriptul, după ce măsoară — nu din pornire.
+ * Voalurile de la capete, în culoarea benzii: acolo unde banda se taie, ea se
+ * stinge, nu se rupe. Nu prind clicuri, ca să nu fure apăsarea de pe săgeți.
  */
 .cronologie::before,
 .cronologie::after {
@@ -343,7 +397,7 @@
   position: absolute;
   top: 0;
   bottom: 0;
-  width: 4rem;
+  width: 5rem;
   z-index: 1;
   pointer-events: none;
   opacity: 0;
@@ -352,16 +406,26 @@
 
 .cronologie::before {
   left: 0;
-  background: linear-gradient(90deg, var(--surface) 0%, rgba(255, 255, 255, 0) 100%);
+  background: linear-gradient(90deg, var(--brand-050) 15%, rgba(241, 243, 249, 0) 100%);
 }
 
 .cronologie::after {
   right: 0;
-  background: linear-gradient(270deg, var(--surface) 0%, rgba(255, 255, 255, 0) 100%);
+  background: linear-gradient(270deg, var(--brand-050) 15%, rgba(241, 243, 249, 0) 100%);
 }
 
 .cronologie--pornita::before,
 .cronologie--pornita::after { opacity: 1; }
+
+/*
+ * Voalul se stinge la capătul lui.
+ *
+ * Cât timp banda stă la început, nu e nimic ascuns în stânga: un voal acolo ar
+ * fi umbrit primul an degeaba — și chiar asta se întâmpla, „2004" apărea pe
+ * jumătate șters. Clasele le pune scriptul, odată cu starea săgeților.
+ */
+.cronologie--la-inceput::before { opacity: 0; }
+.cronologie--la-sfarsit::after { opacity: 0; }
 
 /* ── Săgețile ────────────────────────────────────────────────────────── */
 
@@ -394,8 +458,22 @@
   cursor: default;
 }
 
-.cronologie__sageata--inapoi  { left: .5rem; }
-.cronologie__sageata--inainte { right: .5rem; }
+/*
+ * Săgețile stau în afara containerului, în marginea paginii, ca la model.
+ * Înăuntru acopereau primul și ultimul an.
+ */
+.cronologie__sageata--inapoi  { left: -3.5rem; }
+.cronologie__sageata--inainte { right: -3.5rem; }
+
+/*
+ * Sub 1200px marginea paginii nu mai are 56px, deci săgețile ar ieși din
+ * ecran. Acolo intră înapoi în bandă, iar banda primește margini cât ele.
+ */
+@media (max-width: 1199.98px) {
+  .cronologie__sageata--inapoi  { left: 0; }
+  .cronologie__sageata--inainte { right: 0; }
+  .cronologie__lista { padding: 0 3.25rem; }
+}
 
 /*
  * Un buton care nu comandă nimic este mai rău decât niciun buton: săgețile

@@ -282,9 +282,25 @@ footer.bg-dark {
 
 /* ── Subsolul, după modelul exonia (punctul 30) ─────────────────────── */
 
+/*
+ * Înălțimea subsolului.
+ *
+ * Avea „py-5" de la Bootstrap — 48px sus și jos — potrivit pentru un subsol cu
+ * trei rânduri. Al nostru are patru, iar la marginile acelea arăta ca o notă,
+ * nu ca finalul paginii. Marginile stau acum aici, nu pe clasa utilitară, ca
+ * să se poată strânge pe telefon, unde 88px de gol se derulează degeaba.
+ */
+.subsol {
+  padding: 5.5rem 0 3.5rem;
+}
+
+@media (max-width: 767.98px) {
+  .subsol { padding: 3.5rem 0 2.5rem; }
+}
+
 .subsol__sigla {
   display: inline-block;
-  margin-bottom: 1.75rem;
+  margin-bottom: 2.5rem;
 }
 
 .subsol__sigla img {
@@ -303,9 +319,9 @@ footer.bg-dark {
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
-  gap: .35rem 1.5rem;
+  gap: .75rem 1.75rem;
   list-style: none;
-  margin: 0 0 2.25rem;
+  margin: 0;
   padding: 0;
 }
 
@@ -342,8 +358,14 @@ footer.bg-dark {
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  gap: 1rem 1.75rem;
-  padding-top: 1.75rem;
+  gap: 1.25rem 2rem;
+  /*
+   * Aer între rânduri. Subsolul modelului este înalt și rar; al nostru avea
+   * aceleași rânduri strânse unul în altul, deci arăta ca o notă de subsol,
+   * nu ca finalul paginii.
+   */
+  padding-top: 2.75rem;
+  margin-top: 2.5rem;
   border-top: 1px solid rgba(255, 255, 255, .14);
   font-size: .875rem;
 }
@@ -1108,4 +1130,46 @@ html { scroll-behavior: smooth; }
   html { scroll-behavior: auto; }
   .sus { transition: none; }
   .sus:hover { transform: none; }
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   APARIȚIA BLOCURILOR LA DERULARE
+
+   Starea de pornire este scrisă sub „.are-aparitii", clasă pusă de
+   „miscare.js" pe elementul „html". Fără script — sau cu el blocat —
+   selectorul nu se potrivește, iar pagina rămâne întreagă: nimic nu
+   depinde de JavaScript ca să fie vizibil.
+   ══════════════════════════════════════════════════════════════════ */
+
+.are-aparitii .apare {
+  opacity: 0;
+  transform: translateY(18px);
+  /*
+   * Curba pornește repede și se așază lin. 0,55s este pragul de sub care
+   * mișcarea se simte ca o pagină vie și peste care începe să pară o pagină
+   * care se încarcă greu.
+   */
+  transition: opacity .55s ease, transform .55s cubic-bezier(.22, .61, .36, 1);
+  /* Cât timp elementul se mișcă, browserul îl desenează pe strat propriu. */
+  will-change: opacity, transform;
+}
+
+.are-aparitii .apare--vizibil {
+  opacity: 1;
+  transform: none;
+  will-change: auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .are-aparitii .apare {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+/* Cifrele care cresc nu trebuie să miște rândul de sub ele. */
+[data-creste] {
+  display: inline-block;
+  font-variant-numeric: tabular-nums;
 }

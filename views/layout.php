@@ -1895,6 +1895,15 @@ if (trim($designHeaderOutput) !== '' && preg_match($mobileMenuTokenPattern, $des
 $sertarJsVersion = @filemtime(__DIR__ . '/../public/assets/js/sertar-oferta.js') ?: time();
 ?>
 <script src="/assets/js/sertar-oferta.js?v=<?= $sertarJsVersion ?>" defer></script>
+<?php
+/*
+ * Apariția blocurilor la derulare și numerele care cresc. Un singur fișier
+ * pentru amândouă: pornesc din același „IntersectionObserver". Iese singur
+ * dacă pagina n-are ce anima.
+ */
+$miscareJsVersion = @filemtime(__DIR__ . '/../public/assets/js/miscare.js') ?: time();
+?>
+<script src="/assets/js/miscare.js?v=<?= $miscareJsVersion ?>" defer></script>
 
 <!--
   Butonul „înapoi sus".

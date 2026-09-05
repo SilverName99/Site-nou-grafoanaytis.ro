@@ -112,18 +112,15 @@ $header = <<<HTML
              onerror="this.onerror=null;this.src='/assets/img/sigla/grafoanaytis.png'">
       </a>
       <!--
-        Mențiunea de membru fondator, scoasă la vedere (punctul 31).
-        Stătea doar în atributul „title", adică o vedea numai cine ținea
-        cursorul pe siglă — pe telefon, nimeni. În macheta clientului este
-        scrisă pe două rânduri, lângă emblemă.
+        Emblema AFAS. „Membru fondator" era scris și alături, ca text: pe sigla
+        nouă a asociației cuvintele apar deja, deci se citeau de două ori.
 
-        Duce la pagina de start, ca și sigla firmei: așa a cerut clientul.
-        Sunt două legături către același loc, ceea ce este îngăduit atâta timp
-        cât fiecare spune unde duce — de aceea textul alternativ al emblemei
-        rămâne întreg, nu „siglă".
+        Duce la pagina de start, ca și sigla firmei: așa a cerut clientul. Sunt
+        două legături către același loc, ceea ce este îngăduit atâta timp cât
+        fiecare spune unde duce — de aceea textul alternativ al emblemei rămâne
+        întreg, nu „siglă".
       -->
       <a class="antet-sigle__partener" href="/">
-        <span class="antet-sigle__mentiune" aria-hidden="true">Membru<br>fondator</span>
         <img src="/uploads/gallery/afas-logo-nou.png" height="44"
              alt="Membru fondator al Asociației Furnizorilor de Ambalaje Sustenabile"
              onerror="this.onerror=null;this.src='/assets/img/certificari/afas-logo.png'">
@@ -154,7 +151,7 @@ $footer = <<<'HTML'
   Datele de contact sunt cele din documentul de prezentare al firmei: două
   numere, atribuite pe nume, adresa din Ploiești și adresa de e-mail.
 -->
-<footer class="subsol bg-dark text-white text-opacity-75 py-5 mt-5">
+<footer class="subsol bg-dark text-white text-opacity-75 mt-5">
   <div class="container text-center">
 
     <a class="subsol__sigla" href="/">

@@ -49,8 +49,18 @@
     cronologie.classList.toggle('cronologie--pornita', seDeruleaza());
 
     var maxim = pista.scrollWidth - pista.clientWidth;
-    inapoi.disabled = pista.scrollLeft <= 1;
-    inainte.disabled = pista.scrollLeft >= maxim - 1;
+    var laInceput = pista.scrollLeft <= 1;
+    var laSfarsit = pista.scrollLeft >= maxim - 1;
+
+    inapoi.disabled = laInceput;
+    inainte.disabled = laSfarsit;
+
+    /*
+     * Voalurile urmează aceeași stare ca săgețile: se stinge cel dinspre
+     * capătul atins, fiindcă acolo nu mai e nimic ascuns dincolo de margine.
+     */
+    cronologie.classList.toggle('cronologie--la-inceput', laInceput);
+    cronologie.classList.toggle('cronologie--la-sfarsit', laSfarsit);
   }
 
   var miscareRedusa = window.matchMedia

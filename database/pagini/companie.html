@@ -81,33 +81,44 @@
   </div>
 </section>
 
-<!-- Economie circulară -->
+<!--
+  Economie circulară.
+
+  Alta așezare decât secțiunea de deasupra, dinadins: acolo titlul stă pe un
+  rând și măsurile dedesubt, în trei coloane. Aici titlul rămâne în stânga, iar
+  cele două măsuri se așază în dreapta, una sub alta, ca rânduri late. Cu
+  aceeași formă de două ori la rând, cititorul crede că a mai citit-o și sare
+  peste.
+-->
 <section id="economie-circulara" class="py-5">
   <div class="container">
-    <div class="row g-4 g-lg-5 align-items-end mb-5">
-      <div class="col-12 col-lg-7">
-        <h2 class="display-6 fw-normal text-brand-lg mb-0">Economie circulară și managementul
-        deșeurilor</h2>
-      </div>
+    <div class="row g-4 g-lg-5">
       <div class="col-12 col-lg-5">
-        <p class="mb-0 companie__intro">Sustenabilitatea înseamnă și responsabilitate până la capăt.
-        În tipografia noastră, deșeurile nu sunt doar aruncate, ci reintroduse în circuitul
-        economic:</p>
+        <!-- Pe ecran lat rămâne în dreptul rândurilor, cât timp trec pe lângă el. -->
+        <div class="companie__coloana-fixa">
+          <h2 class="display-6 fw-normal text-brand-lg mb-3">Economie circulară și managementul
+          deșeurilor</h2>
+          <p class="mb-0 companie__intro">Sustenabilitatea înseamnă și responsabilitate până la
+          capăt. În tipografia noastră, deșeurile nu sunt doar aruncate, ci reintroduse în circuitul
+          economic.</p>
+        </div>
+      </div>
+
+      <div class="col-12 col-lg-7">
+        <ol class="companie__randuri">
+          <li class="companie__rand">
+            <h3 class="companie__rand-titlu">Colectare selectivă strictă</h3>
+            <p class="mb-0">Toate resturile de hârtie, carton, plăci de aluminiu și ambalaje sunt
+            sortate și predate către centre specializate de reciclare.</p>
+          </li>
+          <li class="companie__rand">
+            <h3 class="companie__rand-titlu">Optimizarea formatelor</h3>
+            <p class="mb-0">Calculăm layout-urile de tipar astfel încât pierderile de margine să fie
+            minime, reducând la sursă volumul de deșeuri.</p>
+          </li>
+        </ol>
       </div>
     </div>
-
-    <ol class="companie__masuri companie__masuri--doua">
-      <li class="companie__masura">
-        <h3 class="companie__masura-titlu">Colectare selectivă strictă</h3>
-        <p class="mb-0">Toate resturile de hârtie, carton, plăci de aluminiu și ambalaje sunt
-        sortate și predate către centre specializate de reciclare.</p>
-      </li>
-      <li class="companie__masura">
-        <h3 class="companie__masura-titlu">Optimizarea formatelor</h3>
-        <p class="mb-0">Calculăm layout-urile de tipar astfel încât pierderile de margine să fie
-        minime, reducând la sursă volumul de deșeuri.</p>
-      </li>
-    </ol>
   </div>
 </section>
 
@@ -159,14 +170,14 @@
 
   Anii și textele sunt cele din pagina „Dezvoltare" a PREZENTARE.pdf.
 -->
-<section id="evolutie" class="py-5">
+<section id="evolutie" class="evolutie py-5">
   <div class="container">
     <h2 class="display-6 fw-normal text-brand-lg text-center mb-2">Dezvoltare</h2>
     <p class="text-center mx-auto mb-5 evolutie__intro">De la primele mașini de tipar offset la linia
     automată de ștanțat, lipit și aplicare a ferestrelor.</p>
   </div>
 
-  <div class="cronologie">
+  <div class="container cronologie">
     <button type="button" class="cronologie__sageata cronologie__sageata--inapoi" aria-label="Opririle anterioare">
       <span aria-hidden="true">‹</span>
     </button>
@@ -225,15 +236,15 @@
     <dl class="capacitate__cifre">
       <div class="capacitate__cifra">
         <dt>Tipar</dt>
-        <dd>10.000 <span>coli/oră</span></dd>
+        <dd><span data-creste="10000">10.000</span> <span>coli/oră</span></dd>
       </div>
       <div class="capacitate__cifra">
         <dt>Ștanțare</dt>
-        <dd>10.000 <span>coli/oră</span></dd>
+        <dd><span data-creste="10000">10.000</span> <span>coli/oră</span></dd>
       </div>
       <div class="capacitate__cifra">
         <dt>Formare și lipire</dt>
-        <dd>80.000 <span>cutii/oră</span></dd>
+        <dd><span data-creste="80000">80.000</span> <span>cutii/oră</span></dd>
       </div>
     </dl>
   </div>
