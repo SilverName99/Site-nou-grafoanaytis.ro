@@ -1,20 +1,20 @@
 <!--
   Companie — grafoanaytis.ro
 
-  Refăcută după punctele 28 și 29 din revizie. Clientul a cerut ca pagina „să
-  se înlocuiască în întregime": textul vechi — cine suntem, viziune, misiune,
-  editură, echipă, avantaje, chemarea la acțiune — a fost scos, iar în locul
-  lui a intrat textul trimis de el, despre dezvoltare durabilă.
+  Punctele 28 și 29 din revizie: clientul a cerut ca pagina să se înlocuiască
+  în întregime. Textele sunt ale lui, cuvânt cu cuvânt.
 
-  Două lucruri nu vin din punctul 29:
+  Trei lucruri nu vin din punctul 29:
 
-  - cronologia firmei, păstrată la cererea explicită a clientului („nu
-    renunțăm și la cronologia firmei"). Anii și textele sunt acum cele reale,
-    din PREZENTARE.pdf, nu marcaje [DE COMPLETAT];
-  - fotografia mașinii de ștanțat, tot din PREZENTARE.pdf, de pe pagina în
-    care apar și cifrele de producție.
+  - cronologia firmei, păstrată la cererea lui explicită, cu anii reali din
+    PREZENTARE.pdf;
+  - blocul „Avantaje", tot din PREZENTARE.pdf, cerut după prima versiune;
+  - cifrele de producție, de pe pagina „Producție" a aceleiași prezentări.
 
-  Nu mai există niciun [DE COMPLETAT] pe pagina asta.
+  Ritmul secțiunilor: alb, gri, alb, gri, albastru, alb, gri. Prima versiune
+  avea șapte secțiuni albe cu titlu și paragraf, una sub alta — corectă, dar
+  imposibil de parcurs cu ochiul. Blocul albastru cade acolo unde clientul își
+  spune promisiunea, nu la întâmplare.
 -->
 
 <!-- Antetul paginii: fotografie pe toată lățimea, titlul cerut la punctul 28 -->
@@ -29,97 +29,141 @@
   </div>
 </header>
 
-<!-- Dezvoltare durabilă -->
+<!-- Dezvoltare durabilă: deschiderea paginii, centrată și mare -->
 <section id="dezvoltare-durabila" class="py-5">
-  <div class="container">
-    <h2 class="display-5 fw-normal text-brand-lg mb-4">Dezvoltare durabilă</h2>
-    <p class="h4 fw-normal lh-base mb-0 companie__deschidere">Scopul nostru este să găsim cele mai
-    eficiente soluții care să răspundă nevoilor clienților. Am implementat tehnologii moderne care
-    ne permit obținerea unei game variate de produse de cea mai înaltă calitate.</p>
+  <div class="container text-center">
+    <p class="eticheta-sectiune">Dezvoltare durabilă</p>
+    <h2 class="companie__deschidere mx-auto">Scopul nostru este să găsim cele mai eficiente soluții
+    care să răspundă nevoilor clienților. Am implementat tehnologii moderne care ne permit obținerea
+    unei game variate de produse de cea mai înaltă calitate.</h2>
   </div>
 </section>
 
 <!-- Tehnologie -->
 <section id="tehnologie" class="py-5 bg-body-tertiary">
   <div class="container">
-    <h2 class="display-5 fw-normal text-brand-lg mb-3">Tehnologie de ultimă generație pentru un tipar verde</h2>
-    <p class="mb-5 companie__intro">Inovația ne permite să reducem impactul ecologic fără a face
-    niciun compromis în privința calității. Prin investiții constante în echipamente moderne, am
-    optimizat întregul flux de producție:</p>
+    <div class="row g-4 g-lg-5 align-items-end mb-5">
+      <div class="col-12 col-lg-7">
+        <h2 class="display-6 fw-normal text-brand-lg mb-0">Tehnologie de ultimă generație pentru un
+        tipar verde</h2>
+      </div>
+      <div class="col-12 col-lg-5">
+        <p class="mb-0 companie__intro">Inovația ne permite să reducem impactul ecologic fără a face
+        niciun compromis în privința calității. Prin investiții constante în echipamente moderne, am
+        optimizat întregul flux de producție:</p>
+      </div>
+    </div>
 
     <!--
       Cele trei măsuri stau într-o listă, nu în trei coloane oarecare: sunt o
-      enumerare, iar cititorul cu sintetizator vocal aude câte sunt înainte de
-      a le parcurge.
+      enumerare, iar cine ascultă pagina aude câte sunt înainte de a le
+      parcurge. Numerele sunt desenate din CSS, ca să nu fie citite cu voce
+      tare de două ori — o dată ca text, o dată ca poziție în listă.
     -->
-    <ul class="companie__masuri">
+    <ol class="companie__masuri">
       <li class="companie__masura">
-        <h3 class="h5 text-brand-lg">Echipamente eficiente energetic</h3>
+        <h3 class="companie__masura-titlu">Echipamente eficiente energetic</h3>
         <p class="mb-0">Utilizăm utilaje de tipar digital și offset de ultimă generație, care reduc
         considerabil consumul de energie electrică și emisiile de CO<sub>2</sub>.</p>
       </li>
       <li class="companie__masura">
-        <h3 class="h5 text-brand-lg">Tehnologie Computer-to-Plate (CTP)</h3>
+        <h3 class="companie__masura-titlu">Tehnologie Computer-to-Plate (CTP)</h3>
         <p class="mb-0">Am eliminat complet procesele chimice tradiționale din etapa de prepress,
         reducând consumul de apă și generarea de deșeuri toxice.</p>
       </li>
       <li class="companie__masura">
-        <h3 class="h5 text-brand-lg">Automatizare și precizie</h3>
+        <h3 class="companie__masura-titlu">Automatizare și precizie</h3>
         <p class="mb-0">Software-ul avansat de calibrare a culorilor minimizează pierderile de
         material la pornirea fiecărui tiraj. Astfel, fiecare coală de hârtie este folosită la
         potențialul maxim.</p>
       </li>
-    </ul>
+    </ol>
   </div>
 </section>
 
 <!-- Economie circulară -->
 <section id="economie-circulara" class="py-5">
   <div class="container">
-    <h2 class="display-5 fw-normal text-brand-lg mb-3">Economie circulară și managementul deșeurilor</h2>
-    <p class="mb-5 companie__intro">Sustenabilitatea înseamnă și responsabilitate până la capăt. În
-    tipografia noastră, deșeurile nu sunt doar aruncate, ci reintroduse în circuitul economic:</p>
+    <div class="row g-4 g-lg-5 align-items-end mb-5">
+      <div class="col-12 col-lg-7">
+        <h2 class="display-6 fw-normal text-brand-lg mb-0">Economie circulară și managementul
+        deșeurilor</h2>
+      </div>
+      <div class="col-12 col-lg-5">
+        <p class="mb-0 companie__intro">Sustenabilitatea înseamnă și responsabilitate până la capăt.
+        În tipografia noastră, deșeurile nu sunt doar aruncate, ci reintroduse în circuitul
+        economic:</p>
+      </div>
+    </div>
 
-    <ul class="companie__masuri companie__masuri--doua">
+    <ol class="companie__masuri companie__masuri--doua">
       <li class="companie__masura">
-        <h3 class="h5 text-brand-lg">Colectare selectivă strictă</h3>
+        <h3 class="companie__masura-titlu">Colectare selectivă strictă</h3>
         <p class="mb-0">Toate resturile de hârtie, carton, plăci de aluminiu și ambalaje sunt
         sortate și predate către centre specializate de reciclare.</p>
       </li>
       <li class="companie__masura">
-        <h3 class="h5 text-brand-lg">Optimizarea formatelor</h3>
+        <h3 class="companie__masura-titlu">Optimizarea formatelor</h3>
         <p class="mb-0">Calculăm layout-urile de tipar astfel încât pierderile de margine să fie
         minime, reducând la sursă volumul de deșeuri.</p>
       </li>
+    </ol>
+  </div>
+</section>
+
+<!--
+  Avantajele, din pagina cu același nume a prezentării.
+
+  În machetă cele opt sunt legate cu săgeți duble, patru pe rând. Săgeata este
+  desenată aici din CSS, între cutii, și dispare când rândul se rupe: pe două
+  coloane ar fi arătat spre marginea ecranului, iar pe una ar fi arătat în jos
+  o săgeată care indică dreapta.
+-->
+<section id="avantaje" class="py-5 bg-body-tertiary">
+  <div class="container">
+    <h2 class="display-6 fw-normal text-brand-lg text-center mb-5">Avantaje</h2>
+
+    <ul class="avantaje">
+      <li class="avantaj">Analizăm<br>cu atenție</li>
+      <li class="avantaj">Propunem<br>soluții eficiente</li>
+      <li class="avantaj">Design<br>grafic</li>
+      <li class="avantaj">Producție<br>internă</li>
+      <li class="avantaj">Finisaje<br>de lux</li>
+      <li class="avantaj">Controlul<br>calității</li>
+      <li class="avantaj">Prețuri<br>competitive</li>
+      <li class="avantaj">Livrare<br>rapidă</li>
     </ul>
   </div>
 </section>
 
-<!-- Partenerul tău pentru un brand responsabil -->
-<section id="brand-responsabil" class="py-5 bg-body-tertiary">
-  <div class="container">
-    <h2 class="display-5 fw-normal text-brand-lg mb-3">Partenerul tău pentru un brand responsabil</h2>
-    <p class="h4 fw-normal lh-base mb-0 companie__deschidere">Alegând serviciile noastre de tipar,
-    alegi să transmiți mesajul brandului tău într-un mod etic și curat. Fie că este vorba despre
-    ambalaje inovatoare, cataloage corporate sau materiale publicitare, transformăm viziunea ta în
-    realitate, respectând natura.</p>
+<!-- Partenerul tău pentru un brand responsabil: promisiunea, pe fundal de brand -->
+<section id="brand-responsabil" class="bg-brand py-5">
+  <div class="container text-center">
+    <p class="eticheta-sectiune eticheta-sectiune--pe-brand">Partenerul tău pentru un brand responsabil</p>
+    <p class="companie__deschidere mx-auto mb-0">Alegând serviciile noastre de tipar, alegi să
+    transmiți mesajul brandului tău într-un mod etic și curat. Fie că este vorba despre ambalaje
+    inovatoare, cataloage corporate sau materiale publicitare, transformăm viziunea ta în realitate,
+    respectând natura.</p>
   </div>
 </section>
 
 <!--
   Cronologia.
 
-  Se derulează pe orizontală: cu degetul, cu mouse-ul ținut apăsat, cu săgețile
-  de pe margini sau cu tastele săgeți când banda are focus.
+  Refăcută pe fundal deschis: pe albastru, punctele și linia punctată — desenate
+  în culoarea textului obișnuit — cădeau sub 2:1 și abia se ghiceau. Aici linia
+  este de brand pe alb, iar anii sunt scriși în albastru.
 
-  Anii și textele sunt cele din pagina „Dezvoltare" a PREZENTARE.pdf, cuvânt cu
-  cuvânt.
+  Pe ecran lat cele șase opriri intră toate, deci nu se derulează nimic și
+  săgețile nu apar. Scriptul le aprinde doar când banda chiar depășește ecranul.
+
+  Anii și textele sunt cele din pagina „Dezvoltare" a PREZENTARE.pdf.
 -->
-<section id="evolutie" class="bg-brand py-5">
+<section id="evolutie" class="py-5">
   <div class="container">
-    <h2 class="display-4 fw-normal text-center mb-3">Dezvoltare</h2>
-    <p class="text-center mx-auto mb-4 evolutie__intro">De la primele mașini de tipar offset la
-    linia automată de ștanțat, lipit și aplicare a ferestrelor.</p>
+    <h2 class="display-6 fw-normal text-brand-lg text-center mb-2">Dezvoltare</h2>
+    <p class="text-center mx-auto mb-5 evolutie__intro">De la primele mașini de tipar offset la linia
+    automată de ștanțat, lipit și aplicare a ferestrelor.</p>
   </div>
 
   <div class="cronologie">
@@ -130,32 +174,26 @@
     <div class="cronologie__pista" tabindex="0" role="region" aria-label="Cronologia Grafoanaytis, listă derulabilă pe orizontală">
       <ol class="cronologie__lista">
         <li class="cronologie__oprire">
-          <span class="cronologie__punct" aria-hidden="true"></span>
           <p class="cronologie__an">2004</p>
           <p class="cronologie__text">Primele mașini de tipar offset și digital.</p>
         </li>
         <li class="cronologie__oprire">
-          <span class="cronologie__punct" aria-hidden="true"></span>
           <p class="cronologie__an">2007</p>
           <p class="cronologie__text">Dezvoltarea primelor soluții de ambalare personalizată.</p>
         </li>
         <li class="cronologie__oprire">
-          <span class="cronologie__punct" aria-hidden="true"></span>
           <p class="cronologie__an">2010</p>
           <p class="cronologie__text">Prima mașină de ștanțat automată.</p>
         </li>
         <li class="cronologie__oprire">
-          <span class="cronologie__punct" aria-hidden="true"></span>
           <p class="cronologie__an">2014</p>
           <p class="cronologie__text">Retehnologizarea tiparului.</p>
         </li>
         <li class="cronologie__oprire">
-          <span class="cronologie__punct" aria-hidden="true"></span>
           <p class="cronologie__an">2020</p>
           <p class="cronologie__text">Achiziționarea primei linii automate de imprimare folio la cald.</p>
         </li>
-        <li class="cronologie__oprire">
-          <span class="cronologie__punct" aria-hidden="true"></span>
+        <li class="cronologie__oprire cronologie__oprire--acum">
           <p class="cronologie__an">2026</p>
           <p class="cronologie__text">Punerea în producție a mașinilor automate de ștanțat, lipit și
           aplicare automată a ferestrelor pentru cutii.</p>
@@ -174,14 +212,11 @@
   numele mic deasupra, fraza despre utilaje sub el, apoi cele trei cifre pe un
   rând — totul centrat, cum a cerut clientul („aranjat ca în dreapta").
 -->
-<section id="capacitate" class="py-5">
-  <div class="container">
-    <h2 class="display-4 fw-normal text-brand-lg text-center mb-5">Capacitate de producție</h2>
-
-    <p class="text-uppercase fw-semibold text-brand-lg text-center mb-2 capacitate__eticheta">Tehnologie modernă</p>
-    <p class="h4 fw-normal lh-base text-center mx-auto mb-5 capacitate__descriere">Mașini automate
-    (fabricație 2026), de mare productivitate pentru producerea ambalajelor și înnobilarea
-    tiparului.</p>
+<section id="capacitate" class="py-5 bg-body-tertiary">
+  <div class="container text-center">
+    <p class="eticheta-sectiune">Tehnologie modernă</p>
+    <p class="h3 fw-normal lh-base mx-auto mb-5 capacitate__descriere">Mașini automate (fabricație
+    2026), de mare productivitate pentru producerea ambalajelor și înnobilarea tiparului.</p>
 
     <!--
       Cifrele sunt perechi „ce" și „cât", deci o listă de definiții. Într-un

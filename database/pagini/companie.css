@@ -7,14 +7,17 @@
  * întunecat. Voalul nu este decor: titlul este alb, iar fără el contrastul ar
  * depinde de ce se nimerește în fotografie. Cu voalul la 55% negru, albul stă
  * peste 7:1 chiar și pe o zonă complet deschisă a imaginii.
+ *
+ * Înălțimea nu mai este plafonată, ci minimă: titlul de acum se rupe pe două
+ * rânduri pe ecran mediu și are sub el un îndemn, deci cu plafon textul ar fi
+ * ieșit din fotografie.
  */
 .antet-pagina {
   position: relative;
   display: flex;
   align-items: center;
-  height: 50vh;
-  min-height: 320px;
-  max-height: 412px;
+  min-height: min(50vh, 412px);
+  padding: 3.5rem 0;
   overflow: hidden;
   background: #2b2b2b;
 }
@@ -46,16 +49,7 @@
   z-index: 1;
 }
 
-/*
- * Antetul are acum și un îndemn sub titlu, nu doar titlul.
- *
- * Titlul este pe trei cuvinte cu punct între ele, deci se rupe oricum bine;
- * îndemnul are nevoie de o limită de lățime, altfel se întinde pe toată
- * pagina și se citește greu sub un titlu centrat.
- */
-.antet-pagina h1 {
-  text-wrap: balance;
-}
+.antet-pagina h1 { text-wrap: balance; }
 
 .antet-pagina__indemn {
   max-width: 46ch;
@@ -63,87 +57,362 @@
   font-size: clamp(1.125rem, 1rem + .4vw, 1.5rem);
 }
 
-/*
- * Antetul crește cu textul.
- *
- * Regula de mai sus îi dă înălțime fixă, cu plafon 412px, scrisă pentru un
- * antet cu titlu singur. Titlul de acum se rupe pe două rânduri pe ecran
- * mediu, iar sub el mai vine un rând de îndemn: cu înălțime plafonată, textul
- * ar fi ieșit din fotografie. Aici plafonul devine minim, deci antetul se
- * întinde cât îi trebuie și rămâne la fel de înalt când textul încape.
- */
-.antet-pagina {
-  height: auto;
-  max-height: none;
-  min-height: min(50vh, 412px);
-  padding: 3.5rem 0;
+/* ── Eticheta de deasupra secțiunilor ────────────────────────────────────
+   Numele secțiunii, mic și distanțat, peste fraza mare. Așa fraza poate fi
+   ea titlul secțiunii, iar eticheta rămâne reper vizual, nu al doilea titlu.
+   ────────────────────────────────────────────────────────────────────── */
+
+.eticheta-sectiune {
+  font-size: .8125rem;
+  font-weight: 600;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--text-brand);
+  margin-bottom: 1rem;
 }
 
-/* ── Textele paginii ─────────────────────────────────────────────────── */
+.eticheta-sectiune--pe-brand { color: var(--brand-100); }
+
+/* ── Frazele mari ────────────────────────────────────────────────────── */
 
 /*
- * Paragrafele de deschidere ale secțiunilor stau la mărimea unui subtitlu,
- * dar pe rânduri de lungime normală: peste ~62 de semne pe rând, ochiul
- * pierde începutul rândului următor.
+ * Fraza de deschidere a unei secțiuni: mărimea unui subtitlu, pe rânduri de
+ * lungime normală. Peste ~55 de semne pe rând la mărimea asta, ochiul pierde
+ * începutul rândului următor.
  */
-.companie__deschidere,
+.companie__deschidere {
+  max-width: 40ch;
+  font-size: clamp(1.375rem, 1rem + 1.2vw, 2rem);
+  font-weight: 400;
+  line-height: 1.4;
+}
+
+.bg-brand .companie__deschidere { color: #FFFFFF; }
+
 .companie__intro {
-  max-width: 62ch;
+  font-size: 1.0625rem;
+  line-height: 1.65;
+  color: var(--ink-muted);
 }
 
-/*
- * Fraza care introduce lista de măsuri stă între un titlu de 48px și blocuri
- * de proză de 16px. La mărimea prozei se lipea de ele și părea deja prima
- * măsură; puțin mai mare, se citește ca ce este: o introducere.
- */
-.companie__intro {
-  font-size: 1.125rem;
-  line-height: 1.6;
-}
+/* ── Măsurile ────────────────────────────────────────────────────────── */
 
-/*
- * Măsurile — trei la tehnologie, două la economia circulară.
- *
- * Lista își pierde bulinele, dar nu și rolul: rămâne „ul", deci un cititor de
- * ecran anunță câte măsuri urmează. Coloanele se rup singure sub 992px.
- */
 .companie__masuri {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 2rem;
+  gap: 2.5rem 2rem;
   list-style: none;
+  counter-reset: masura;
   margin: 0;
   padding: 0;
 }
 
 .companie__masuri--doua {
   grid-template-columns: repeat(2, 1fr);
-  max-width: 60rem;
+  max-width: 58rem;
 }
 
 @media (max-width: 991.98px) {
   .companie__masuri,
-  .companie__masuri--doua { grid-template-columns: 1fr; gap: 1.75rem; }
+  .companie__masuri--doua { grid-template-columns: 1fr; gap: 2rem; }
 }
 
 /*
- * Linia din capul fiecărei măsuri ține locul bulinei scoase: fără ea, trei
- * blocuri de text alăturate par un singur paragraf rupt în coloane.
+ * Numărul din capul fiecărei măsuri.
+ *
+ * Este desenat din CSS, nu scris în pagină: lista este deja „ol", deci cine
+ * ascultă pagina aude oricum „unu din trei". Scris ca text, l-ar fi auzit de
+ * două ori.
  */
 .companie__masura {
-  padding-top: 1.25rem;
+  counter-increment: masura;
+  padding-top: 1.5rem;
   border-top: 2px solid var(--fill-brand);
+}
+
+.companie__masura::before {
+  content: "0" counter(masura);
+  display: block;
+  font-size: 1.75rem;
+  font-weight: 300;
+  line-height: 1;
+  color: var(--brand-300);
+  margin-bottom: .75rem;
+}
+
+.companie__masura-titlu {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--text-brand-large);
+  margin-bottom: .5rem;
+}
+
+/* ── Avantajele ──────────────────────────────────────────────────────── */
+
+/*
+ * Patru pe rând, ca în machetă, cu săgeata dublă între ele.
+ *
+ * Săgeata este desenată din CSS pe fiecare cutie, spre dreapta, și se stinge
+ * la ultima de pe rând — altfel ar fi arătat spre marginea ecranului. Sub
+ * 992px, unde rândul se rupe, dispare de tot: o săgeată care arată dreapta
+ * într-o coloană verticală minte.
+ */
+.avantaje {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 3rem 0;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.avantaj {
+  position: relative;
+  text-align: center;
+  font-size: clamp(1.0625rem, .9rem + .5vw, 1.5rem);
+  line-height: 1.35;
+  color: var(--ink);
+  padding: 0 2.75rem;
+}
+
+@media (min-width: 992px) {
+  /*
+   * Săgeata: trei galoane, ca în machetă, desenate ca imagine SVG scrisă în
+   * CSS. Prima încercare le tăia dintr-un singur dreptunghi cu „clip-path" și
+   * ieșea o pată: un contur cu douăzeci de vârfuri, în procente, nu poate
+   * descrie trei forme separate. Aici fiecare galon este o cale a lui,
+   * desenată în coordonate proprii, iar culorile se închid de la stânga la
+   * dreapta, tot ca în machetă.
+   */
+  .avantaj::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: -.25rem;
+    width: 2.375rem;
+    height: 1.25rem;
+    transform: translateY(-50%);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 38 20'%3E%3Cpath d='M0 0h7l8 10-8 10H0l8-10z' fill='%239AAADD'/%3E%3Cpath d='M11 0h7l8 10-8 10h-7l8-10z' fill='%234161C8'/%3E%3Cpath d='M22 0h7l8 10-8 10h-7l8-10z' fill='%231F3D9D'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-size: contain;
+  }
+
+  .avantaj:nth-child(4n)::after { display: none; }
+}
+
+@media (max-width: 991.98px) {
+  .avantaje { grid-template-columns: repeat(2, 1fr); gap: 2.25rem 1rem; }
+  .avantaj { padding: 0 .75rem; }
+}
+
+@media (max-width: 575.98px) {
+  .avantaje { grid-template-columns: 1fr; gap: 1.5rem; }
+}
+
+/* ── Cronologia ──────────────────────────────────────────────────────────
+   Bandă orizontală pe fundal deschis. Pe ecran lat cele șase opriri intră
+   toate, deci nu se derulează nimic; sub 1200px se derulează, iar scriptul
+   aprinde atunci săgețile.
+   ────────────────────────────────────────────────────────────────────── */
+
+.cronologie {
+  position: relative;
+}
+
+.cronologie__pista {
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-behavior: smooth;
+  scroll-snap-type: x proximity;
+  /* Bara de derulare a sistemului ar fi tăiat un rând din textul ultimei opriri. */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.cronologie__pista::-webkit-scrollbar { display: none; }
+
+/* Cât se trage cu mouse-ul, cursorul spune că banda se mișcă. */
+.cronologie__pista.se-trage {
+  scroll-behavior: auto;
+  cursor: grabbing;
+  scroll-snap-type: none;
+}
+
+/*
+ * Banda poate fi derulată, deci trebuie să poată primi focus: altfel cine
+ * navighează de la tastatură nu ajunge niciodată la opririle din dreapta.
+ */
+.cronologie__pista:focus-visible {
+  outline: 2px solid var(--brand-900);
+  outline-offset: 2px;
+}
+
+.cronologie__lista {
+  display: flex;
+  gap: 0;
+  margin: 0;
+  padding: 0 1rem;
+  list-style: none;
+}
+
+@media (min-width: 992px) {
+  /* Loc pentru săgeți, când apar. */
+  .cronologie__lista { padding: 0 3.5rem; }
+}
+
+/*
+ * Opririle sunt egale și se întind pe toată lățimea când încap.
+ *
+ * „flex: 1 0 15rem" în loc de „flex: 0 0 17rem": pe ecran lat cele șase umplu
+ * banda fără gol la dreapta, iar pe ecran îngust nu coboară sub 15rem, deci
+ * se derulează în loc să se strivească.
+ */
+.cronologie__oprire {
+  /*
+   * Crește, dar nu se strivește: pe ecran lat cele șase umplu banda fără gol
+   * la dreapta și fără derulare, iar pe telefon rămân la 12rem și se derulează
+   * în loc să se subțieze până la un cuvânt pe rând.
+   */
+  flex: 1 0 12rem;
+  scroll-snap-align: start;
+  position: relative;
+  padding: 2.5rem 1.5rem 0 0;
+}
+
+/*
+ * Linia continuă care leagă opririle, cu bulina anului pe ea.
+ *
+ * Pe fundalul albastru de dinainte, linia și bulina erau desenate în culoarea
+ * textului obișnuit: 1,9:1, adică o linie pe care trebuia s-o cauți. Aici sunt
+ * albastru de brand pe alb — 8,3:1 bulina, 2,6:1 linia, care este decor, nu
+ * informație: anul scris dedesubt spune totul și fără ea.
+ */
+.cronologie__oprire::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: .5rem;
+  height: 2px;
+  background: var(--brand-200);
+}
+
+.cronologie__oprire:last-child::before { right: 1.5rem; }
+
+.cronologie__oprire::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1.125rem;
+  height: 1.125rem;
+  border-radius: 50%;
+  background: var(--fill-brand);
+}
+
+/* Anul în curs: bulină plină cu inel, ca să se vadă unde am ajuns. */
+.cronologie__oprire--acum::after {
+  box-shadow: 0 0 0 5px var(--brand-100);
+}
+
+.cronologie__an {
+  font-size: clamp(2rem, 1.4rem + 1.9vw, 3rem);
+  font-weight: 300;
+  line-height: 1;
+  color: var(--text-brand-large);
+  margin: 0 0 .75rem;
+}
+
+.cronologie__oprire--acum .cronologie__an { font-weight: 500; }
+
+.cronologie__text {
+  font-size: .9375rem;
+  line-height: 1.6;
+  color: var(--ink);
+  margin-bottom: 0;
+  padding-right: .5rem;
+}
+
+/*
+ * Voalurile de la capete și săgețile există doar cât timp banda chiar se
+ * derulează. Clasa o pune scriptul, după ce măsoară — nu din pornire.
+ */
+.cronologie::before,
+.cronologie::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 4rem;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity .2s ease;
+}
+
+.cronologie::before {
+  left: 0;
+  background: linear-gradient(90deg, var(--surface) 0%, rgba(255, 255, 255, 0) 100%);
+}
+
+.cronologie::after {
+  right: 0;
+  background: linear-gradient(270deg, var(--surface) 0%, rgba(255, 255, 255, 0) 100%);
+}
+
+.cronologie--pornita::before,
+.cronologie--pornita::after { opacity: 1; }
+
+/* ── Săgețile ────────────────────────────────────────────────────────── */
+
+.cronologie__sageata {
+  position: absolute;
+  top: 1.75rem;
+  z-index: 2;
+  width: 44px;
+  height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--fill-brand);
+  border-radius: 50%;
+  background: var(--surface);
+  color: var(--text-brand);
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: background-color .18s ease, color .18s ease;
+}
+
+.cronologie__sageata:hover:not(:disabled) {
+  background: var(--fill-brand);
+  color: var(--on-fill-brand);
+}
+
+.cronologie__sageata:disabled {
+  opacity: .35;
+  cursor: default;
+}
+
+.cronologie__sageata--inapoi  { left: .5rem; }
+.cronologie__sageata--inainte { right: .5rem; }
+
+/*
+ * Un buton care nu comandă nimic este mai rău decât niciun buton: săgețile
+ * apar numai după ce scriptul constată că banda chiar depășește ecranul.
+ */
+.cronologie:not(.cronologie--pornita) .cronologie__sageata {
+  display: none;
+}
+
+.evolutie__intro {
+  max-width: 62ch;
+  color: var(--ink-muted);
 }
 
 /* ── Capacitatea de producție ────────────────────────────────────────── */
 
-.capacitate__descriere {
-  max-width: 52ch;
-}
-
-.capacitate__eticheta {
-  letter-spacing: .08em;
-}
+.capacitate__descriere { max-width: 52ch; }
 
 /*
  * Cele trei cifre, așezate ca în pagina „Producție" a prezentării: numele
@@ -156,7 +425,6 @@
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 1.5rem 1rem;
-  /* Trei cifre pe toată lățimea containerului s-ar fi rărit prea mult. */
   max-width: 46rem;
   margin: 0 auto;
   text-align: center;
@@ -188,211 +456,9 @@
   .capacitate__cifre { grid-template-columns: 1fr; gap: 1rem; }
 }
 
-.evolutie__intro {
-  max-width: 62ch;
-}
-
-/* ── Cronologia ──────────────────────────────────────────────────────────
-   Bandă derulabilă pe orizontală, cu opriri de lățime fixă.
-   ────────────────────────────────────────────────────────────────────── */
-
-.cronologie {
-  position: relative;
-}
-
-.cronologie__pista {
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  /*
-   * Aceeași valoare ca marginea din stânga a listei.
-   *
-   * Fără ea, agățarea alinia prima oprire la marginea ecranului și derula
-   * peste marginea interioară: banda pornea deja mișcată, iar săgeata înapoi
-   * rămânea aprinsă fiindcă poziția de pornire nu mai era zero.
-   */
-  scroll-padding-left: 1rem;
-  /* Bara de derulare ar tăia banda în două; derularea se face cu degetul,
-     cu mouse-ul ținut apăsat, cu săgețile de pe margini sau de la tastatură. */
-  scrollbar-width: none;
-  cursor: grab;
-}
-
-.cronologie__pista::-webkit-scrollbar {
-  display: none;
-}
-
-.cronologie__pista.se-trage {
-  cursor: grabbing;
-  scroll-snap-type: none;
-}
-
-/*
- * Banda poate fi derulată, deci trebuie să poată primi focus: altfel cine
- * navighează de la tastatură nu ajunge niciodată la opririle din dreapta.
- */
-.cronologie__pista:focus-visible {
-  outline: 2px solid var(--ink);
-  outline-offset: -2px;
-}
-
-/*
- * Marginile benzii.
- *
- * Pe ecran lat lasă loc săgeților, care stau pe margini: fără cei 4,5rem,
- * săgeata acoperea primul an. Pe ecran îngust nu are rost — acolo săgețile
- * sunt ascunse, iar 72px de margine dintr-un telefon de 390px ar fi mâncat
- * un sfert din bandă.
- */
-.cronologie__lista {
-  display: flex;
-  gap: 0;
-  margin: 0;
-  padding: 0 1rem;
-  list-style: none;
-}
-
-@media (min-width: 992px) {
-  .cronologie__lista {
-    padding: 0 4.5rem;
-  }
-}
-
-.cronologie__oprire {
-  flex: 0 0 17rem;
-  scroll-snap-align: start;
-  padding: 0 1.25rem;
-  position: relative;
-}
-
-/*
- * Linia punctată care leagă opririle. Se desenează pe fiecare oprire, de la
- * punct spre dreapta, ca să se întindă exact cât lista — nu mai mult.
- */
-.cronologie__oprire::before {
-  content: "";
-  position: absolute;
-  left: 1.25rem;
-  right: 0;
-  top: .375rem;
-  height: 2px;
-  background-image: radial-gradient(circle, var(--ink) 1px, transparent 1px);
-  background-size: 8px 2px;
-  background-repeat: repeat-x;
-  opacity: .45;
-}
-
-.cronologie__oprire:last-child::before {
-  display: none;
-}
-
-.cronologie__punct {
-  display: block;
-  width: .875rem;
-  height: .875rem;
-  border-radius: 50%;
-  background: var(--ink);
-  position: relative;
-  z-index: 1;
-}
-
-.cronologie__an {
-  font-size: clamp(2.5rem, 1.6rem + 2.6vw, 4rem);
-  font-weight: 300;
-  line-height: 1;
-  margin: 1rem 0 .5rem;
-}
-
-.cronologie__text {
-  font-size: .9375rem;
-  line-height: 1.6;
-  margin-bottom: 0;
-}
-
-/*
- * Voaluri la capete.
- *
- * O bandă derulabilă arată mereu o oprire tăiată la margine. Fără voal,
- * tăietura pare o greșeală de așezare; cu el, se citește ca „mai urmează".
- * Nu prind clicuri, ca să nu fure apăsarea de pe săgeți.
- */
-.cronologie::before,
-.cronologie::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  width: 5rem;
-  z-index: 1;
-  pointer-events: none;
-}
-
-.cronologie::before {
-  left: 0;
-  background: linear-gradient(90deg, var(--fill-brand) 0%, rgba(31, 61, 157, 0) 100%);
-}
-
-.cronologie::after {
-  right: 0;
-  background: linear-gradient(270deg, var(--fill-brand) 0%, rgba(31, 61, 157, 0) 100%);
-}
-
-/* Săgețile de pe margini */
-.cronologie__sageata {
-  position: absolute;
-  top: 2.75rem;
-  z-index: 2;
-  width: 44px;
-  height: 44px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid var(--ink);
-  border-radius: 0;
-  background: var(--fill-brand);
-  /*
-   * Alb, nu „--ink". Săgeata avea text închis fiindcă umplerea era portocaliul
-   * pal; pe albastru aceeași pereche cade la 1,63:1, adică o săgeată care nu se
-   * mai vede. Alb pe albastru: 9,49:1.
-   */
-  color: var(--on-fill-brand);
-  font-size: 1.5rem;
-  line-height: 1;
-  cursor: pointer;
-}
-
-/* La hover se inversează: fundal închis, semn în tenta palidă a brandului — 9,36:1.
-   „--fill-brand" pe „--ink" ar da 1,63:1, din același motiv ca mai sus. */
-.cronologie__sageata:hover:not(:disabled) {
-  background: var(--ink);
-  color: var(--brand-200);
-}
-
-.cronologie__sageata:disabled {
-  opacity: .3;
-  cursor: default;
-}
-
-.cronologie__sageata--inapoi  { left: 1rem; }
-.cronologie__sageata--inainte { right: 1rem; }
-
-/* Fără JavaScript nu au ce comanda, deci nu se arată deloc. */
-.cronologie:not(.cronologie--pornita) .cronologie__sageata {
-  display: none;
-}
-
-/*
- * Sub 992px săgețile nu au unde să stea fără să acopere anii, iar acolo oricum
- * banda se trage cu degetul. Voalul de la marginea din dreapta arată că
- * urmează ceva.
- */
-@media (max-width: 991.98px) {
-  .cronologie__sageata {
-    display: none;
-  }
-}
-
-@media (min-width: 992px) {
-  .cronologie__pista {
-    scroll-padding-left: 4.5rem;
-  }
+@media (prefers-reduced-motion: reduce) {
+  .cronologie__pista { scroll-behavior: auto; }
+  .cronologie__sageata,
+  .cronologie::before,
+  .cronologie::after { transition: none; }
 }

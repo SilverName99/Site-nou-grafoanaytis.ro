@@ -75,7 +75,7 @@
 -->
 
 <!-- Text stânga, fotografie lipită de marginea dreaptă -->
-<section id="despre" class="banda-alternanta banda-alternanta--foto-dreapta">
+<section id="despre" class="banda-alternanta banda-alternanta--foto-dreapta banda-alternanta--foto-plafon">
   <div class="container">
     <div class="row">
       <div class="col-12 col-md-6 banda-alternanta__text align-self-center">
@@ -148,26 +148,39 @@
   Cifrele companiei.
 
   Punctul 24 din revizie spune că pentru rubrica asta clientul trimite un
-  design separat, deci aici rămân doar cifrele pe care le-a confirmat deja.
-  A treia, pe care nu ne-a dat-o nimeni, este marcată, nu inventată.
+  design separat. Până atunci stau aici patru cifre pe care le putem dovedi,
+  nu marcaje goale:
+
+  - 2004 este anul din certificatul ISO și din prezentare;
+  - 10.000 și 80.000 sunt capacitățile din pagina „Producție" a prezentării;
+  - 19 este numărul siglelor de client de mai jos, pe pagina asta — deci o
+    cifră pe care oricine o poate număra singur.
+
+  Varianta de dinainte avea „50×70 cm, format maxim offset", care spune ceva
+  doar unui tipograf, și un „[DE COMPLETAT] clienți deserviți" care nu spunea
+  nimic nimănui.
 -->
 <section id="cifre" class="py-5">
   <div class="container">
-    <h2 class="display-5 fw-normal text-center mb-4">Cifrele companiei</h2>
-    <div class="row text-center g-4">
-      <div class="col-12 col-lg-4">
-        <p class="display-3 fw-semibold text-brand-lg mb-0">2004</p>
-        <p class="text-uppercase fw-semibold small text-secondary">anul înființării</p>
+    <h2 class="display-5 fw-normal text-center mb-5">Cifrele companiei</h2>
+    <dl class="cifre">
+      <div class="cifra">
+        <dd>2004</dd>
+        <dt>anul înființării</dt>
       </div>
-      <div class="col-12 col-lg-4">
-        <p class="display-3 fw-semibold text-brand-lg mb-0">50×70</p>
-        <p class="text-uppercase fw-semibold small text-secondary">cm, format maxim offset</p>
+      <div class="cifra">
+        <dd>10.000 <span>coli/oră</span></dd>
+        <dt>tipar și ștanțare</dt>
       </div>
-      <div class="col-12 col-lg-4">
-        <p class="display-3 fw-semibold text-brand-lg mb-0">[DE COMPLETAT]</p>
-        <p class="text-uppercase fw-semibold small text-secondary">clienți deserviți</p>
+      <div class="cifra">
+        <dd>80.000 <span>cutii/oră</span></dd>
+        <dt>formare și lipire</dt>
       </div>
-    </div>
+      <div class="cifra">
+        <dd>19</dd>
+        <dt>branduri care ne-au ales</dt>
+      </div>
+    </dl>
   </div>
 </section>
 
@@ -214,8 +227,13 @@
       tastatură, ca sigla privită să nu fugă, și se oprește de tot pentru cine
       a cerut mai puțină mișcare din sistemul de operare. Butonul de oprire îl
       pune scriptul paginii, ca la filmul din hero (WCAG 2.2.2).
+
+      Banda se poate și trage cu mâna. Fiind o zonă derulabilă, primește focus
+      din tastatură — altfel cine nu folosește mouse-ul n-ar ajunge niciodată
+      la siglele din dreapta — și are un nume, ca să se știe unde a ajuns.
     -->
-    <div class="carusel-clienti" data-carusel-clienti>
+    <div class="carusel-clienti" data-carusel-clienti
+         tabindex="0" role="region" aria-label="Siglele clienților, bandă derulabilă pe orizontală">
       <ul class="carusel-clienti__banda">
         <li class="carusel-clienti__element">
           <img src="/uploads/gallery/client-lidl.webp" alt="Lidl" loading="lazy">

@@ -242,20 +242,38 @@
     var pozitie = 0;
     var ceas = null;
 
+    /*
+     * Trecerea de la un mesaj la altul, în doi timpi.
+     *
+     * Mesajul care pleacă urcă și se stinge; cel care vine urcă din jos și se
+     * aprinde. Între ei textul se schimbă într-un moment în care nu se vede
+     * nimic, iar poziția de pornire a celui nou se pune cu tranziția oprită —
+     * altfel browserul ar anima și saltul de jos, și s-ar vedea un tremurat.
+     *
+     * „offsetHeight" citit între cele două stări nu este de prisos: forțează
+     * browserul să recalculeze acum, deci starea de pornire chiar există
+     * înainte de a fi schimbată. Fără el, cele două schimbări s-ar contopi
+     * într-un singur cadru și textul ar apărea brusc, fără drum.
+     */
     function arata(index) {
-      cutie.setAttribute('data-in-schimbare', '');
+      cutie.setAttribute('data-iese', '');
+
       window.setTimeout(function () {
         titlu.textContent = mesaje[index][0];
         subtitlu.textContent = mesaje[index][1];
-        cutie.removeAttribute('data-in-schimbare');
-      }, 400);
+
+        cutie.removeAttribute('data-iese');
+        cutie.setAttribute('data-asezare', '');
+        void text.offsetHeight;
+        cutie.removeAttribute('data-asezare');
+      }, 320);
     }
 
     function porneste() {
       ceas = window.setInterval(function () {
         pozitie = (pozitie + 1) % mesaje.length;
         arata(pozitie);
-      }, 6000);
+      }, 4200);
     }
 
     function opreste() {
@@ -290,11 +308,150 @@
       return;
     }
 
+    var banda = carusel.querySelector('.carusel-clienti__banda');
+    if (!banda) {
+      return;
+    }
+
+    /*
+     * Derularea se face din poziția de derulare a cutiei, nu dintr-o animație
+     * CSS pe bandă.
+     *
+     * Varianta cu „@keyframes translateX" mergea, dar nu putea fi apucată cu
+     * mâna: transformarea este scrisă de animație, iar o tragere ar fi trebuit
+     * să i se suprapună, ceea ce înseamnă fie oprirea animației și recalcularea
+     * poziției la fiecare apăsare, fie două surse de adevăr pentru aceeași
+     * mișcare. Aici mișcarea este una singură — „scrollLeft" — iar tragerea,
+     * degetul, rotița și tastele o schimbă toate la fel.
+     *
+     * Lista este dublată în pagină, deci la jumătatea lățimii banda arată
+     * exact ca la început: scăzând jumătatea când o depășim, bucla nu se vede.
+     */
+    carusel.classList.add('carusel-clienti--tragere');
+
+    /* 98 de pixeli pe secundă: aceeași viteză ca animația de dinainte. */
+    var VITEZA = 98 / 1000;
+
+    var oprit = false;
+    var deasupra = false;
+    var seTrage = false;
+    var pornireX = 0;
+    var pornireScroll = 0;
+    var ultimulCadru = 0;
+
+    function jumatate() {
+      return banda.scrollWidth / 2;
+    }
+
+    function normalizeaza() {
+      var j = jumatate();
+      if (j <= 0) {
+        return;
+      }
+      if (carusel.scrollLeft >= j) {
+        carusel.scrollLeft -= j;
+      } else if (carusel.scrollLeft < 0) {
+        carusel.scrollLeft += j;
+      }
+    }
+
+    function cadru(acum) {
+      var trecut = ultimulCadru ? acum - ultimulCadru : 0;
+      ultimulCadru = acum;
+
+      /*
+       * Un salt mai mare de o zecime de secundă înseamnă filă revenită din
+       * fundal sau un cadru pierdut: banda ar sări. Îl tratăm ca pe un cadru
+       * obișnuit.
+       */
+      if (trecut > 100) {
+        trecut = 16;
+      }
+
+      if (!oprit && !deasupra && !seTrage && !miscareRedusa && !document.hidden) {
+        carusel.scrollLeft += VITEZA * trecut;
+        normalizeaza();
+      }
+
+      window.requestAnimationFrame(cadru);
+    }
+
+    window.requestAnimationFrame(cadru);
+
+    /* Sigla privită nu trebuie să fugă de sub cursor. */
+    carusel.addEventListener('pointerenter', function (e) {
+      if (e.pointerType !== 'touch') {
+        deasupra = true;
+      }
+    });
+    carusel.addEventListener('pointerleave', function () { deasupra = false; });
+    carusel.addEventListener('focusin', function () { deasupra = true; });
+    carusel.addEventListener('focusout', function () { deasupra = false; });
+
+    /* ── Tragerea cu mâna ─────────────────────────────────────────────── */
+
+    carusel.addEventListener('pointerdown', function (e) {
+      /*
+       * Pe ecran tactil derularea cu degetul o face browserul singur, mai bine
+       * decât am face-o noi: nu ne băgăm.
+       */
+      if (e.pointerType === 'touch') {
+        return;
+      }
+      seTrage = true;
+      pornireX = e.clientX;
+      pornireScroll = carusel.scrollLeft;
+      carusel.classList.add('se-trage');
+      carusel.setPointerCapture(e.pointerId);
+    });
+
+    carusel.addEventListener('pointermove', function (e) {
+      if (!seTrage) {
+        return;
+      }
+      /* Fără asta, mouse-ul ținut apăsat marchează siglele ca pe un text. */
+      e.preventDefault();
+      carusel.scrollLeft = pornireScroll - (e.clientX - pornireX);
+      normalizeaza();
+    });
+
+    function incheieTragerea(e) {
+      if (!seTrage) {
+        return;
+      }
+      seTrage = false;
+      carusel.classList.remove('se-trage');
+      if (e && e.pointerId !== undefined && carusel.hasPointerCapture(e.pointerId)) {
+        carusel.releasePointerCapture(e.pointerId);
+      }
+    }
+
+    carusel.addEventListener('pointerup', incheieTragerea);
+    carusel.addEventListener('pointercancel', incheieTragerea);
+
+    /*
+     * Fără rândul ăsta, tragerea nu funcționează deloc pe sigle.
+     *
+     * O imagine este, implicit, un obiect pe care browserul îl poate lua și
+     * duce în altă filă. La a doua mișcare cu butonul apăsat pornește „drag"-ul
+     * nativ, care fură pointerul și trimite „pointercancel" — adică exact
+     * evenimentul prin care noi încheiem tragerea. Se vedea ca o bandă care se
+     * mișcă doi-trei pixeli și se oprește.
+     */
+    carusel.addEventListener('dragstart', function (e) {
+      e.preventDefault();
+    });
+
+    /* ── Butonul de oprire ────────────────────────────────────────────── */
+
     /*
      * O mișcare pornită singură, mai lungă de cinci secunde, trebuie să poată
      * fi oprită de vizitator — WCAG 2.2.2, aceeași regulă ca la filmul de
      * fundal. Butonul se construiește din script, nu din markup: dacă banda nu
-     * se mișcă (mai puțină mișcare cerută din sistem), nu apare deloc.
+     * se mișcă singură, nu are ce opri.
+     *
+     * Tragerea rămâne însă și atunci: „mai puțină mișcare" înseamnă „nu porni
+     * tu nimic", nu „nu-l lăsa pe om să miște".
      */
     if (miscareRedusa) {
       return;
@@ -307,14 +464,9 @@
     buton.setAttribute('aria-pressed', 'false');
 
     buton.addEventListener('click', function () {
-      var oprit = carusel.hasAttribute('data-oprit');
-      if (oprit) {
-        carusel.removeAttribute('data-oprit');
-      } else {
-        carusel.setAttribute('data-oprit', '');
-      }
-      buton.textContent = oprit ? 'Oprește derularea' : 'Pornește derularea';
-      buton.setAttribute('aria-pressed', oprit ? 'false' : 'true');
+      oprit = !oprit;
+      buton.textContent = oprit ? 'Pornește derularea' : 'Oprește derularea';
+      buton.setAttribute('aria-pressed', oprit ? 'true' : 'false');
     });
 
     carusel.insertAdjacentElement('afterend', buton);

@@ -49,21 +49,17 @@ const PAGINI = [
     'companie' => 'Companie',
     'servicii' => 'Servicii',
     'produse' => 'Produse',
-    'servicii__tipar-offset' => 'Tipar offset',
-    'servicii__stantare-folio-embos' => 'Ștanțare, folio și emboss',
-    'servicii__lipire-cutii' => 'Lipire cutii',
-    'servicii__aplicare-ferestre' => 'Aplicare ferestre',
-    'servicii__tipar-digital' => 'Tipar digital',
-    'servicii__ambalaje' => 'Ambalaje',
-    'servicii__creatie-si-design' => 'Creație și design',
-    'servicii__separatie-de-culoare-pe-placi-offset-kodak' => 'Separație de culoare pe plăci offset (Kodak)',
-    'servicii__servicii-de-stantare' => 'Ștanțare',
-    'servicii__inscriptionare-folio-emboss' => 'Inscripționare Folio / Emboss',
-    'servicii__gravura-laser' => 'Gravură laser',
-    'servicii__asistenta' => 'Asistență',
-    'utilaje' => 'Utilaje',
+    /*
+     * Cele douăsprezece pagini „/servicii/<nume>" și pagina „/utilaje" au
+     * ieșit din listă la punctul 16 din revizie. Rândurile lor rămân însă în
+     * tabela „pages" pe serverele unde au fost deja semănate: scoaterea din
+     * listă nu șterge nimic. Pentru asta există scripts/sterge-pagini.php.
+     */
     'certificari' => 'Certificări',
     'contact' => 'Contact',
+    'termeni-si-conditii' => 'Termeni și condiții',
+    'politica-de-confidentialitate' => 'Politica de confidențialitate',
+    'politica-de-cookies' => 'Politica de cookies',
 ];
 
 $suprascrie = in_array('--suprascrie', $argv, true);

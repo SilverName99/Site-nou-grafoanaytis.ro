@@ -23,17 +23,31 @@
     return;
   }
 
-  cronologie.classList.add('cronologie--pornita');
-
   function pas() {
     return oprire.getBoundingClientRect().width || 272;
   }
 
   /*
-   * Un capăt atins înseamnă buton stins. Marja de o unitate acoperă rotunjirile
-   * de subpixel ale browserului, care altfel lasă butonul aprins degeaba.
+   * Săgețile apar doar dacă banda chiar depășește ecranul.
+   *
+   * Pe ecran lat cele șase opriri intră toate, deci nu era ce derula: rămâneau
+   * două butoane rotunde care nu făceau nimic. Măsurătoarea se reface la
+   * fiecare redimensionare, fiindcă lățimea unei opriri se schimbă cu ea.
+   *
+   * Marja de o unitate acoperă rotunjirile de subpixel ale browserului, care
+   * altfel raportează o depășire de o fracțiune de pixel.
+   */
+  function seDeruleaza() {
+    return pista.scrollWidth - pista.clientWidth > 1;
+  }
+
+  /*
+   * Un capăt atins înseamnă buton stins. Aceeași marjă de o unitate, din
+   * același motiv.
    */
   function actualizeazaSageti() {
+    cronologie.classList.toggle('cronologie--pornita', seDeruleaza());
+
     var maxim = pista.scrollWidth - pista.clientWidth;
     inapoi.disabled = pista.scrollLeft <= 1;
     inainte.disabled = pista.scrollLeft >= maxim - 1;

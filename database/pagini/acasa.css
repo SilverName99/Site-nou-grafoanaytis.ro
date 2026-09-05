@@ -132,25 +132,35 @@
   margin: 0;
   padding: .5rem 0;
   width: max-content;
-  /*
-   * Durata e legată de numărul de sigle, nu aleasă la ochi: 19 sigle × 2,2s
-   * dau o viteză la care ochiul apucă să citească fiecare siglă. Translația e
-   * de exact 50%, adică lungimea primei liste — acolo duplicatul se suprapune
-   * perfect peste original și bucla nu se vede.
-   */
-  animation: carusel-clienti 42s linear infinite;
 }
 
-@keyframes carusel-clienti {
-  from { transform: translateX(0); }
-  to   { transform: translateX(-50%); }
+/*
+ * Banda se poate apuca și trage.
+ *
+ * Clasa o pune scriptul, după ce preia derularea: fără JavaScript banda stă
+ * pe loc, iar un cursor de „apucă-mă" pe ceva care nu se mișcă ar fi o
+ * promisiune goală. Cu el, cutia devine derulabilă și cu degetul, și cu
+ * rotița, și cu tastele săgeți când are focus.
+ */
+.carusel-clienti--tragere {
+  overflow-x: auto;
+  cursor: grab;
+  /* Bara de derulare ar fi tăiat un rând sub sigle; mișcarea se vede oricum. */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 
-/* Sigla privită nu trebuie să fugă de sub cursor sau de sub focalizare. */
-.carusel-clienti:hover .carusel-clienti__banda,
-.carusel-clienti:focus-within .carusel-clienti__banda,
-.carusel-clienti[data-oprit] .carusel-clienti__banda {
-  animation-play-state: paused;
+.carusel-clienti--tragere::-webkit-scrollbar { display: none; }
+
+.carusel-clienti--tragere.se-trage {
+  cursor: grabbing;
+  /* Cât ține tragerea, siglele nu se selectează ca text. */
+  user-select: none;
+}
+
+.carusel-clienti--tragere:focus-visible {
+  outline: 2px solid var(--brand-900);
+  outline-offset: 2px;
 }
 
 .carusel-clienti__element {
@@ -234,18 +244,100 @@
   justify-content: center;
 }
 
-/* Trecerea dintre mesaje: stingere scurtă, fără mișcare pe orizontală. */
+/*
+ * Trecerea dintre mesaje: urcă și se stinge, apoi vine din jos și se aprinde.
+ *
+ * Mișcarea este pe verticală, nu pe orizontală: mesajele stau într-o coloană
+ * centrată peste film, iar o alunecare laterală ar fi trecut peste marginile
+ * ecranului pe telefon. Distanța este mică — 14px — cât să se vadă direcția,
+ * nu cât să sară textul.
+ *
+ * Subtitlul pleacă și vine cu o clipă în urma titlului. Diferența de 70ms nu
+ * se numără, dar se simte: cele două rânduri par legate, nu mutate deodată.
+ */
 .hero-mesaje__titlu,
 .hero-mesaje__subtitlu {
-  transition: opacity .4s ease;
+  transition: opacity .3s ease, transform .3s cubic-bezier(.22, .61, .36, 1);
 }
 
-.hero-mesaje[data-in-schimbare] .hero-mesaje__titlu,
-.hero-mesaje[data-in-schimbare] .hero-mesaje__subtitlu {
+.hero-mesaje__subtitlu {
+  transition-delay: .07s;
+}
+
+/* Mesajul care pleacă. */
+.hero-mesaje[data-iese] .hero-mesaje__titlu,
+.hero-mesaje[data-iese] .hero-mesaje__subtitlu {
   opacity: 0;
+  transform: translateY(-14px);
+}
+
+/*
+ * Poziția de pornire a mesajului care vine, pusă fără tranziție: este o
+ * așezare, nu o mișcare. Scriptul o pune și o scoate în același cadru.
+ */
+.hero-mesaje[data-asezare] .hero-mesaje__titlu,
+.hero-mesaje[data-asezare] .hero-mesaje__subtitlu {
+  opacity: 0;
+  transform: translateY(14px);
+  transition: none;
 }
 
 @media (prefers-reduced-motion: reduce) {
   .hero-mesaje__titlu,
-  .hero-mesaje__subtitlu { transition: none; }
+  .hero-mesaje__subtitlu { transition: none; transform: none; }
+}
+
+/* ── Cifrele companiei ───────────────────────────────────────────────────
+   Patru cifre pe un rând, fiecare cu ce înseamnă scris dedesubt.
+
+   Perechea „cât" și „ce" este o listă de definiții. „dd" stă înaintea lui
+   „dt" în pagină pentru că așa se citește — cifra mai întâi — iar ordinea
+   vizuală o dă grila, nu ordinea din HTML: legătura dintre termen și
+   definiție se păstrează oricum, prin faptul că sunt în același „div".
+   ────────────────────────────────────────────────────────────────────── */
+
+.cifre {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2rem 1.5rem;
+  margin: 0;
+}
+
+.cifra {
+  text-align: center;
+  padding-top: 1.25rem;
+  border-top: 2px solid var(--fill-brand);
+}
+
+.cifra dd {
+  margin: 0 0 .35rem;
+  font-size: clamp(2rem, 1.3rem + 2.2vw, 3.25rem);
+  font-weight: 600;
+  line-height: 1;
+  color: var(--text-brand-large);
+}
+
+/* Unitatea nu este cifra: rămâne mică, sub ea. */
+.cifra dd span {
+  display: block;
+  margin-top: .35rem;
+  font-size: .9375rem;
+  font-weight: 400;
+  color: var(--ink-muted);
+}
+
+.cifra dt {
+  font-size: .8125rem;
+  font-weight: 600;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+}
+
+@media (max-width: 991.98px) {
+  .cifre { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 480px) {
+  .cifre { grid-template-columns: 1fr; gap: 1.5rem; }
 }

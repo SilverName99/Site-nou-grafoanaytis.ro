@@ -858,6 +858,8 @@ if (trim($designHeaderOutput) !== '' && preg_match($mobileMenuTokenPattern, $des
     </style>
 </head>
 <body class="site-shell">
+<!-- Ținta butonului „înapoi sus". Fără ea, ancora n-ar avea unde duce focusul. -->
+<span id="inceput-pagina"></span>
     <?php if ($gtmEnabled && $gtmBodyCode !== ''): ?>
     <?= $gtmBodyCode ?>
     <?php elseif ($gtmEnabled && $gtmId !== ''): ?>
@@ -1893,5 +1895,67 @@ if (trim($designHeaderOutput) !== '' && preg_match($mobileMenuTokenPattern, $des
 $sertarJsVersion = @filemtime(__DIR__ . '/../public/assets/js/sertar-oferta.js') ?: time();
 ?>
 <script src="/assets/js/sertar-oferta.js?v=<?= $sertarJsVersion ?>" defer></script>
+
+<!--
+  Butonul „înapoi sus".
+
+  Stă în șablon, nu în subsolul din setări: subsolul se poate rescrie din
+  dashboard, iar butonul ar dispărea odată cu el. Aici este pe toate paginile.
+
+  Este ancoră, nu buton: dus până sus, focusul trebuie să ajungă la începutul
+  paginii, altfel următorul „Tab" continuă din subsol și vizitatorul care
+  navighează de la tastatură se trezește tot jos. „href" către „#" nu duce
+  focusul nicăieri; ancora către antet îl duce.
+
+  Apare abia după ce pagina a fost derulată o înălțime de ecran: sus, unde nu
+  are ce face, ar acoperi degeaba un colț.
+-->
+<a class="sus" href="#inceput-pagina" aria-label="Înapoi sus" hidden>
+  <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"
+       stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+    <path d="M12 19V5M5 12l7-7 7 7"/>
+  </svg>
+</a>
+
+<script>
+    (function () {
+        'use strict';
+
+        var buton = document.querySelector('.sus');
+        if (!buton) {
+            return;
+        }
+
+        /*
+         * Pragul este o înălțime de ecran, nu un număr fix de pixeli: pe un
+         * telefon 600px înseamnă o pagină întreagă derulată, pe un monitor mare
+         * abia jumătate de ecran.
+         */
+        function potriveste() {
+            var arata = window.scrollY > window.innerHeight;
+            buton.hidden = !arata;
+        }
+
+        potriveste();
+        window.addEventListener('scroll', potriveste, { passive: true });
+        window.addEventListener('resize', potriveste);
+
+        /*
+         * Derularea lină o face „scroll-behavior" din CSS, care ascultă și de
+         * „prefers-reduced-motion". Aici rămâne doar mutarea focusului: o
+         * ancoră duce privirea sus, dar focusul îl duce numai dacă ținta îl
+         * poate primi.
+         */
+        buton.addEventListener('click', function () {
+            var inceput = document.getElementById('inceput-pagina');
+            if (inceput) {
+                window.setTimeout(function () {
+                    inceput.setAttribute('tabindex', '-1');
+                    inceput.focus({ preventScroll: true });
+                }, 0);
+            }
+        });
+    })();
+</script>
 </body>
 </html>

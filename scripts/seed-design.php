@@ -61,7 +61,6 @@ $meniu = [
     /* Punctul 9 din revizie: Produse înaintea Serviciilor. */
     ['Produse', '/produse'],
     ['Servicii', '/servicii'],
-    ['Utilaje', '/utilaje'],
     ['Certificări', '/certificari'],
     ['Contact', '/contact'],
 ];
@@ -117,8 +116,13 @@ $header = <<<HTML
         Stătea doar în atributul „title", adică o vedea numai cine ținea
         cursorul pe siglă — pe telefon, nimeni. În macheta clientului este
         scrisă pe două rânduri, lângă emblemă.
+
+        Duce la pagina de start, ca și sigla firmei: așa a cerut clientul.
+        Sunt două legături către același loc, ceea ce este îngăduit atâta timp
+        cât fiecare spune unde duce — de aceea textul alternativ al emblemei
+        rămâne întreg, nu „siglă".
       -->
-      <a class="antet-sigle__partener" href="/certificari">
+      <a class="antet-sigle__partener" href="/">
         <span class="antet-sigle__mentiune" aria-hidden="true">Membru<br>fondator</span>
         <img src="/uploads/gallery/afas-logo-nou.png" height="44"
              alt="Membru fondator al Asociației Furnizorilor de Ambalaje Sustenabile"
@@ -165,7 +169,17 @@ $footer = <<<'HTML'
     </ul>
 
     <div class="subsol__jos">
-      <p class="subsol__drepturi">&copy; {{an}} Grafoanaytis. Toate drepturile rezervate.</p>
+      <p class="subsol__drepturi">&copy; Grafoanaytis {{an}}</p>
+
+      <!--
+        Paginile legale, ca în subsolul modelului. Nu erau aici cât timp nu
+        existau: o legătură care duce la 404 este mai rea decât una lipsă.
+      -->
+      <ul class="subsol__legal">
+        <li><a class="link-light" href="/termeni-si-conditii">Termeni și condiții</a></li>
+        <li><a class="link-light" href="/politica-de-confidentialitate">Politica de confidențialitate</a></li>
+        <li><a class="link-light" href="/politica-de-cookies">Politica de cookies</a></li>
+      </ul>
 
       <!--
         Socializarea. Deocamdată doar Instagram: este singurul cont pe care
@@ -241,7 +255,7 @@ $continut = [
      * antetul o are — deci cele două liste spuneau lucruri diferite despre
      * site. Acum urmează aceeași ordine ca antetul.
      */
-    'design_menu_html' => '<a href="/">Acasă</a><a href="/companie">Companie</a><a href="/produse">Produse</a><a href="/servicii">Servicii</a><a href="/utilaje">Utilaje</a><a href="/certificari">Certificări</a><a href="/contact">Contact</a>',
+    'design_menu_html' => '<a href="/">Acasă</a><a href="/companie">Companie</a><a href="/produse">Produse</a><a href="/servicii">Servicii</a><a href="/certificari">Certificări</a><a href="/contact">Contact</a>',
     'design_footer_html' => $footer,
     'design_header_js' => $headerJs,
 ];

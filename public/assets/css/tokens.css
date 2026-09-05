@@ -34,6 +34,8 @@
   --ink:        #212529;
   --ink-muted:  #52525B;
   --line:       #DEE2E6;
+  /* Linia care marchează o margine, nu o desparte: 3,32:1 pe alb. */
+  --line-forte: #868E96;
   --surface:    #FFFFFF;
   --surface-alt:#F8F9FA;
 
@@ -349,6 +351,34 @@ footer.bg-dark {
 .subsol__drepturi,
 .subsol__credit { margin: 0; }
 
+/*
+ * Paginile legale, pe același rând cu drepturile de autor, ca la model.
+ *
+ * Lista își pierde bulinele, dar nu și rolul: rămâne „ul", deci se aude „trei
+ * elemente" înainte de a fi parcursă. Fiecare legătură are 44px pe verticală,
+ * cât cere WCAG 2.5.8, obținuți din marginea interioară — nu din înălțime
+ * fixă, care ar fi rupt alinierea cu restul rândului.
+ */
+.subsol__legal {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0 1.5rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.subsol__legal a {
+  display: inline-block;
+  padding: .75rem 0;
+  margin: -.75rem 0;
+  font-size: .8125rem;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+
 .subsol__retea {
   display: inline-flex;
   align-items: center;
@@ -515,9 +545,9 @@ a[href^="tel:"] {
  * 28px, nu pentru patru paragrafe de proză.
  */
 .banda-alternanta .banda-alternanta__corp--lung p:not(.small) {
-  font-size: clamp(1.0625rem, .95rem + .35vw, 1.5rem);
-  line-height: 1.45;
-  margin-bottom: .9rem;
+  font-size: clamp(1.0625rem, .95rem + .22vw, 1.25rem);
+  line-height: 1.5;
+  margin-bottom: .8rem;
 }
 
 .banda-alternanta .banda-alternanta__corp--lung p:last-child {
@@ -596,6 +626,45 @@ a[href^="tel:"] {
 
   .banda-alternanta--foto-dreapta .banda-alternanta__cadru img { right: 0; }
   .banda-alternanta--foto-stanga  .banda-alternanta__cadru img { left: 0; }
+
+  /*
+   * Banda cu text lung: fotografia nu se mai întinde pe toată înălțimea.
+   *
+   * Textul lung face banda de peste 800px, iar o fotografie lată — 1600×855 —
+   * pusă să umple o cutie de 720×800 se taie la jumătate pe orizontală: se
+   * vede un umăr, nu o scenă. Cu înălțimea plafonată la 34rem și fotografia
+   * așezată la mijloc, din aceeași imagine se vede aproape trei sferturi.
+   *
+   * Restul jumătății nu rămâne alb: primește aceleași linii decorative ca
+   * jumătatea cu text, ca golul să pară parte din bandă, nu o scăpare.
+   */
+  .banda-alternanta--foto-plafon .banda-alternanta__cadru img {
+    inset: 50% auto auto;
+    height: min(100%, 34rem);
+    transform: translateY(-50%);
+  }
+}
+
+.banda-alternanta--foto-plafon::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 50%;
+  z-index: -1;
+  background: url('/assets/img/linii-decorative.svg') no-repeat center center / cover;
+}
+
+.banda-alternanta--foto-plafon.banda-alternanta--foto-dreapta::after {
+  right: 0;
+  transform: scaleX(-1);
+}
+
+.banda-alternanta--foto-plafon.banda-alternanta--foto-stanga::after { left: 0; }
+
+/* Pe telefon coloanele stau una sub alta, deci nu mai există „jumătatea" ei. */
+@media (max-width: 767.98px) {
+  .banda-alternanta--foto-plafon::after { display: none; }
 }
 
 /* Pe telefon coloanele se așază una sub alta, deci decorul ia toată lățimea. */
@@ -783,4 +852,260 @@ a[href^="tel:"] {
 .sertar-oferta__formular .sageata {
   margin-left: .5rem;
   flex: none;
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   PAGINILE LEGALE
+
+   Termeni, confidențialitate, cookies. Sunt pagini pe care nimeni nu le
+   citește din plăcere: tot ce urmează ține de un singur lucru — să poți
+   găsi repede paragraful care te privește și să-l poți citi fără efort.
+   ══════════════════════════════════════════════════════════════════ */
+
+.pagina-legala { max-width: 46rem; }
+
+/*
+ * Antetul este „sticky-top", deci o legătură din cuprins ar duce titlul fix
+ * sub bara de meniu, unde nu se vede. Marginea de derulare îl ține dedesubt.
+ */
+.pagina-legala section[id] { scroll-margin-top: 7.5rem; }
+
+.pagina-legala h2 {
+  font-size: 1.5rem;
+  color: var(--text-brand-large);
+  margin-top: 2.75rem;
+  margin-bottom: .75rem;
+}
+
+.pagina-legala h2:first-child { margin-top: 0; }
+
+.pagina-legala h3 {
+  font-size: 1.125rem;
+  color: var(--text-brand);
+  margin-top: 1.75rem;
+  margin-bottom: .5rem;
+}
+
+/*
+ * Rândurile de aici sunt enumerări și trimiteri, nu proză de prezentare: la
+ * lățimea obișnuită a paginii un aliniat juridic s-ar rupe în prea multe
+ * rânduri scurte. 68ch rămâne sub pragul de 80 de semne cerut de WCAG 1.4.8.
+ */
+.pagina-legala p,
+.pagina-legala li { max-width: 68ch; }
+
+.pagina-legala ul,
+.pagina-legala ol { padding-left: 1.25rem; }
+
+.pagina-legala li { margin-bottom: .5rem; line-height: 1.65; }
+
+.pagina-legala code {
+  font-size: .9em;
+  padding: .1em .35em;
+  background: var(--brand-050);
+  border-radius: 2px;
+}
+
+.pagina-legala__actualizat {
+  font-size: .875rem;
+  color: var(--ink-muted);
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid var(--line);
+}
+
+/* ── Cuprinsul ─────────────────────────────────────────────────────── */
+
+/*
+ * Pe ecran lat rămâne lângă text, ca să se știe tot timpul unde ești. Sub
+ * 992px devine o listă obișnuită așezată înaintea textului: nimic fix, nimic
+ * care să acopere conținutul pe telefon.
+ */
+.cuprins {
+  padding: 1.25rem 1.5rem;
+  background: var(--brand-050);
+  border-left: 3px solid var(--fill-brand);
+}
+
+@media (min-width: 992px) {
+  .cuprins { position: sticky; top: 7.5rem; }
+}
+
+.cuprins__titlu {
+  font-size: .8125rem;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--text-brand);
+  margin-bottom: .75rem;
+}
+
+.cuprins ol {
+  list-style: none;
+  counter-reset: cuprins;
+  margin: 0;
+  padding: 0;
+}
+
+.cuprins li { counter-increment: cuprins; margin-bottom: .35rem; }
+
+.cuprins a {
+  display: block;
+  /* Ținta de atingere: peste 24px pe verticală, cât cere WCAG 2.5.8. */
+  padding: .3rem 0;
+  font-size: .9375rem;
+  line-height: 1.4;
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.cuprins a::before {
+  content: counter(cuprins) ". ";
+  color: var(--text-brand);
+  font-weight: 700;
+}
+
+.cuprins a:hover,
+.cuprins a:focus-visible { text-decoration: underline; }
+
+/* ── Caseta cu datele firmei ───────────────────────────────────────── */
+
+.caseta-operator {
+  padding: 1.25rem 1.5rem;
+  background: var(--brand-050);
+  border: 1px solid var(--line);
+  margin-bottom: 1.5rem;
+}
+
+.caseta-operator dl {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: .35rem 1rem;
+  margin: 0;
+}
+
+.caseta-operator dt { font-weight: 700; color: var(--text-brand-large); }
+.caseta-operator dd { margin: 0; overflow-wrap: anywhere; }
+
+@media (max-width: 575.98px) {
+  /* Sub 576px cele două coloane ar lăsa valorilor un deget de lățime. */
+  .caseta-operator dl { grid-template-columns: 1fr; gap: 0; }
+  .caseta-operator dd { margin-bottom: .6rem; }
+}
+
+/* ── Tabelul de cookie-uri ─────────────────────────────────────────── */
+
+/*
+ * Un tabel cu patru coloane nu încape pe un telefon. Nu-l strâng: îl las să se
+ * deruleze pe orizontală în cutia lui, cu pagina nemișcată.
+ */
+.tabel-cookies-cutie {
+  overflow-x: auto;
+  /*
+   * Conturul marchează unde se taie tabelul, deci nu e decor: îi trebuie o
+   * linie care se vede — 3,32:1 pe alb, peste pragul de 3:1 din WCAG 1.4.11 —
+   * nu cea de 1,4:1 folosită între secțiuni.
+   */
+  border: 1px solid var(--line-forte);
+}
+
+/*
+ * Nota „se derulează în lateral". Marginea tăiată a tabelului spune singură că
+ * textul continuă, dar numai dacă te uiți la ea. Dispare de la 768px în sus,
+ * unde tabelul încape întreg și nota ar fi minciună.
+ */
+.nota-derulare {
+  font-size: .875rem;
+  color: var(--ink-muted);
+  margin-bottom: .5rem;
+}
+
+@media (min-width: 768px) {
+  .nota-derulare { display: none; }
+}
+
+.tabel-cookies {
+  width: 100%;
+  min-width: 34rem;
+  border-collapse: collapse;
+  font-size: .9375rem;
+}
+
+.tabel-cookies th,
+.tabel-cookies td {
+  padding: .75rem 1rem;
+  text-align: left;
+  vertical-align: top;
+  border-bottom: 1px solid var(--line);
+}
+
+.tabel-cookies thead th {
+  background: var(--brand-800);
+  color: #FFFFFF;
+  font-size: .8125rem;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+
+.tabel-cookies tbody tr:last-child th,
+.tabel-cookies tbody tr:last-child td { border-bottom: 0; }
+
+/* ══════════════════════════════════════════════════════════════════
+   BUTONUL „ÎNAPOI SUS"
+   ══════════════════════════════════════════════════════════════════ */
+
+.sus {
+  position: fixed;
+  right: 1.25rem;
+  bottom: 1.25rem;
+  z-index: 1030;
+  /*
+   * 48×48: peste minimul de 24px cerut de WCAG 2.5.8 și peste cei 44px pe
+   * care îi cere un deget pe telefon.
+   */
+  width: 48px;
+  height: 48px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--fill-brand);
+  color: var(--on-fill-brand);
+  border-radius: 50%;
+  box-shadow: 0 6px 18px rgba(18, 36, 92, .28);
+  transition: background-color .18s ease, transform .18s ease;
+}
+
+.sus:hover {
+  background: var(--fill-brand-hover);
+  color: var(--on-fill-brand);
+  transform: translateY(-2px);
+}
+
+/*
+ * Pe telefon, butonul stă deasupra colțului din dreapta jos, unde se așază de
+ * obicei degetul mare. Îl ridic puțin, ca să nu acopere ultimul rând al
+ * subsolului.
+ */
+@media (max-width: 575.98px) {
+  .sus { right: 1rem; bottom: 1rem; width: 44px; height: 44px; }
+}
+
+/*
+ * Derularea lină, cerută o singură dată pentru toate ancorele paginii —
+ * inclusiv pentru cuprinsul paginilor legale. Cine a cerut mai puțină mișcare
+ * din sistem sare direct, fără drum.
+ */
+html { scroll-behavior: smooth; }
+
+/*
+ * Antetul este lipicios, deci o ancoră ar duce titlul fix sub el. Marginea de
+ * derulare îl ține dedesubt, pe toate țintele de ancoră.
+ */
+:target { scroll-margin-top: 7.5rem; }
+
+#inceput-pagina:focus { outline: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .sus { transition: none; }
+  .sus:hover { transform: none; }
 }
