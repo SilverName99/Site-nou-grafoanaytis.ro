@@ -104,7 +104,8 @@
 .masuri {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 1.5rem;
+  /* Șase puncte, deci două rânduri de trei: golul dintre rânduri este mai mare. */
+  gap: 2rem 1.5rem;
   list-style: none;
   counter-reset: masura;
   margin: 0;
@@ -154,29 +155,6 @@
   /* Loc pentru număr, ca titlul lung să nu intre sub el. */
   padding-right: 2.5rem;
 }
-
-/*
- * Capul părții a doua stă între cele două liste, nu în ele.
- *
- * A fost întâi element de listă, ca numerotarea să curgă peste amândouă
- * grupele. Nu era bine: un titlu numerotat la fel cu măsurile de sub el pare
- * fratele lor, nu capul lor. Acum este bloc obișnuit între două „ol", iar
- * fiecare listă își numără măsurile de la unu.
- */
-.masuri__cap {
-  padding: 1.5rem 0 1.75rem;
-  border-top: 1px solid var(--line);
-  margin-top: 2.5rem;
-}
-
-.masuri__cap-titlu {
-  font-size: 1.5rem;
-  font-weight: 400;
-  color: var(--text-brand-large);
-  margin-bottom: .5rem;
-}
-
-.masuri__cap p { max-width: 62ch; }
 
 /* ── Avantajele ──────────────────────────────────────────────────────── */
 
