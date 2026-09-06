@@ -39,86 +39,75 @@
   </div>
 </section>
 
-<!-- Tehnologie -->
-<section id="tehnologie" class="py-5 bg-body-tertiary">
+<!--
+  Tipar verde: o singură secțiune, cum stă și în documentul clientului.
+
+  Erau două, cu titluri și forme aproape identice, fiindcă textul lui începea
+  cu un subtitlu și continua cu o listă în care „Economie circulară" apărea ca
+  al patrulea punct — adică nu ca secțiune nouă, ci ca a doua parte a
+  aceleiași. Aici sunt din nou împreună: o introducere, trei măsuri de
+  tehnologie, apoi partea despre deșeuri cu încă două. Numerotarea curge
+  01–05 peste amândouă, ca să se citească drept un singur flux de producție,
+  cum îl și descrie.
+-->
+<section id="tipar-verde" class="py-5 bg-body-tertiary">
   <div class="container">
-    <div class="row g-4 g-lg-5 align-items-end mb-5">
-      <div class="col-12 col-lg-7">
-        <h2 class="display-6 fw-normal text-brand-lg mb-0">Tehnologie de ultimă generație pentru un
-        tipar verde</h2>
-      </div>
-      <div class="col-12 col-lg-5">
-        <p class="mb-0 companie__intro">Inovația ne permite să reducem impactul ecologic fără a face
-        niciun compromis în privința calității. Prin investiții constante în echipamente moderne, am
-        optimizat întregul flux de producție:</p>
-      </div>
+    <div class="text-center mb-5">
+      <p class="eticheta-sectiune">Tipar verde</p>
+      <h2 class="display-6 fw-normal text-brand-lg mb-3">Tehnologie de ultimă generație pentru un
+      tipar verde</h2>
+      <p class="mb-0 mx-auto companie__intro">Inovația ne permite să reducem impactul ecologic fără
+      a face niciun compromis în privința calității. Prin investiții constante în echipamente
+      moderne, am optimizat întregul flux de producție.</p>
     </div>
 
     <!--
-      Cele trei măsuri stau într-o listă, nu în trei coloane oarecare: sunt o
+      Măsurile stau într-o listă numerotată, nu în cutii oarecare: sunt o
       enumerare, iar cine ascultă pagina aude câte sunt înainte de a le
-      parcurge. Numerele sunt desenate din CSS, ca să nu fie citite cu voce
-      tare de două ori — o dată ca text, o dată ca poziție în listă.
+      parcurge. Numerele sunt desenate din CSS, ca să nu fie citite de două ori
+      — o dată ca text, o dată ca poziție în listă. Contorul nu se reia la
+      partea a doua, deci lista rămâne una singură.
     -->
-    <ol class="companie__masuri">
-      <li class="companie__masura">
-        <h3 class="companie__masura-titlu">Echipamente eficiente energetic</h3>
+    <ol class="masuri">
+      <li class="masura">
+        <h3 class="masura__titlu">Echipamente eficiente energetic</h3>
         <p class="mb-0">Utilizăm utilaje de tipar digital și offset de ultimă generație, care reduc
         considerabil consumul de energie electrică și emisiile de CO<sub>2</sub>.</p>
       </li>
-      <li class="companie__masura">
-        <h3 class="companie__masura-titlu">Tehnologie Computer-to-Plate (CTP)</h3>
+      <li class="masura">
+        <h3 class="masura__titlu">Tehnologie Computer-to-Plate (CTP)</h3>
         <p class="mb-0">Am eliminat complet procesele chimice tradiționale din etapa de prepress,
         reducând consumul de apă și generarea de deșeuri toxice.</p>
       </li>
-      <li class="companie__masura">
-        <h3 class="companie__masura-titlu">Automatizare și precizie</h3>
+      <li class="masura">
+        <h3 class="masura__titlu">Automatizare și precizie</h3>
         <p class="mb-0">Software-ul avansat de calibrare a culorilor minimizează pierderile de
         material la pornirea fiecărui tiraj. Astfel, fiecare coală de hârtie este folosită la
         potențialul maxim.</p>
       </li>
+
+      <!--
+        A doua parte a aceleiași liste. Titlul ei stă într-un element de listă
+        care ține toată lățimea grilei, ca numerotarea să nu se rupă și ca
+        legătura dintre intro și cele două măsuri de sub el să rămână limpede.
+      -->
+      <li class="masuri__cap">
+        <h3 class="masuri__cap-titlu">Economie circulară și managementul deșeurilor</h3>
+        <p class="mb-0">Sustenabilitatea înseamnă și responsabilitate până la capăt. În tipografia
+        noastră, deșeurile nu sunt doar aruncate, ci reintroduse în circuitul economic.</p>
+      </li>
+
+      <li class="masura">
+        <h3 class="masura__titlu">Colectare selectivă strictă</h3>
+        <p class="mb-0">Toate resturile de hârtie, carton, plăci de aluminiu și ambalaje sunt
+        sortate și predate către centre specializate de reciclare.</p>
+      </li>
+      <li class="masura">
+        <h3 class="masura__titlu">Optimizarea formatelor</h3>
+        <p class="mb-0">Calculăm layout-urile de tipar astfel încât pierderile de margine să fie
+        minime, reducând la sursă volumul de deșeuri.</p>
+      </li>
     </ol>
-  </div>
-</section>
-
-<!--
-  Economie circulară.
-
-  Alta așezare decât secțiunea de deasupra, dinadins: acolo titlul stă pe un
-  rând și măsurile dedesubt, în trei coloane. Aici titlul rămâne în stânga, iar
-  cele două măsuri se așază în dreapta, una sub alta, ca rânduri late. Cu
-  aceeași formă de două ori la rând, cititorul crede că a mai citit-o și sare
-  peste.
--->
-<section id="economie-circulara" class="py-5">
-  <div class="container">
-    <div class="row g-4 g-lg-5">
-      <div class="col-12 col-lg-5">
-        <!-- Pe ecran lat rămâne în dreptul rândurilor, cât timp trec pe lângă el. -->
-        <div class="companie__coloana-fixa">
-          <h2 class="display-6 fw-normal text-brand-lg mb-3">Economie circulară și managementul
-          deșeurilor</h2>
-          <p class="mb-0 companie__intro">Sustenabilitatea înseamnă și responsabilitate până la
-          capăt. În tipografia noastră, deșeurile nu sunt doar aruncate, ci reintroduse în circuitul
-          economic.</p>
-        </div>
-      </div>
-
-      <div class="col-12 col-lg-7">
-        <ol class="companie__randuri">
-          <li class="companie__rand">
-            <h3 class="companie__rand-titlu">Colectare selectivă strictă</h3>
-            <p class="mb-0">Toate resturile de hârtie, carton, plăci de aluminiu și ambalaje sunt
-            sortate și predate către centre specializate de reciclare.</p>
-          </li>
-          <li class="companie__rand">
-            <h3 class="companie__rand-titlu">Optimizarea formatelor</h3>
-            <p class="mb-0">Calculăm layout-urile de tipar astfel încât pierderile de margine să fie
-            minime, reducând la sursă volumul de deșeuri.</p>
-          </li>
-        </ol>
-      </div>
-    </div>
   </div>
 </section>
 
@@ -150,7 +139,7 @@
 <!-- Partenerul tău pentru un brand responsabil: promisiunea, pe fundal de brand -->
 <section id="brand-responsabil" class="bg-brand py-5">
   <div class="container text-center">
-    <p class="eticheta-sectiune eticheta-sectiune--pe-brand">Partenerul tău pentru un brand responsabil</p>
+    <h2 class="eticheta-sectiune eticheta-sectiune--pe-brand">Partenerul tău pentru un brand responsabil</h2>
     <p class="companie__deschidere mx-auto mb-0">Alegând serviciile noastre de tipar, alegi să
     transmiți mesajul brandului tău într-un mod etic și curat. Fie că este vorba despre ambalaje
     inovatoare, cataloage corporate sau materiale publicitare, transformăm viziunea ta în realitate,
@@ -225,6 +214,7 @@
 -->
 <section id="capacitate" class="py-5 bg-body-tertiary">
   <div class="container text-center">
+    <h2 class="display-6 fw-normal text-brand-lg mb-4">Capacitate de producție</h2>
     <p class="eticheta-sectiune">Tehnologie modernă</p>
     <p class="h3 fw-normal lh-base mx-auto mb-5 capacitate__descriere">Mașini automate (fabricație
     2026), de mare productivitate pentru producerea ambalajelor și înnobilarea tiparului.</p>
@@ -247,5 +237,32 @@
         <dd><span data-creste="80000">80.000</span> <span class="capacitate__unitate">cutii/oră</span></dd>
       </div>
     </dl>
+
+    <!--
+      Banda de fotografii din aceeași pagină a prezentării: standul de la
+      Packshow, discuția de la stand, mașina de ștanțat, linia de aplicare a
+      ferestrelor și cea de lipit.
+
+      Proporțiile lor diferă mult — de la 906×555 la 364×555 — deci grila le dă
+      aceeași înălțime și le taie pe lățime, ca în machetă, unde stau tot pe un
+      rând de aceeași înălțime.
+    -->
+    <ul class="productie-poze">
+      <li><img src="/assets/img/companie/productie-1-packshow.webp"
+               alt="Ecuson de expozant Grafoanaytis la târgul Packshow"
+               width="906" height="555" loading="lazy"></li>
+      <li><img src="/assets/img/companie/productie-2-stand.webp"
+               alt="Standul Grafoanaytis la târgul Packshow"
+               width="668" height="555" loading="lazy"></li>
+      <li><img src="/assets/img/companie/productie-3-stantat.webp"
+               alt="Mașina automată de ștanțat Huatai, în hala Grafoanaytis"
+               width="742" height="555" loading="lazy"></li>
+      <li><img src="/assets/img/companie/productie-4-ferestre.webp"
+               alt="Linia automată de aplicare a ferestrelor din folie PVC"
+               width="364" height="555" loading="lazy"></li>
+      <li><img src="/assets/img/companie/productie-5-lipit.webp"
+               alt="Detaliu din linia automată de format și lipit cutii"
+               width="384" height="555" loading="lazy"></li>
+    </ul>
   </div>
 </section>

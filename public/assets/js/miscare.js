@@ -219,7 +219,34 @@
     }
   }
 
+  /* ── Antetul care se strânge ─────────────────────────────────────────── */
+
+  /*
+   * Sus, siglele stau mari; la prima mișcare a paginii se micșorează.
+   *
+   * Clasa se pune pe antet, nu pe „html": antetul este lipicios, deci el este
+   * cel care mănâncă din ecran, și tot el trebuie să se strângă. Pragul de
+   * 16px nu este ales la întâmplare — sub el intră tremuratul de derulare al
+   * unui touchpad, care altfel ar fi umflat și strâns siglele întruna.
+   *
+   * Mărimea o schimbă foaia de stil; aici se schimbă doar starea.
+   */
+  function pregatesteAntetul() {
+    var antet = document.querySelector('.navbar.sticky-top');
+    if (!antet) {
+      return;
+    }
+
+    function potriveste() {
+      antet.classList.toggle('antet--micsorat', window.scrollY > 16);
+    }
+
+    potriveste();
+    window.addEventListener('scroll', potriveste, { passive: true });
+  }
+
   function porneste() {
+    pregatesteAntetul();
     if (areObservator && !miscareRedusa) {
       pregatesteAparitiile();
     }

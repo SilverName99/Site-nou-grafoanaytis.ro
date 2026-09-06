@@ -712,16 +712,6 @@ a[href^="tel:"] {
   min-width: 0;
 }
 
-/* Linie subțire între cele două sigle, ca să nu pară o singură emblemă. */
-.antet-sigle__partener {
-  display: inline-flex;
-  align-items: center;
-  gap: .5rem;
-  padding-left: 1rem;
-  border-left: 1px solid var(--line);
-  text-decoration: none;
-}
-
 /*
  * „Membru fondator", scris pe două rânduri lângă emblemă, ca în macheta
  * clientului. Mic și în gri: e o mențiune, nu un titlu, iar emblema de lângă
@@ -747,16 +737,45 @@ a[href^="tel:"] {
 /*
  * Înălțimea o dă CSS-ul, nu atributul: „width:auto" păstrează proporția
  * oricare ar fi ea. Limita de lățime oprește o siglă foarte lată să împingă
- * meniul; 240px lasă loc siglei firmei, care are raportul 411×80, adică
- * 226px la 44 înălțime. Sub limită nimic nu se turtește, fiindcă „contain"
- * încadrează desenul păstrându-i proporția.
+ * meniul. Sub limită nimic nu se turtește, fiindcă „contain" încadrează
+ * desenul păstrându-i proporția.
+ *
+ * Sus, unde antetul este prima linie a paginii, siglele stau la 62px — cu 40%
+ * mai mult decât înainte, cât să se citească și scrisul mic de sub emblemă.
+ * La prima mișcare a paginii coboară la 44px, ca antetul lipicios să nu mănânce
+ * din ecran cât timp citești.
+ *
+ * Limita de lățime crește odată cu înălțimea, altfel n-ar fi folosit la nimic:
+ * sigla firmei are raportul 411×80, deci la 62 înălțime cere 318px de lățime.
+ * Cu limita rămasă la 240, „contain" ar fi încadrat-o la 240 lățime — adică la
+ * 47px înălțime reală, iar mărirea nu s-ar fi văzut deloc.
+ *
+ * Mărimea mare este starea implicită, iar micșorarea o cere o clasă pusă de
+ * script. Așa, cu JavaScript blocat, siglele rămân mari și lizibile — nu
+ * invers, unde o pagină încărcată sus le-ar fi arătat o clipă mici.
  */
 .antet-sigle img {
-  height: 44px;
+  height: 62px;
   width: auto;
-  max-width: 240px;
+  max-width: 330px;
   object-fit: contain;
   display: block;
+  transition: height .28s cubic-bezier(.22, .61, .36, 1),
+              max-width .28s cubic-bezier(.22, .61, .36, 1);
+}
+
+.antet--micsorat .antet-sigle img {
+  height: 44px;
+  max-width: 240px;
+}
+
+/*
+ * Pe telefon antetul are oricum puțin loc, iar o siglă de 62px ar fi luat o
+ * treime din ecran. Acolo diferența dintre cele două stări rămâne mică.
+ */
+@media (max-width: 767.98px) {
+  .antet-sigle img { height: 46px; max-width: 240px; }
+  .antet--micsorat .antet-sigle img { height: 38px; max-width: 200px; }
 }
 
 @media (max-width: 575.98px) {
@@ -768,10 +787,12 @@ a[href^="tel:"] {
     padding-left: .625rem;
   }
 
-  .antet-sigle img {
-    height: 34px;
-    max-width: 176px;
-  }
+  .antet-sigle img { height: 40px; max-width: 200px; }
+  .antet--micsorat .antet-sigle img { height: 34px; max-width: 176px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .antet-sigle img { transition: none; }
 }
 
 /*
@@ -1190,4 +1211,71 @@ html { scroll-behavior: smooth; }
 [data-creste] {
   display: inline-block;
   font-variant-numeric: tabular-nums;
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   PAGINA CONTACT — cele trei rubrici
+   ══════════════════════════════════════════════════════════════════ */
+
+/*
+ * Datele de contact și locația se centrează, cum a cerut clientul. Formularul
+ * nu: o etichetă centrată deasupra unui câmp lat se rupe de el, iar ochiul nu
+ * mai știe care etichetă ține de care câmp. Acolo se centrează doar titlul
+ * rubricii și butonul.
+ */
+.rubrica-contact {
+  text-align: center;
+}
+
+.rubrica-contact__eticheta {
+  font-size: .8125rem;
+  font-weight: 700;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--text-brand);
+  margin-bottom: .25rem;
+}
+
+/* ── Harta, încărcată la cerere ──────────────────────────────────────── */
+
+.harta {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  background: var(--brand-050);
+  border: 1px solid var(--line);
+}
+
+.harta iframe {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+.harta__acoperire {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: .75rem;
+  padding: 1.5rem;
+  text-align: center;
+}
+
+.harta__adresa {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--text-brand-large);
+  margin: 0;
+}
+
+.harta__nota {
+  font-size: .8125rem;
+  line-height: 1.5;
+  color: var(--ink-muted);
+  max-width: 34ch;
+  margin: 0;
 }

@@ -139,6 +139,19 @@
   transition: transform .35s ease;
 }
 
+/*
+ * Toate imaginile ocupă aceeași cutie, oricât de diferite ar fi.
+ *
+ * Fără plafon, o fotografie de format înalt se întindea la 736×1370 și
+ * împingea pagina la peste patru mii de pixeli — se derula un ecran și
+ * jumătate doar peste ea. Mai rău: cutia își schimba înălțimea de la o
+ * fotografie la alta, deci butoanele și miniaturile săreau la fiecare
+ * schimbare de imagine.
+ *
+ * Cu proporție fixă și „object-fit: contain", fotografia intră întreagă, nu
+ * se taie nimic din ea, iar restul paginii stă pe loc. Plafonul în „vh" o
+ * ține și pe un ecran mic sub o înălțime de ecran.
+ */
 .product-carousel__slide {
   flex: 0 0 100%;
   width: 100%;
@@ -147,6 +160,10 @@
 
 .product-carousel__slide img {
   width: 100%;
+  aspect-ratio: 4 / 3;
+  max-height: min(70vh, 560px);
+  object-fit: contain;
+  background: var(--surface-alt);
   border: 1px solid var(--line);
   display: block;
 }

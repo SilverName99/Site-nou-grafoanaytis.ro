@@ -40,3 +40,57 @@
       .finally(function () { buton.disabled = false; });
   });
 })();
+
+/*
+ * Harta, încărcată la cerere.
+ *
+ * Adresa „iframe"-ului stă într-un atribut, nu într-un „iframe" ascuns: un
+ * cadru ascuns tot se încarcă, deci ar fi adus cookie-urile Google chiar dacă
+ * nimeni nu-l vede. Cadrul se construiește abia la apăsare.
+ *
+ * Cine a ales „Accept toate" în bannerul de cookie-uri o primește din pornire:
+ * acordul e dat, nu are rost să fie cerut a doua oară.
+ */
+(function () {
+  'use strict';
+
+  var harta = document.querySelector('[data-harta]');
+  if (!harta) {
+    return;
+  }
+
+  var sursa = harta.getAttribute('data-sursa');
+  if (!sursa) {
+    return;
+  }
+
+  function incarca() {
+    var cadru = document.createElement('iframe');
+    cadru.src = sursa;
+    cadru.title = 'Harta către sediul Grafoanaytis, Str. Văleni nr. 141, Ploiești';
+    cadru.loading = 'lazy';
+    cadru.referrerPolicy = 'strict-origin-when-cross-origin';
+    cadru.setAttribute('allowfullscreen', '');
+    harta.textContent = '';
+    harta.appendChild(cadru);
+    harta.setAttribute('data-incarcata', '');
+  }
+
+  var buton = harta.querySelector('[data-harta-arata]');
+  if (buton) {
+    buton.addEventListener('click', incarca);
+  }
+
+  /*
+   * „bv_cookie_consent=all" este alegerea scrisă de bannerul din șablon.
+   * Citirea se face pe cuvinte întregi, ca „all" să nu se potrivească din
+   * mijlocul altei valori.
+   */
+  var acord = document.cookie.split(';').some(function (bucata) {
+    return bucata.trim() === 'bv_cookie_consent=all';
+  });
+
+  if (acord) {
+    incarca();
+  }
+})();

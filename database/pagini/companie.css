@@ -63,6 +63,7 @@
    ────────────────────────────────────────────────────────────────────── */
 
 .eticheta-sectiune {
+  /* Poate fi și „h2", când chiar este titlul secțiunii: mărimea o dă regula. */
   font-size: .8125rem;
   font-weight: 600;
   letter-spacing: .12em;
@@ -95,114 +96,84 @@
   color: var(--ink-muted);
 }
 
-/* ── Măsurile ────────────────────────────────────────────────────────── */
+/* ── Măsurile de tipar verde ─────────────────────────────────────────────
+   O singură listă, numerotată 01–05, cu titlul părții a doua așezat în
+   mijlocul ei pe toată lățimea grilei.
+   ────────────────────────────────────────────────────────────────────── */
 
-.companie__masuri {
+.masuri {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 2.5rem 2rem;
+  gap: 1.5rem;
   list-style: none;
   counter-reset: masura;
   margin: 0;
   padding: 0;
 }
 
-.companie__masuri--doua {
-  grid-template-columns: repeat(2, 1fr);
-  max-width: 58rem;
-}
-
 @media (max-width: 991.98px) {
-  .companie__masuri,
-  .companie__masuri--doua { grid-template-columns: 1fr; gap: 2rem; }
+  .masuri { grid-template-columns: 1fr; }
 }
 
 /*
- * Numărul din capul fiecărei măsuri.
+ * Cutii albe pe banda gri, nu text pe fundal.
  *
- * Este desenat din CSS, nu scris în pagină: lista este deja „ol", deci cine
- * ascultă pagina aude oricum „unu din trei". Scris ca text, l-ar fi auzit de
- * două ori.
+ * Prima variantă avea doar o linie deasupra fiecărei măsuri; pe fundalul gri
+ * al secțiunii, cinci blocuri de text fără margine se citeau ca un singur
+ * paragraf rupt în coloane. Cutia le desparte fără să adauge zgomot.
  */
-.companie__masura {
+.masura {
   counter-increment: masura;
-  padding-top: 1.5rem;
-  border-top: 2px solid var(--fill-brand);
+  position: relative;
+  padding: 2.5rem 1.5rem 1.5rem;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-top: 3px solid var(--fill-brand);
 }
 
-.companie__masura::before {
+/*
+ * Numărul este desenat din CSS: lista este „ol", deci poziția se aude oricum.
+ * Scris ca text, ar fi fost citit de două ori.
+ */
+.masura::before {
   content: "0" counter(masura);
-  display: block;
-  font-size: 1.75rem;
+  position: absolute;
+  top: 1rem;
+  right: 1.25rem;
+  font-size: 1.5rem;
   font-weight: 300;
   line-height: 1;
-  color: var(--brand-300);
-  margin-bottom: .75rem;
+  color: var(--brand-200);
 }
 
-.companie__masura-titlu {
+.masura__titlu {
   font-size: 1.125rem;
   font-weight: 600;
   color: var(--text-brand-large);
   margin-bottom: .5rem;
+  /* Loc pentru număr, ca titlul lung să nu intre sub el. */
+  padding-right: 2.5rem;
 }
-
-/* ── Rândurile din „Economie circulară" ──────────────────────────────────
-   Aceleași informații ca măsurile de mai sus, altă formă: titlul rămâne în
-   stânga, iar cele două rânduri late trec pe lângă el.
-   ────────────────────────────────────────────────────────────────────── */
-
-@media (min-width: 992px) {
-  .companie__coloana-fixa {
-    position: sticky;
-    /* Sub antetul lipicios, care are 95px pe ecran lat. */
-    top: 7.5rem;
-  }
-}
-
-.companie__randuri {
-  list-style: none;
-  counter-reset: rand;
-  margin: 0;
-  padding: 0;
-}
-
-.companie__rand {
-  counter-increment: rand;
-  position: relative;
-  padding: 1.75rem 0 1.75rem 4.5rem;
-  border-top: 1px solid var(--line);
-}
-
-.companie__rand:last-child { border-bottom: 1px solid var(--line); }
 
 /*
- * Numărul stă în stânga textului, nu deasupra lui ca la măsurile din secțiunea
- * de deasupra — altfel cele două secțiuni ar fi arătat la fel cu alt titlu.
- * Este desenat din CSS: lista este „ol", deci poziția se aude oricum.
+ * Capul părții a doua ține toată lățimea grilei: este titlu peste măsurile
+ * care urmează, nu o măsură alături de ele.
  */
-.companie__rand::before {
-  content: "0" counter(rand);
-  position: absolute;
-  left: 0;
-  top: 1.6rem;
-  font-size: 2rem;
-  font-weight: 300;
-  line-height: 1;
-  color: var(--brand-300);
+.masuri__cap {
+  grid-column: 1 / -1;
+  padding: 1.5rem 0 .5rem;
+  border-top: 1px solid var(--line);
+  margin-top: 1rem;
 }
 
-.companie__rand-titlu {
-  font-size: 1.25rem;
-  font-weight: 600;
+.masuri__cap-titlu {
+  font-size: 1.5rem;
+  font-weight: 400;
   color: var(--text-brand-large);
   margin-bottom: .5rem;
 }
 
-@media (max-width: 575.98px) {
-  .companie__rand { padding-left: 3.25rem; }
-  .companie__rand::before { font-size: 1.5rem; top: 1.85rem; }
-}
+.masuri__cap p { max-width: 62ch; }
 
 /* ── Avantajele ──────────────────────────────────────────────────────── */
 
@@ -539,6 +510,46 @@
 
 @media (max-width: 575.98px) {
   .capacitate__cifre { grid-template-columns: 1fr; gap: 1rem; }
+}
+
+/*
+ * Banda de fotografii de sub cifre, ca în pagina „Producție" a prezentării.
+ *
+ * Fotografiile au proporții foarte diferite — de la 906×555 la 364×555 — deci
+ * grila le dă aceeași înălțime și le taie pe lățime, cum stau și în machetă.
+ * Sub 992px se rup pe mai puține coloane: cinci fotografii pe un rând de
+ * telefon ar fi ajuns fâșii de un deget.
+ */
+.productie-poze {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: .75rem;
+  list-style: none;
+  margin: 3.5rem 0 0;
+  padding: 0;
+}
+
+.productie-poze img {
+  display: block;
+  width: 100%;
+  height: 190px;
+  object-fit: cover;
+  border-radius: 2px;
+}
+
+@media (max-width: 991.98px) {
+  .productie-poze { grid-template-columns: repeat(3, 1fr); }
+  .productie-poze img { height: 160px; }
+  /* Ultimele două trec pe rândul al doilea și îl umplu. */
+  .productie-poze li:nth-child(4) { grid-column: 1 / 3; }
+  .productie-poze li:nth-child(5) { grid-column: 3 / 4; }
+}
+
+@media (max-width: 575.98px) {
+  .productie-poze { grid-template-columns: repeat(2, 1fr); }
+  .productie-poze img { height: 130px; }
+  .productie-poze li:nth-child(4) { grid-column: auto; }
+  .productie-poze li:nth-child(5) { grid-column: 1 / -1; }
 }
 
 @media (prefers-reduced-motion: reduce) {
