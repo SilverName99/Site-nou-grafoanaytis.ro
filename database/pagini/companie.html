@@ -86,24 +86,39 @@
         potențialul maxim.</p>
       </li>
 
-      <!--
-        A doua parte a aceleiași liste. Titlul ei stă într-un element de listă
-        care ține toată lățimea grilei, ca numerotarea să nu se rupă și ca
-        legătura dintre intro și cele două măsuri de sub el să rămână limpede.
-      -->
-      <li class="masuri__cap">
-        <h3 class="masuri__cap-titlu">Economie circulară și managementul deșeurilor</h3>
-        <p class="mb-0">Sustenabilitatea înseamnă și responsabilitate până la capăt. În tipografia
-        noastră, deșeurile nu sunt doar aruncate, ci reintroduse în circuitul economic.</p>
-      </li>
+    </ol>
 
+    <!--
+      A doua parte: titlul ei, apoi lista ei.
+
+      Erau toate șase într-o singură listă, cu titlul ăsta ca al patrulea
+      element, iar numerele curgeau 01–03, titlu fără număr, 04–05. Spunea două
+      lucruri care se bat cap în cap: că titlul desparte lista în două, dar că
+      numerele sunt ale aceleiași liste — și oricine se uita la ea căuta,
+      pe bună dreptate, numărul lipsă al titlului.
+
+      Despărțirea în două „ol" repornește numărătoarea de la unu, fiindcă
+      fiecare listă își are contorul ei. „counter-reset" pus pe titlul-frate
+      nu ajunge: îl consumă chiar titlul, iar frații de după continuă din
+      contorul vechi — verificat în browser, nu presupus.
+
+      Măsurile de sub titlul ăsta sunt „h4", nu „h3": el le stă deasupra, deci
+      nu pot fi de același rang cu el. Mărimea le-o dă clasa, nu eticheta.
+    -->
+    <div class="masuri__cap">
+      <h3 class="masuri__cap-titlu">Economie circulară și managementul deșeurilor</h3>
+      <p class="mb-0">Sustenabilitatea înseamnă și responsabilitate până la capăt. În tipografia
+      noastră, deșeurile nu sunt doar aruncate, ci reintroduse în circuitul economic.</p>
+    </div>
+
+    <ol class="masuri">
       <li class="masura">
-        <h3 class="masura__titlu">Colectare selectivă strictă</h3>
+        <h4 class="masura__titlu">Colectare selectivă strictă</h4>
         <p class="mb-0">Toate resturile de hârtie, carton, plăci de aluminiu și ambalaje sunt
         sortate și predate către centre specializate de reciclare.</p>
       </li>
       <li class="masura">
-        <h3 class="masura__titlu">Optimizarea formatelor</h3>
+        <h4 class="masura__titlu">Optimizarea formatelor</h4>
         <p class="mb-0">Calculăm layout-urile de tipar astfel încât pierderile de margine să fie
         minime, reducând la sursă volumul de deșeuri.</p>
       </li>

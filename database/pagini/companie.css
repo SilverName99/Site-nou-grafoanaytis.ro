@@ -156,14 +156,17 @@
 }
 
 /*
- * Capul părții a doua ține toată lățimea grilei: este titlu peste măsurile
- * care urmează, nu o măsură alături de ele.
+ * Capul părții a doua stă între cele două liste, nu în ele.
+ *
+ * A fost întâi element de listă, ca numerotarea să curgă peste amândouă
+ * grupele. Nu era bine: un titlu numerotat la fel cu măsurile de sub el pare
+ * fratele lor, nu capul lor. Acum este bloc obișnuit între două „ol", iar
+ * fiecare listă își numără măsurile de la unu.
  */
 .masuri__cap {
-  grid-column: 1 / -1;
-  padding: 1.5rem 0 .5rem;
+  padding: 1.5rem 0 1.75rem;
   border-top: 1px solid var(--line);
-  margin-top: 1rem;
+  margin-top: 2.5rem;
 }
 
 .masuri__cap-titlu {
