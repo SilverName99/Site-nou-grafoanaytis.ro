@@ -1123,8 +1123,8 @@ $campaignHourlyOpens = is_array($campaignHourlyOpens ?? null) ? $campaignHourlyO
                     <input
                         type="text"
                         name="contact_form_recipients"
-                        value="<?= htmlspecialchars(trim((string) ($settings['contact_form_recipients'] ?? 'contact@grafoanaytis.ro')), ENT_QUOTES) ?>"
-                        placeholder="contact@grafoanaytis.ro, office@grafoanaytis.ro"
+                        value="<?= htmlspecialchars(trim((string) ($settings['contact_form_recipients'] ?? 'grafoanaytis@yahoo.com')), ENT_QUOTES) ?>"
+                        placeholder="grafoanaytis@yahoo.com"
                         style="flex:1 1 420px;min-width:280px;"
                     >
                     <button class="btn" type="submit">Salvează destinatarii</button>
@@ -1150,7 +1150,7 @@ $campaignHourlyOpens = is_array($campaignHourlyOpens ?? null) ? $campaignHourlyO
                 </div>
                 <div id="contact-instructions-body">
                     <p style="margin:0 0 10px;color:#64748b;">
-                        Ca formularul să trimită corect către <strong>contact@grafoanaytis.ro</strong>, trebuie să respecte pașii de mai jos.
+                        Ca formularul să trimită corect către <strong>grafoanaytis@yahoo.com</strong>, trebuie să respecte pașii de mai jos.
                     </p>
                     <ol style="margin:0 0 10px 18px;line-height:1.7;color:#334155;">
                         <li>Formularul din front-end trebuie să trimită <code>POST</code> JSON la endpoint-ul <code>/contact/send</code>.</li>

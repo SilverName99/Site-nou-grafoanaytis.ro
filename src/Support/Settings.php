@@ -9,7 +9,8 @@ use PDO;
 final class Settings
 {
     private const DEFAULTS = [
-        'contact_form_recipients' => 'contact@grafoanaytis.ro',
+        /* Cutia poștală a tipografiei. Aici trebuie să ajungă tot ce pleacă din site. */
+        'contact_form_recipients' => 'grafoanaytis@yahoo.com',
 
         /*
          * Datele operatorului de date cu caracter personal, folosite în
@@ -77,7 +78,13 @@ final class Settings
         'fan_parcel_height_cm' => '',
         'email_delivery_method' => 'smtp',
         'order_email_from_name' => 'Grafoanaytis',
-        'order_email_from_address' => 'no-reply@localhost',
+        /*
+         * Expeditorul. „no-reply@localhost" nu este o adresă adevărată: multe
+         * servere de mail resping mesajul înainte să-l vadă cineva, iar Yahoo
+         * este printre ele. Adresa de aici trebuie să fie una de pe domeniul de
+         * pe care pleacă mesajele, ca SPF-ul să se potrivească.
+         */
+        'order_email_from_address' => 'noreply@grafoanaytis.ro',
         'smtp_host' => '',
         'smtp_port' => '587',
         'smtp_encryption' => 'tls',

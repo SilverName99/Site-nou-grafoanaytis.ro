@@ -3017,7 +3017,11 @@ HTML;
                 $out[strtolower($adresa)] = $adresa;
             }
         }
-        return $out !== [] ? array_values($out) : ['contact@grafoanaytis.ro'];
+        /*
+         * Rezerva contează: dacă setarea e goală sau stricată, mesajul tot
+         * trebuie să ajungă undeva unde se citește, nu la o adresă închipuită.
+         */
+        return $out !== [] ? array_values($out) : ['grafoanaytis@yahoo.com'];
     }
 
     public function optInSubmit(array $params): void
@@ -4096,7 +4100,7 @@ HTML;
         $operatorReprezentant = $dateOperator('gdpr_operator_reprezentant');
         $operatorEmail = trim((string) ($setariGdpr['gdpr_operator_email'] ?? '')) !== ''
             ? htmlspecialchars((string) $setariGdpr['gdpr_operator_email'], ENT_QUOTES)
-            : 'gdpr@grafoanaytis.ro';
+            : 'grafoanaytis@yahoo.com';
         $subiectNumeComplet = htmlspecialchars($old($oldInput, 'subiect_nume_complet'), ENT_QUOTES);
         $ciSerie = htmlspecialchars($old($oldInput, 'ci_serie'), ENT_QUOTES);
         $ciNumar = htmlspecialchars($old($oldInput, 'ci_numar'), ENT_QUOTES);
