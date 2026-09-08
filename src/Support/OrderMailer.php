@@ -439,8 +439,21 @@ HTML;
             $meta['order_number'] = $orderNumber;
         }
 
+        /*
+         * Adresa celui care a scris, pusă în „Reply-To".
+         *
+         * Fără ea, un „Răspunde" din cutia tipografiei se întoarce la adresa
+         * site-ului, adică la ei înșiși: ca să răspundă omului, ar trebui să
+         * copieze adresa din corpul mesajului de fiecare dată. Formularul de
+         * contact și sertarul de ofertă o trimit deja, în „from_email".
+         */
+        $replyTo = trim((string) ($historyMeta['from_email'] ?? ''));
+        if (!filter_var($replyTo, FILTER_VALIDATE_EMAIL)) {
+            $replyTo = '';
+        }
+
         try {
-            self::sendHtmlEmail($to, $subject, $html, $settings);
+            self::sendHtmlEmail($to, $subject, $html, $settings, $replyTo);
             self::logEmailSend($db, [
                 'order_id' => $orderId,
                 'email_type' => $emailType,
@@ -526,8 +539,21 @@ HTML;
         }
         $meta = is_array($historyMeta['meta'] ?? null) ? $historyMeta['meta'] : [];
 
+        /*
+         * Adresa celui care a scris, pusă în „Reply-To".
+         *
+         * Fără ea, un „Răspunde" din cutia tipografiei se întoarce la adresa
+         * site-ului, adică la ei înșiși: ca să răspundă omului, ar trebui să
+         * copieze adresa din corpul mesajului de fiecare dată. Formularul de
+         * contact și sertarul de ofertă o trimit deja, în „from_email".
+         */
+        $replyTo = trim((string) ($historyMeta['from_email'] ?? ''));
+        if (!filter_var($replyTo, FILTER_VALIDATE_EMAIL)) {
+            $replyTo = '';
+        }
+
         try {
-            self::sendHtmlEmail($to, $subject, $html, $settings);
+            self::sendHtmlEmail($to, $subject, $html, $settings, $replyTo);
             self::logEmailSend($db, [
                 'order_id' => $orderId,
                 'email_type' => $emailType,
@@ -555,8 +581,13 @@ HTML;
         }
     }
 
-    private static function sendHtmlEmail(string $to, string $subject, string $html, array $settings): void
-    {
+    private static function sendHtmlEmail(
+        string $to,
+        string $subject,
+        string $html,
+        array $settings,
+        string $replyTo = ''
+    ): void {
         $fromName = self::sanitizeHeader((string) ($settings['order_email_from_name'] ?? 'Grafoanaytis'));
         $fromAddress = trim((string) ($settings['order_email_from_address'] ?? 'no-reply@localhost'));
         if (!filter_var($fromAddress, FILTER_VALIDATE_EMAIL)) {
@@ -564,9 +595,22 @@ HTML;
         }
 
         $subject = self::sanitizeHeader($subject);
+
+        /*
+         * Expeditorul rămâne cutia site-ului, oricine ar fi scris.
+         *
+         * Nu punem adresa vizitatorului în „From": mesajul ar pleca de pe un
+         * server care nu are dreptul să trimită în numele domeniului lui, iar
+         * SPF-ul și DMARC-ul l-ar arunca. Ea merge în „Reply-To", care nu se
+         * verifică și face exact ce trebuie: „Răspunde" ajunge la om.
+         */
+        if (!filter_var($replyTo, FILTER_VALIDATE_EMAIL)) {
+            $replyTo = $fromAddress;
+        }
+
         $deliveryMethod = strtolower(trim((string) ($settings['email_delivery_method'] ?? 'smtp')));
         if ($deliveryMethod === 'sendgrid') {
-            self::sendWithSendGrid($to, $subject, $html, $fromName, $fromAddress, $settings);
+            self::sendWithSendGrid($to, $subject, $html, $fromName, $fromAddress, $settings, $replyTo);
             return;
         }
 
@@ -574,11 +618,11 @@ HTML;
         // pentru instalările fără SMTP (pe Hostinger mail() e aruncat tăcut).
         $smtpHost = trim((string) ($settings['smtp_host'] ?? ''));
         if ($deliveryMethod === 'smtp' && $smtpHost !== '') {
-            self::sendWithSmtp($to, $subject, $html, $fromName, $fromAddress, $settings);
+            self::sendWithSmtp($to, $subject, $html, $fromName, $fromAddress, $settings, $replyTo);
             return;
         }
 
-        self::sendWithPhpMail($to, $subject, $html, $fromName, $fromAddress);
+        self::sendWithPhpMail($to, $subject, $html, $fromName, $fromAddress, $replyTo);
     }
 
     /**
@@ -592,8 +636,13 @@ HTML;
         string $html,
         string $fromName,
         string $fromAddress,
-        array $settings
+        array $settings,
+        string $replyTo = ''
     ): void {
+        if (!filter_var($replyTo, FILTER_VALIDATE_EMAIL)) {
+            $replyTo = $fromAddress;
+        }
+
         $host = trim((string) ($settings['smtp_host'] ?? ''));
         $port = (int) ($settings['smtp_port'] ?? 587);
         if ($port <= 0) {
@@ -685,7 +734,7 @@ HTML;
             $anteturi = [
                 'Date: ' . date('r'),
                 'From: ' . $numeCodat . ' <' . $expeditorPlic . '>',
-                'Reply-To: ' . $fromAddress,
+                'Reply-To: ' . $replyTo,
                 'To: <' . $to . '>',
                 'Subject: ' . $subiectCodat,
                 'MIME-Version: 1.0',
@@ -754,8 +803,13 @@ HTML;
         string $subject,
         string $html,
         string $fromName,
-        string $fromAddress
+        string $fromAddress,
+        string $replyTo = ''
     ): void {
+        if (!filter_var($replyTo, FILTER_VALIDATE_EMAIL)) {
+            $replyTo = $fromAddress;
+        }
+
         if (!function_exists('mail')) {
             throw new RuntimeException('Functia mail() nu este disponibila pe server.');
         }
@@ -764,7 +818,7 @@ HTML;
             'MIME-Version: 1.0',
             'Content-Type: text/html; charset=UTF-8',
             'From: ' . self::sanitizeHeader($fromName) . ' <' . $fromAddress . '>',
-            'Reply-To: ' . $fromAddress,
+            'Reply-To: ' . $replyTo,
             'X-Mailer: PHP/' . phpversion(),
         ];
 
@@ -780,8 +834,13 @@ HTML;
         string $html,
         string $fromName,
         string $fromAddress,
-        array $settings
+        array $settings,
+        string $replyTo = ''
     ): void {
+        if (!filter_var($replyTo, FILTER_VALIDATE_EMAIL)) {
+            $replyTo = $fromAddress;
+        }
+
         $apiKey = trim((string) ($settings['sendgrid_api_key'] ?? ''));
         if ($apiKey === '') {
             throw new RuntimeException('Cheia API SendGrid nu este configurata.');
@@ -795,6 +854,7 @@ HTML;
                 'email' => $fromAddress,
                 'name' => $fromName,
             ],
+            'reply_to' => ['email' => $replyTo],
             'subject' => $subject,
             'content' => [[
                 'type' => 'text/html',

@@ -76,14 +76,20 @@ echo "\n── Dacă pot pleca ────────────────�
 
 $metoda = strtolower(trim((string) setare($db, 'email_delivery_method')));
 $gazda = trim((string) setare($db, 'smtp_host'));
-$utilizator = trim((string) setare($db, 'smtp_user'));
-$parola = trim((string) setare($db, 'smtp_pass'));
+/*
+ * Cheile sunt „smtp_username" și „smtp_password", nu „smtp_user"/„smtp_pass".
+ * Prima versiune a scriptului le citea pe cele scurte, care nu există în
+ * tabelă: raporta „(gol)" pe un server unde datele erau puse corect și
+ * mesajele chiar plecau. O verificare care minte e mai rea decât niciuna.
+ */
+$utilizator = trim((string) setare($db, 'smtp_username'));
+$parola = trim((string) setare($db, 'smtp_password'));
 $expeditor = trim((string) setare($db, 'order_email_from_address'));
 
 printf("  %-26s %s\n", 'email_delivery_method', $metoda !== '' ? $metoda : '(nesetat)');
 printf("  %-26s %s\n", 'smtp_host', $gazda !== '' ? $gazda : '(gol)');
-printf("  %-26s %s\n", 'smtp_user', $utilizator !== '' ? $utilizator : '(gol)');
-printf("  %-26s %s\n", 'smtp_pass', $parola !== '' ? '(pusă)' : '(goală)');
+printf("  %-26s %s\n", 'smtp_username', $utilizator !== '' ? $utilizator : '(gol)');
+printf("  %-26s %s\n", 'smtp_password', $parola !== '' ? '(pusă)' : '(goală)');
 printf("  %-26s %s\n", 'order_email_from_address', $expeditor !== '' ? $expeditor : '(gol)');
 
 $probleme = [];
@@ -104,6 +110,19 @@ if ($expeditor === '' || !filter_var($expeditor, FILTER_VALIDATE_EMAIL)
     $probleme[] = 'Expeditorul „' . ($expeditor !== '' ? $expeditor : '(gol)')
         . '" nu este o adresă adevărată. Multe servere resping mesajul înainte '
         . 'să-l vadă cineva, iar Yahoo este printre ele.';
+} elseif ($utilizator !== '' && strcasecmp($expeditor, $utilizator) !== 0) {
+    /*
+     * Plicul poartă contul SMTP, dar antetul „From" poartă adresa asta. Când
+     * cele două domenii nu se potrivesc, DMARC-ul domeniului din „From" decide
+     * soarta mesajului — și pentru yahoo.com decizia obișnuită este „aruncă".
+     * Poate ajunge azi și poate cădea mâine în spam, fără să se schimbe nimic
+     * la noi.
+     */
+    $probleme[] = 'Expeditorul „' . $expeditor . '" este alt domeniu decât contul '
+        . 'SMTP „' . $utilizator . '". Mesajul pleacă de pe serverul unui domeniu '
+        . 'și se dă drept altul, iar asta îl trece pe mâna DMARC-ului. Cel mai '
+        . 'sigur este ca expeditorul să fie chiar contul SMTP; destinatarul '
+        . 'rămâne oricum ' . CUTIA_POSTALA . '.';
 }
 
 if ($probleme === []) {
