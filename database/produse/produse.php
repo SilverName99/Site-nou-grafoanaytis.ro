@@ -7,7 +7,18 @@ declare(strict_types=1);
  *
  * Fotografiile sunt cele trimise de client, alese după ce le-am privit, nu după
  * nume. Textele descriu ce se vede în ele și ce spune clientul pe site-ul lui
- * vechi. Cifrele marcate [DE COMPLETAT] le confirmă el.
+ * vechi.
+ *
+ * Câmpurile pe care clientul nu le-a confirmat încă — dimensiuni, tiraj minim,
+ * termen de execuție — sunt lăsate goale, nu marcate „[DE COMPLETAT]". Un câmp
+ * gol nu se scrie în baza de date, iar rândul lui din tabelul de caracteristici
+ * se ascunde singur, așa că vizitatorul nu vede nici rândul, nici marcajul.
+ * Marcajul se citea pe site ca text, ceea ce era mai rău decât lipsa lui.
+ *
+ * Când clientul le trimite, se completează aici și se rulează din nou
+ * seed-produse.php. Dacă între timp le-a scris el din dashboard, atenție:
+ * „--suprascrie" rescrie caracteristicile din acest fișier, deci ce a scris el
+ * s-ar pierde — în cazul acela se copiază întâi valorile lui aici.
  *
  * Categoriile sunt de două feluri și un produs poate fi în amândouă:
  *   - familie de produs („Ambalaje cosmetice"), pentru pagina de produse;
@@ -75,18 +86,18 @@ return [
             'slug' => 'cutii-cu-fereastra-pentru-cofetarie',
             'nume' => 'Cutii cu fereastră pentru cofetărie',
             'subtitlu' => 'Fereastra din folie PVC se aplică automat, iar prăjitura se vede fără să fie atinsă',
-            'descriere' => "Cutii de carton cu mâner și fereastră transparentă, pentru cofetării, patiserii și laboratoare de dulciuri.\n\nFereastra se aplică pe mașină automată, dintr-o folie PVC croită după decupajul cutiei, deci marginea rămâne dreaptă pe tot tirajul. Cartonul se tipărește offset înainte de ștanțare, așa că imprimeul intră până în muchia pliului.\n\n[DE COMPLETAT: fotografii proprii cu cutii cu fereastră executate de Grafoanaytis]",
+            'descriere' => "Cutii de carton cu mâner și fereastră transparentă, pentru cofetării, patiserii și laboratoare de dulciuri.\n\nFereastra se aplică pe mașină automată, dintr-o folie PVC croită după decupajul cutiei, deci marginea rămâne dreaptă pe tot tirajul. Cartonul se tipărește offset înainte de ștanțare, așa că imprimeul intră până în muchia pliului.",
             'aplicabilitate' => "Cofetării și patiserii|Laboratoare de dulciuri|Magazine cu vânzare la bucată",
             'imagine' => 'prajituri.webp',
             'galerie' => ['prajituri.webp', 'prajituri2.webp', 'alimtenar.webp', 'mochi.webp'],
             'categorii' => ['ambalaje-alimentare', 'cutii-cu-fereastra', 'aplicare-ferestre', 'tipar-offset', 'ambalaje'],
             'campuri' => [
-                'dimensiuni' => '[DE COMPLETAT: dimensiunile uzuale]',
+                'dimensiuni' => '',
                 'material' => 'Carton duplex sau microondulat, contact alimentar',
-                'tiraj' => '[DE COMPLETAT: tirajul minim]',
+                'tiraj' => '',
                 'personalizare' => 'Tipar offset până la formatul 50×70 cm, policromie',
                 'finisaje' => 'Lăcuire, plastifiere, fereastră din folie PVC',
-                'termen' => '[DE COMPLETAT]',
+                'termen' => '',
             ],
         ],
         [
@@ -99,12 +110,12 @@ return [
             'galerie' => ['alimentar2.webp', 'alimtenar.webp', 'dulciuri.webp', 'mochi.webp'],
             'categorii' => ['ambalaje-alimentare', 'lipire-cutii', 'tipar-offset', 'ambalaje', 'servicii-de-stantare'],
             'campuri' => [
-                'dimensiuni' => '[DE COMPLETAT: dimensiunile uzuale]',
+                'dimensiuni' => '',
                 'material' => 'Carton duplex și microondulat, contact alimentar',
-                'tiraj' => '[DE COMPLETAT: tirajul minim]',
+                'tiraj' => '',
                 'personalizare' => 'Tipar offset, policromie',
                 'finisaje' => 'Lăcuire, ștanțare, lipire automată',
-                'termen' => '[DE COMPLETAT]',
+                'termen' => '',
             ],
         ],
         [
@@ -121,12 +132,12 @@ return [
             ],
             'categorii' => ['ambalaje-alimentare', 'stantare-folio-embos', 'lipire-cutii', 'tipar-offset', 'ambalaje', 'inscriptionare-folio-emboss'],
             'campuri' => [
-                'dimensiuni' => '[DE COMPLETAT: dimensiunile uzuale]',
+                'dimensiuni' => '',
                 'material' => 'Carton grafic 300–350 g, cu sau fără cașerare',
-                'tiraj' => '[DE COMPLETAT: tirajul minim]',
+                'tiraj' => '',
                 'personalizare' => 'Tipar offset, policromie plus culori speciale',
                 'finisaje' => 'Folio la cald, emboss, lăcuire, ștanțare, lipire automată',
-                'termen' => '[DE COMPLETAT]',
+                'termen' => '',
             ],
         ],
         [
@@ -139,12 +150,12 @@ return [
             'galerie' => ['bere.webp', 'bere2.webp', 'cupholder1.webp', 'vin1.webp'],
             'categorii' => ['ambalaje-alimentare', 'stantare-folio-embos', 'tipar-offset', 'ambalaje', 'servicii-de-stantare'],
             'campuri' => [
-                'dimensiuni' => '[DE COMPLETAT: dimensiunile uzuale]',
+                'dimensiuni' => '',
                 'material' => 'Carton microondulat sau duplex gros',
-                'tiraj' => '[DE COMPLETAT: tirajul minim]',
+                'tiraj' => '',
                 'personalizare' => 'Tipar offset, policromie',
                 'finisaje' => 'Ștanțare cu mâner, lăcuire',
-                'termen' => '[DE COMPLETAT]',
+                'termen' => '',
             ],
         ],
         [
@@ -157,12 +168,12 @@ return [
             'galerie' => ['matcha.webp', 'matcha2.webp', 'ceai.webp', 'sirin.webp'],
             'categorii' => ['ambalaje-alimentare', 'lipire-cutii', 'tipar-offset', 'ambalaje'],
             'campuri' => [
-                'dimensiuni' => '[DE COMPLETAT: dimensiunile uzuale]',
+                'dimensiuni' => '',
                 'material' => 'Carton duplex, contact alimentar',
-                'tiraj' => '[DE COMPLETAT: tirajul minim]',
+                'tiraj' => '',
                 'personalizare' => 'Tipar offset, policromie',
                 'finisaje' => 'Lăcuire, plastifiere, lipire automată',
-                'termen' => '[DE COMPLETAT]',
+                'termen' => '',
             ],
         ],
         [
@@ -175,12 +186,12 @@ return [
             'galerie' => ['ambalaj-farma-3.webp', 'ambalaj-farma-4.webp', 'ambalaj-farma.webp', 'ambalaj-farma2.webp', 'blister.webp'],
             'categorii' => ['ambalaje-farma', 'lipire-cutii', 'stantare-folio-embos', 'tipar-offset', 'ambalaje', 'servicii-de-stantare'],
             'campuri' => [
-                'dimensiuni' => '[DE COMPLETAT: dimensiunile uzuale]',
+                'dimensiuni' => '',
                 'material' => 'Carton grafic alb, cerneluri fără migrare',
-                'tiraj' => '[DE COMPLETAT: tirajul minim]',
+                'tiraj' => '',
                 'personalizare' => 'Tipar offset, policromie',
                 'finisaje' => 'Lăcuire, ștanțare, lipire automată',
-                'termen' => '[DE COMPLETAT]',
+                'termen' => '',
             ],
         ],
         [
@@ -193,12 +204,12 @@ return [
             'galerie' => ['geam5.webp', 'geam.webp', 'geam2.webp', 'geam4.webp', 'geam8.webp'],
             'categorii' => ['cutii-cu-fereastra', 'aplicare-ferestre', 'ambalaje', 'tipar-offset'],
             'campuri' => [
-                'dimensiuni' => '[DE COMPLETAT: dimensiunile uzuale]',
+                'dimensiuni' => '',
                 'material' => 'Carton duplex sau grafic, folie PVC pentru fereastră',
-                'tiraj' => '[DE COMPLETAT: tirajul minim]',
+                'tiraj' => '',
                 'personalizare' => 'Tipar offset, policromie',
                 'finisaje' => 'Ștanțare, aplicare fereastră, lăcuire, lipire automată',
-                'termen' => '[DE COMPLETAT]',
+                'termen' => '',
             ],
         ],
         [
@@ -211,12 +222,12 @@ return [
             'galerie' => ['box3.webp', 'box2.webp', 'box1.webp', 'cosmetic2.webp'],
             'categorii' => ['ambalaje-cosmetice', 'stantare-folio-embos', 'lipire-cutii', 'tipar-offset', 'ambalaje', 'servicii-de-stantare', 'inscriptionare-folio-emboss'],
             'campuri' => [
-                'dimensiuni' => '[DE COMPLETAT: dimensiunile uzuale]',
+                'dimensiuni' => '',
                 'material' => 'Carton grafic 250–350 g, cu sau fără cașerare',
-                'tiraj' => '[DE COMPLETAT: tirajul minim]',
+                'tiraj' => '',
                 'personalizare' => 'Tipar offset, policromie plus culori speciale',
                 'finisaje' => 'Folio la cald, emboss, lăcuire, plastifiere mată sau lucioasă',
-                'termen' => '[DE COMPLETAT]',
+                'termen' => '',
             ],
         ],
         [
@@ -231,10 +242,10 @@ return [
             'campuri' => [
                 'dimensiuni' => 'După forma produsului și a stenderului',
                 'material' => 'Carton grafic, hârtie autoadezivă, folie',
-                'tiraj' => '[DE COMPLETAT: tirajul minim]',
+                'tiraj' => '',
                 'personalizare' => 'Tipar offset sau digital, policromie',
                 'finisaje' => 'Ștanțare pe contur, decupaj de agățare, lăcuire, plastifiere',
-                'termen' => '[DE COMPLETAT]',
+                'termen' => '',
             ],
         ],
         [
@@ -247,12 +258,12 @@ return [
             'galerie' => ['tamaie.webp', 'tamaie2.webp', 'cutie-123.webp'],
             'categorii' => ['ambalaje-cosmetice', 'stantare-folio-embos', 'lipire-cutii', 'tipar-offset', 'ambalaje', 'inscriptionare-folio-emboss'],
             'campuri' => [
-                'dimensiuni' => '[DE COMPLETAT: dimensiunile uzuale]',
+                'dimensiuni' => '',
                 'material' => 'Carton grafic, cu sau fără cașerare',
-                'tiraj' => '[DE COMPLETAT: tirajul minim]',
+                'tiraj' => '',
                 'personalizare' => 'Tipar offset, policromie',
                 'finisaje' => 'Folio, emboss, lăcuire, lipire automată',
-                'termen' => '[DE COMPLETAT]',
+                'termen' => '',
             ],
         ],
         [
@@ -270,7 +281,7 @@ return [
                 'tiraj' => 'De la un exemplar, în tipar digital',
                 'personalizare' => 'Tipar offset pentru tiraje medii și mari, digital pentru tiraje mici',
                 'finisaje' => 'Broșare lipită sau cusută, copertă cartonată, folio',
-                'termen' => '[DE COMPLETAT]',
+                'termen' => '',
             ],
         ],
         [
@@ -285,10 +296,10 @@ return [
             'campuri' => [
                 'dimensiuni' => 'Formate de album și la cerere',
                 'material' => 'Hârtie cretată pentru interior, carton pentru copertă',
-                'tiraj' => '[DE COMPLETAT: tirajul minim]',
+                'tiraj' => '',
                 'personalizare' => 'Tipar offset, policromie',
                 'finisaje' => 'Coasere, copertă cartonată, cașerare, folio, plastifiere',
-                'termen' => '[DE COMPLETAT]',
+                'termen' => '',
             ],
         ],
         [
@@ -303,10 +314,10 @@ return [
             'campuri' => [
                 'dimensiuni' => 'A4, A5 și formate la cerere',
                 'material' => 'Hârtie offset și carton pentru coperți',
-                'tiraj' => '[DE COMPLETAT: tirajul minim]',
+                'tiraj' => '',
                 'personalizare' => 'Tipar offset, policromie',
                 'finisaje' => 'Folio, emboss, plastifiere, coasere sau spiralare',
-                'termen' => '[DE COMPLETAT]',
+                'termen' => '',
             ],
         ],
         [
@@ -321,10 +332,10 @@ return [
             'campuri' => [
                 'dimensiuni' => 'Pentru documente A4',
                 'material' => 'Carton grafic 300–350 g',
-                'tiraj' => '[DE COMPLETAT: tirajul minim]',
+                'tiraj' => '',
                 'personalizare' => 'Tipar offset, policromie',
                 'finisaje' => 'Ștanțare, biguire, folio, plastifiere',
-                'termen' => '[DE COMPLETAT]',
+                'termen' => '',
             ],
         ],
         [
@@ -337,12 +348,12 @@ return [
             'galerie' => ['evenimente-imobil.webp'],
             'categorii' => ['tiparituri', 'tipar-offset'],
             'campuri' => [
-                'dimensiuni' => '[DE COMPLETAT: formatul]',
+                'dimensiuni' => '',
                 'material' => 'Hârtie offset pentru interior, carton pentru copertă',
-                'tiraj' => '[DE COMPLETAT: tirajul minim]',
+                'tiraj' => '',
                 'personalizare' => 'Tipar offset, policromie',
                 'finisaje' => 'Plastifiere, biguire, broșare',
-                'termen' => '[DE COMPLETAT]',
+                'termen' => '',
             ],
         ],
         [
@@ -357,10 +368,10 @@ return [
             'campuri' => [
                 'dimensiuni' => 'A4, A5, DL și formate la cerere',
                 'material' => 'Hârtie cretată sau offset',
-                'tiraj' => '[DE COMPLETAT: tirajul minim]',
+                'tiraj' => '',
                 'personalizare' => 'Tipar offset, policromie',
                 'finisaje' => 'Capsare, broșare lipită, biguire, plastifiere',
-                'termen' => '[DE COMPLETAT]',
+                'termen' => '',
             ],
         ],
         [
@@ -375,10 +386,10 @@ return [
             'campuri' => [
                 'dimensiuni' => 'La cerere, după forma recipientului',
                 'material' => 'Hârtie autoadezivă albă sau kraft, folie',
-                'tiraj' => '[DE COMPLETAT: tirajul minim]',
+                'tiraj' => '',
                 'personalizare' => 'Tipar offset sau digital, policromie',
                 'finisaje' => 'Lăcuire, plastifiere, ștanțare pe contur',
-                'termen' => '[DE COMPLETAT]',
+                'termen' => '',
             ],
         ],
     ],

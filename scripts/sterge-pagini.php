@@ -100,9 +100,14 @@ if (!$confirma) {
 /*
  * Cache-ul de răspunsuri ține paginile deja compuse. Fără golire, o pagină
  * ștearsă ar continua să apară până la expirarea lui.
+ *
+ * Metoda se cheamă „purgePageCache", nu „flush". Cum apelul era păzit de un
+ * „method_exists", greșeala nu s-a văzut niciodată: scriptul spunea că a
+ * șters paginile și pleca fără să golească nimic.
  */
-if (class_exists(ResponseCache::class) && method_exists(ResponseCache::class, 'flush')) {
-    ResponseCache::flush();
+$golite = ResponseCache::purgePageCache();
+if ($golite > 0) {
+    echo "cache: {$golite} pagini golite din cache.\n";
 }
 
 echo "\nGata: {$sterse} șterse, {$lipsa} negăsite.\n";

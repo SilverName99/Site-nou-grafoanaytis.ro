@@ -90,10 +90,34 @@
     padding: 1rem .75rem;
   }
 
-  /* Rânduri alternate, ca la model: ajută ochiul pe un tabel lung. */
+  /*
+   * Rânduri alternate, ca la model: ajută ochiul pe un tabel lung.
+   *
+   * Numărătoarea trebuie să sară peste rândurile ascunse. „nth-child" le vede
+   * și pe acelea — un rând ascuns nu iese din numărătoare, doar din pagină —
+   * așa că la o fișă căreia îi lipsesc „Dimensiuni" și „Tiraj minim" ieșeau
+   * două rânduri albe unul sub altul, iar alternanța se rupea.
+   *
+   * CSS nu știe să numere numai frații vizibili, dar știe să întrebe câți
+   * frați goi sunt înaintea unui rând: fiecare „~" în plus cere încă unul.
+   * Fiecare rând gol dinainte întoarce alternanța o dată, deci regulile de mai
+   * jos o întorc pe rând, până la cinci rânduri goale — mai multe nu are de
+   * unde, tabelul are șase.
+   */
   .caracteristici__rand:nth-child(odd) {
     background: var(--surface-alt);
   }
+
+  .caracteristici__rand:has(dd:empty) ~ .caracteristici__rand:nth-child(odd) { background: transparent; }
+  .caracteristici__rand:has(dd:empty) ~ .caracteristici__rand:nth-child(even) { background: var(--surface-alt); }
+  .caracteristici__rand:has(dd:empty) ~ .caracteristici__rand:has(dd:empty) ~ .caracteristici__rand:nth-child(odd) { background: var(--surface-alt); }
+  .caracteristici__rand:has(dd:empty) ~ .caracteristici__rand:has(dd:empty) ~ .caracteristici__rand:nth-child(even) { background: transparent; }
+  .caracteristici__rand:has(dd:empty) ~ .caracteristici__rand:has(dd:empty) ~ .caracteristici__rand:has(dd:empty) ~ .caracteristici__rand:nth-child(odd) { background: transparent; }
+  .caracteristici__rand:has(dd:empty) ~ .caracteristici__rand:has(dd:empty) ~ .caracteristici__rand:has(dd:empty) ~ .caracteristici__rand:nth-child(even) { background: var(--surface-alt); }
+  .caracteristici__rand:has(dd:empty) ~ .caracteristici__rand:has(dd:empty) ~ .caracteristici__rand:has(dd:empty) ~ .caracteristici__rand:has(dd:empty) ~ .caracteristici__rand:nth-child(odd) { background: var(--surface-alt); }
+  .caracteristici__rand:has(dd:empty) ~ .caracteristici__rand:has(dd:empty) ~ .caracteristici__rand:has(dd:empty) ~ .caracteristici__rand:has(dd:empty) ~ .caracteristici__rand:nth-child(even) { background: transparent; }
+  .caracteristici__rand:has(dd:empty) ~ .caracteristici__rand:has(dd:empty) ~ .caracteristici__rand:has(dd:empty) ~ .caracteristici__rand:has(dd:empty) ~ .caracteristici__rand:has(dd:empty) ~ .caracteristici__rand:nth-child(odd) { background: transparent; }
+  .caracteristici__rand:has(dd:empty) ~ .caracteristici__rand:has(dd:empty) ~ .caracteristici__rand:has(dd:empty) ~ .caracteristici__rand:has(dd:empty) ~ .caracteristici__rand:has(dd:empty) ~ .caracteristici__rand:nth-child(even) { background: var(--surface-alt); }
 }
 
 .caracteristici dt {
