@@ -758,27 +758,59 @@ a[href^="tel:"] {
 }
 
 /*
- * Sigla firmei umple spațiul liber dintre ea și meniu — dar numai acolo unde
- * spațiul chiar există.
- *
- * Măsurat: peste 1400px containerul are 1320, iar între sigle și primul rând
- * de meniu rămân 130px goi la 62px înălțime. La 78px sigla ajunge la 480 și
- * mai lasă 33px de aer — plin, dar nu lipit.
- *
- * Sub 1400px containerul scade la 1140, iar golul este deja zero la mărimea de
- * azi: acolo o siglă mai mare ar împinge meniul. De aceea creșterea începe de
- * la 1400, nu mai jos.
+ * Siglele din antet: mărimea de bază, pentru ecranele mici și mijlocii.
+ * Peste 1400px intră blocul de mai jos, care le mărește.
  */
 .navbar-brand img {
   height: 54px;
 }
 
-@media (min-width: 1400px) {
-  .navbar-brand img { height: 78px; }
-  .antet--micsorat .navbar-brand img { height: 46px; }
+.antet--micsorat .navbar-brand img {
+  height: 42px;
 }
 
-.antet--micsorat .navbar-brand img { height: 42px; }
+/*
+ * Sigla mare, pe ecranele late.
+ *
+ * Clientul a cerut sigla mai mare, dar antetul la fel de înalt ca acum: „sa nu
+ * ocupe mai mult din pagina decat ocupa acum". Înălțimea nu era însă cea care
+ * o mărginea, ci lățimea. Sigla are raportul 1200×195, adică 6,15: fiecare
+ * pixel de înălțime îi cere șase de lățime. În bara de 1320px, meniul cu
+ * butonul lua 722, emblema AFAS cu despărțitorul ei încă 74, iar sigla 480 —
+ * rămâneau 20 de pixeli liberi. De aceea creșterile de până acum se opreau: de
+ * la vreo 80px în sus sigla se lipea de „ACASĂ", iar mai departe se turtea
+ * singură, fiindcă „contain" o încadra pe lățime și îi cobora înălțimea reală.
+ *
+ * Așa că lățimea a fost cea căutată, din două locuri:
+ *
+ *  1. Bara antetului ține acum până la 1400px, nu 1320 ca restul paginii. Sunt
+ *     40 de pixeli în plus de fiecare parte, atât cât să nu se rupă legătura
+ *     vizuală cu textul de dedesubt. Sub 1432px lățime de ecran bara se strânge
+ *     singură („100% - 2rem"), ca să rămână o margine până la marginea ferestrei.
+ *  2. Cei 10 pixeli de margine pe care Bootstrap îi pune deasupra și dedesubtul
+ *     legăturii cu sigla. Nu se vedeau, dar înălțau antetul; scoși, îi ia sigla.
+ *
+ * Rezultatul: sigla urcă de la 78 la 88 de pixeli (cu 13% mai mare), iar
+ * antetul rămâne la fix aceiași 129 de pixeli sus și 93 după derulare —
+ * 88 + 2×20 din marginile barei + 1 al liniei de jos, respectiv 52 + 40 + 1.
+ */
+@media (min-width: 1400px) {
+  .navbar > .container {
+    max-width: min(100% - 2rem, 1400px);
+  }
+
+  .navbar-brand {
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+
+  .navbar-brand img { height: 88px; }
+  .antet--micsorat .navbar-brand img { height: 52px; }
+
+  /* Aerul dintre cele două sigle, strâns cât să încapă creșterea. */
+  .antet-sigle { gap: .625rem; }
+  .antet-sigle__partener { padding-left: .625rem; }
+}
 
 /* Emblema AFAS: mărimea de până acum, fără plafon care s-o încadreze. */
 .antet-sigle__partener img {

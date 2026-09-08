@@ -418,10 +418,21 @@
 .cronologie__sageata--inainte { right: -3.5rem; }
 
 /*
- * Sub 1200px marginea paginii nu mai are 56px, deci săgețile ar ieși din
- * ecran. Acolo intră înapoi în bandă, iar banda primește margini cât ele.
+ * Săgețile ies în afara containerului cu 56px, deci au nevoie de o margine de
+ * pagină cel puțin atât de lată. Ea nu crește însă continuu: containerul stă
+ * la 1140px până la 1400px lățime de ecran, apoi sare la 1320. Așa se fac două
+ * ferestre în care marginea e prea îngustă și săgeata iese din ecran, iar
+ * pagina capătă derulare pe orizontală:
+ *
+ *   – sub 1268px  (1140 + 2×64), unde marginea scade sub 64px;
+ *   – între 1400 și 1448px, unde containerul tocmai a sărit la 1320 și
+ *     marginea a scăzut din nou la 40px.
+ *
+ * În amândouă săgețile intră înapoi în bandă, iar banda primește margini cât
+ * ele. Sunt 64, nu 56, ca să rămână și puțin aer între săgeată și marginea
+ * ferestrei.
  */
-@media (max-width: 1199.98px) {
+@media (max-width: 1267.98px), (min-width: 1400px) and (max-width: 1447.98px) {
   .cronologie__sageata--inapoi  { left: 0; }
   .cronologie__sageata--inainte { right: 0; }
   .cronologie__lista { padding: 0 3.25rem; }
