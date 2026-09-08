@@ -735,47 +735,65 @@ a[href^="tel:"] {
 }
 
 /*
- * Înălțimea o dă CSS-ul, nu atributul: „width:auto" păstrează proporția
- * oricare ar fi ea. Limita de lățime oprește o siglă foarte lată să împingă
- * meniul. Sub limită nimic nu se turtește, fiindcă „contain" încadrează
- * desenul păstrându-i proporția.
+ * Siglele din antet.
  *
- * Sus, unde antetul este prima linie a paginii, siglele stau la 62px — cu 40%
- * mai mult decât înainte, cât să se citească și scrisul mic de sub emblemă.
- * La prima mișcare a paginii coboară la 44px, ca antetul lipicios să nu mănânce
- * din ecran cât timp citești.
+ * Înălțimea o dă CSS-ul, nu atributul din HTML; „width: auto" păstrează
+ * proporția oricare ar fi ea.
  *
- * Limita de lățime crește odată cu înălțimea, altfel n-ar fi folosit la nimic:
- * sigla firmei are raportul 411×80, deci la 62 înălțime cere 318px de lățime.
- * Cu limita rămasă la 240, „contain" ar fi încadrat-o la 240 lățime — adică la
- * 47px înălțime reală, iar mărirea nu s-ar fi văzut deloc.
+ * Aveau amândouă un plafon de lățime, iar pe sigla firmei el o turtea: raportul
+ * ei este 1200×195, adică 6,15, deci la 62px înălțime cere 382px lățime. Cu
+ * plafonul la 330, „contain" o încadra pe lățime și o cobora la 54px reali —
+ * de-aia părea mică oricât îi creșteam înălțimea. Plafonul a ieșit; mărimea o
+ * dă acum numai înălțimea.
  *
- * Mărimea mare este starea implicită, iar micșorarea o cere o clasă pusă de
- * script. Așa, cu JavaScript blocat, siglele rămân mari și lizibile — nu
- * invers, unde o pagină încărcată sus le-ar fi arătat o clipă mici.
+ * Cele două sigle se măsoară separat. Clientul a cerut mai mare doar sigla
+ * firmei; emblema AFAS este marcă de partener, secundară, și rămâne la
+ * mărimea ei.
  */
 .antet-sigle img {
-  height: 62px;
   width: auto;
-  max-width: 330px;
   object-fit: contain;
   display: block;
-  transition: height .28s cubic-bezier(.22, .61, .36, 1),
-              max-width .28s cubic-bezier(.22, .61, .36, 1);
-}
-
-.antet--micsorat .antet-sigle img {
-  height: 44px;
-  max-width: 240px;
+  transition: height .28s cubic-bezier(.22, .61, .36, 1);
 }
 
 /*
- * Pe telefon antetul are oricum puțin loc, iar o siglă de 62px ar fi luat o
- * treime din ecran. Acolo diferența dintre cele două stări rămâne mică.
+ * Sigla firmei umple spațiul liber dintre ea și meniu — dar numai acolo unde
+ * spațiul chiar există.
+ *
+ * Măsurat: peste 1400px containerul are 1320, iar între sigle și primul rând
+ * de meniu rămân 130px goi la 62px înălțime. La 78px sigla ajunge la 480 și
+ * mai lasă 33px de aer — plin, dar nu lipit.
+ *
+ * Sub 1400px containerul scade la 1140, iar golul este deja zero la mărimea de
+ * azi: acolo o siglă mai mare ar împinge meniul. De aceea creșterea începe de
+ * la 1400, nu mai jos.
  */
+.navbar-brand img {
+  height: 54px;
+}
+
+@media (min-width: 1400px) {
+  .navbar-brand img { height: 78px; }
+  .antet--micsorat .navbar-brand img { height: 46px; }
+}
+
+.antet--micsorat .navbar-brand img { height: 42px; }
+
+/* Emblema AFAS: mărimea de până acum, fără plafon care s-o încadreze. */
+.antet-sigle__partener img {
+  height: 58px;
+}
+
+.antet--micsorat .antet-sigle__partener img {
+  height: 42px;
+}
+
 @media (max-width: 767.98px) {
-  .antet-sigle img { height: 46px; max-width: 240px; }
-  .antet--micsorat .antet-sigle img { height: 38px; max-width: 200px; }
+  .navbar-brand img { height: 46px; }
+  .antet--micsorat .navbar-brand img { height: 38px; }
+  .antet-sigle__partener img { height: 44px; }
+  .antet--micsorat .antet-sigle__partener img { height: 36px; }
 }
 
 @media (max-width: 575.98px) {
@@ -787,8 +805,10 @@ a[href^="tel:"] {
     padding-left: .625rem;
   }
 
-  .antet-sigle img { height: 40px; max-width: 200px; }
-  .antet--micsorat .antet-sigle img { height: 34px; max-width: 176px; }
+  .navbar-brand img { height: 38px; }
+  .antet--micsorat .navbar-brand img { height: 32px; }
+  .antet-sigle__partener img { height: 36px; }
+  .antet--micsorat .antet-sigle__partener img { height: 30px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
