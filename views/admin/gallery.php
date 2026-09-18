@@ -18,7 +18,7 @@ $currentGalleryBackUrl = $currentGalleryUrl . ($currentGalleryQuery !== '' ? ('?
     <div class="section-head">
         <div>
             <h1>Galerie</h1>
-            <p>Gestionează imagini și videoclipuri mp4.</p>
+            <p>Gestionează imagini, videoclipuri mp4 și documente PDF.</p>
         </div>
         <div style="display:flex;gap:8px;">
             <button class="btn btn-secondary" type="button" id="open-folder-modal">+ Adaugă folder</button>
@@ -70,6 +70,8 @@ $currentGalleryBackUrl = $currentGalleryUrl . ($currentGalleryQuery !== '' ? ('?
                         <video muted preload="metadata">
                             <source src="<?= htmlspecialchars((string) $folder['cover_url'], ENT_QUOTES) ?>" type="video/mp4">
                         </video>
+                    <?php elseif (($folder['cover_media_type'] ?? '') === 'document'): ?>
+                        <span>PDF</span>
                     <?php elseif (!empty($folder['cover_url'])): ?>
                         <img src="<?= htmlspecialchars((string) $folder['cover_url'], ENT_QUOTES) ?>" alt="<?= htmlspecialchars((string) $folder['name'], ENT_QUOTES) ?>" onerror="this.onerror=null;this.src='/assets/img/product-placeholder.svg';">
                     <?php else: ?>
@@ -102,7 +104,7 @@ $currentGalleryBackUrl = $currentGalleryUrl . ($currentGalleryQuery !== '' ? ('?
         <div class="gallery-empty">
             <div class="icon">🖼️</div>
             <h3>Niciun fișier</h3>
-            <p><?= $searchQuery !== '' ? 'Nu există rezultate pentru căutarea ta.' : 'Adaugă imagini sau clipuri mp4 în galerie.' ?></p>
+            <p><?= $searchQuery !== '' ? 'Nu există rezultate pentru căutarea ta.' : 'Adaugă imagini, clipuri mp4 sau PDF-uri în galerie.' ?></p>
         </div>
     <?php elseif ($viewMode !== 'folders'): ?>
         <form method="post" action="/admin/gallery/bulk-delete" id="gallery-bulk-form">
@@ -149,6 +151,21 @@ $currentGalleryBackUrl = $currentGalleryUrl . ($currentGalleryQuery !== '' ? ('?
                             <video controls preload="metadata">
                                 <source src="<?= htmlspecialchars($mediaUrl, ENT_QUOTES) ?>" type="video/mp4">
                             </video>
+                        <?php elseif ($mediaType === 'document'): ?>
+                            <?php
+                            /*
+                             * Un PDF nu se poate desena într-un „img": pus acolo,
+                             * ar arăta ca o imagine stricată. Primește o fișă cu
+                             * numele fișierului și o legătură care îl deschide,
+                             * ca să se poată verifica din galerie că e cel bun.
+                             */
+                            ?>
+                            <a class="gallery-item__document" href="<?= htmlspecialchars($mediaUrl, ENT_QUOTES) ?>"
+                               target="_blank" rel="noopener"
+                               title="Deschide documentul într-o filă nouă">
+                                <span class="gallery-item__document-icon" aria-hidden="true">PDF</span>
+                                <span class="gallery-item__document-name"><?= htmlspecialchars(basename($mediaUrl), ENT_QUOTES) ?></span>
+                            </a>
                         <?php else: ?>
                             <img
                                 src="<?= htmlspecialchars($mediaUrl, ENT_QUOTES) ?>"
@@ -208,7 +225,7 @@ $currentGalleryBackUrl = $currentGalleryUrl . ($currentGalleryQuery !== '' ? ('?
             <div class="field" style="grid-column:1/-1;">
                 <label class="upload-dropzone" for="gallery-bulk-files" id="gallery-bulk-dropzone">
                     <input type="file" id="gallery-bulk-files" name="image_files[]"
-                           accept="image/*,video/mp4" multiple hidden>
+                           accept="image/*,video/mp4,application/pdf" multiple hidden>
                     <span class="icon">⤴⤴</span>
                     <strong>Încarcă mai multe fișiere odată</strong>
                     <small>Selectează mai multe cu Ctrl / Shift, sau trage-le aici</small>
@@ -262,15 +279,15 @@ $currentGalleryBackUrl = $currentGalleryUrl . ($currentGalleryQuery !== '' ? ('?
             </div>
             <div class="field" style="grid-column:1/-1;">
                 <label class="upload-dropzone" for="gallery-image-file" id="gallery-dropzone">
-                    <input type="file" id="gallery-image-file" name="image_file" accept="image/*,video/mp4" hidden>
+                    <input type="file" id="gallery-image-file" name="image_file" accept="image/*,video/mp4,application/pdf" hidden>
                     <span class="icon">⤴</span>
-                    <strong>Upload media (imagine/mp4)</strong>
+                    <strong>Upload media (imagine / mp4 / PDF)</strong>
                     <small>Click pentru alegere sau drag & drop</small>
                     <em id="gallery-file-name">Niciun fișier selectat</em>
                 </label>
             </div>
             <div class="field" style="grid-column:1/-1;">
-                <label>...sau URL media (imagine/mp4)</label>
+                <label>...sau URL media (imagine / mp4 / PDF)</label>
                 <input type="text" name="image_url" placeholder="/assets/img/product-placeholder.svg">
             </div>
             <div class="field" style="grid-column:1/-1;">

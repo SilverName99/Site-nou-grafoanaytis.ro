@@ -21653,8 +21653,15 @@ HTML;
             return null;
         }
 
+        /*
+         * „pdf" a intrat în listă fiindcă antetul are benzi care duc la
+         * documente — comunicatul de proiect, anunțul de recrutare — iar
+         * clientul trebuie să le poată schimba singur, ca pe orice altă
+         * fotografie. Până acum fișierele acelea se copiau pe server prin git,
+         * ceea ce însemna un drum prin noi la fiecare înlocuire.
+         */
         $ext = strtolower(pathinfo((string) ($file['name'] ?? ''), PATHINFO_EXTENSION));
-        $allowed = ['jpg', 'jpeg', 'png', 'webp', 'gif', 'mp4'];
+        $allowed = ['jpg', 'jpeg', 'png', 'webp', 'gif', 'mp4', 'pdf'];
         if (!in_array($ext, $allowed, true)) {
             return null;
         }
@@ -21692,11 +21699,24 @@ HTML;
         ];
     }
 
+    /**
+     * Ce fel de fișier este, după extensie.
+     *
+     * „document" este al treilea fel, pe lângă imagine și video: un PDF nu se
+     * poate desena într-un „img", deci galeria îi arată o fișă cu numele și o
+     * legătură, iar listele de imagini (alegătorul de fotografii al paginilor,
+     * al produselor) îl sar, fiindcă ele cer „media_type = 'image'".
+     */
     private function detectMediaType(string $path): string
     {
         $urlPath = (string) (parse_url($path, PHP_URL_PATH) ?? $path);
         $ext = strtolower(pathinfo($urlPath, PATHINFO_EXTENSION));
-        return $ext === 'mp4' ? 'video' : 'image';
+
+        if ($ext === 'mp4') {
+            return 'video';
+        }
+
+        return $ext === 'pdf' ? 'document' : 'image';
     }
 
     private function galleryMoveResponse(bool $ok, string $message): void

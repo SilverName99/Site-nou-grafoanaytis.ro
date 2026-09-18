@@ -16,6 +16,7 @@ declare(strict_types=1);
  * din antet să nu ceară rescrierea meniului și a subsolului odată cu el:
  *
  *   php scripts/seed-design.php --suprascrie --doar=design_header_html
+ *   php scripts/seed-design.php --suprascrie --doar=design_header_css
  */
 
 require_once __DIR__ . '/../bootstrap.php';
@@ -92,6 +93,27 @@ $header = <<<HTML
      aria-label="Comunicat de presă privind proiectul 332198, fișier PDF, se deschide într-o filă nouă">
     <span class="banner-comunicare__rand">Comunicare implementare proiect „Dezvoltarea activității GRAFOANAYTIS SRL prin achiziția de echipamente”, Cod proiect 332198</span>
     <span class="banner-comunicare__rand">Scurtă descriere a proiectului – PR-SM-2021-2027 GRAFOANAYTIS_332198</span>
+  </a>
+</div>
+<!--
+  Banda cu anunțul de recrutare din proiect.
+
+  Stă sub banda albastră și deasupra meniului, cum a cerut clientul. Este a
+  doua obligație de informare a proiectului, deci merge tot pe toate paginile,
+  dar nu are aceeași greutate ca prima: fundal deschis în loc de albastru plin,
+  ca ochiul să le ia în ordine, nu amândouă deodată.
+
+  Fișierul stă în „/documente", ca și comunicatul, deci ajunge pe server odată
+  cu codul. Când clientul vrea să-l schimbe singur, îl încarcă în Galerie —
+  care acceptă acum și PDF-uri — și schimbă aici adresa cu cea din galerie,
+  de forma „/uploads/gallery/nume-fisier.pdf".
+-->
+<div id="banner-recrutare">
+  <a class="banner-recrutare__legatura container"
+     href="/documente/anunt-recrutare-332198.pdf" target="_blank" rel="noopener"
+     aria-label="Anunț de angajare în cadrul proiectului PR-SM-2021-2027 GRAFOANAYTIS_332198, fișier PDF, se deschide într-o filă nouă">
+    <span class="banner-recrutare__eticheta" aria-hidden="true">PDF</span>
+    <span class="banner-recrutare__text">Anunț de angajare în cadrul proiectului PR-SM-2021-2027 GRAFOANAYTIS_332198</span>
   </a>
 </div>
 <!--
@@ -242,6 +264,21 @@ $headerJs = <<<'JS'
 JS;
 
 /*
+ * Stilul antetului.
+ *
+ * Stătea în „public/assets/css/tokens.css", deci caseta de CSS a antetului din
+ * Dashboard → Design Site era goală și părea că antetul n-are stil deloc.
+ * Sursa a rămas un fișier din depozit — se editează acolo, cu istoric în git —
+ * dar de aici ajunge și în setare, deci și sub ochii cui deschide dashboardul.
+ */
+$antetCss = (string) file_get_contents(__DIR__ . '/../database/design/antet.css');
+
+if (trim($antetCss) === '') {
+    fwrite(STDERR, "Fișierul „database/design/antet.css” lipsește sau este gol.\n");
+    exit(1);
+}
+
+/*
  * Continut editabil de client: aici protectia are sens, ca o rulare repetata
  * sa nu stearga ce a schimbat el din Design Site.
  */
@@ -255,6 +292,7 @@ $continut = [
     'design_menu_html' => '<a href="/">Acasă</a><a href="/companie">Companie</a><a href="/produse">Produse</a><a href="/servicii">Servicii</a><a href="/certificari">Certificări</a><a href="/contact">Contact</a>',
     'design_footer_html' => $footer,
     'design_header_js' => $headerJs,
+    'design_header_css' => $antetCss,
 ];
 
 /*

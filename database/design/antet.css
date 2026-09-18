@@ -1,0 +1,323 @@
+/*
+ * Stilul antetului: benzile de informare, siglele, meniul.
+ *
+ * Stătea în „public/assets/css/tokens.css", adică într-un fișier pe care
+ * numai noi îl putem deschide. În Dashboard → Design Site, caseta de CSS a
+ * antetului era goală, deci cine se uita acolo credea că antetul nu are stil
+ * deloc. Acum stă aici, iar seed-design.php îl scrie în „design_header_css",
+ * de unde ajunge și în casetă, și în pagină.
+ *
+ * Culorile și distanțele vin tot din „tokens.css": acolo sunt definite
+ * variabilele („--fill-brand", „--line", „--brand-050"), aici doar se
+ * folosesc. Foaia asta se încarcă după tokens.css, deci poate suprascrie
+ * orice vine de la Bootstrap.
+ *
+ * Fișierul se editează aici, în depozit, nu în dashboard: ce se scrie în
+ * dashboard se pierde la următoarea rulare cu „--suprascrie".
+ */
+
+/* Meniul principal */
+.navbar-nav .nav-link {
+  text-transform: uppercase;
+  font-weight: 500;
+  font-size: 1rem;
+  color: var(--nav-culoare);
+}
+
+.navbar-nav .nav-link:hover,
+.navbar-nav .nav-link:focus-visible {
+  color: var(--text-brand);
+}
+
+/*
+ * Pagina curentă. Modelul o colorează cu galbenul de brand, ceea ce pe fundal
+ * alb dă un contrast de circa 1,6:1 — sub orice prag de lizibilitate. Aici
+ * semnalul îl dau greutatea 800 și albastrul de brand, la 9,49:1.
+ */
+.navbar-nav .nav-link.active {
+  font-weight: 800;
+  color: var(--text-brand);
+}
+
+/*
+ * Antetul.
+ *
+ * Padding-ul vertical era cel implicit din Bootstrap, 8px, ceea ce dădea un
+ * antet de 57px față de 94px la model. Creșterea e pe rampă: pe telefon
+ * modelul stă la 59px, deci acolo nu are rost să urcăm.
+ */
+@media (min-width: 1200px) {
+  .navbar {
+    --bs-navbar-padding-y: 1.25rem;
+  }
+}
+
+/* O intrare de meniu nu se rupe niciodată în două rânduri. */
+.navbar-nav .nav-link {
+  white-space: nowrap;
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   Antetul: două sigle, mereu vizibil
+
+   Clientul cere sigla asociației lângă sigla firmei, pe orice pagină, cu
+   antetul lipit de marginea de sus.
+   ══════════════════════════════════════════════════════════════════ */
+
+.antet-sigle {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  min-width: 0;
+}
+
+/*
+ * „Membru fondator", scris pe două rânduri lângă emblemă, ca în macheta
+ * clientului. Mic și în gri: e o mențiune, nu un titlu, iar emblema de lângă
+ * ea duce oricum greul. Textul alternativ al imaginii spune același lucru, deci
+ * mențiunea vizuală e marcată ca decor — altfel cititoarele de ecran ar
+ * repeta-o de două ori.
+ */
+.antet-sigle__mentiune {
+  font-size: .625rem;
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+  white-space: nowrap;
+}
+
+@media (max-width: 767.98px) {
+  /* Pe telefon antetul e strâmt: rămâne doar emblema. */
+  .antet-sigle__mentiune { display: none; }
+}
+
+/*
+ * Siglele din antet.
+ *
+ * Înălțimea o dă CSS-ul, nu atributul din HTML; „width: auto" păstrează
+ * proporția oricare ar fi ea.
+ *
+ * Aveau amândouă un plafon de lățime, iar pe sigla firmei el o turtea: raportul
+ * ei este 1200×195, adică 6,15, deci la 62px înălțime cere 382px lățime. Cu
+ * plafonul la 330, „contain" o încadra pe lățime și o cobora la 54px reali —
+ * de-aia părea mică oricât îi creșteam înălțimea. Plafonul a ieșit; mărimea o
+ * dă acum numai înălțimea.
+ *
+ * Cele două sigle se măsoară separat. Clientul a cerut mai mare doar sigla
+ * firmei; emblema AFAS este marcă de partener, secundară, și rămâne la
+ * mărimea ei.
+ */
+.antet-sigle img {
+  width: auto;
+  object-fit: contain;
+  display: block;
+  transition: height .28s cubic-bezier(.22, .61, .36, 1);
+}
+
+/*
+ * Siglele din antet: mărimea de bază, pentru ecranele mici și mijlocii.
+ * Peste 1400px intră blocul de mai jos, care le mărește.
+ */
+.navbar-brand img {
+  height: 54px;
+}
+
+.antet--micsorat .navbar-brand img {
+  height: 42px;
+}
+
+/*
+ * Sigla mare, pe ecranele late.
+ *
+ * Clientul a cerut sigla mai mare, dar antetul la fel de înalt ca acum: „sa nu
+ * ocupe mai mult din pagina decat ocupa acum". Înălțimea nu era însă cea care
+ * o mărginea, ci lățimea. Sigla are raportul 1200×195, adică 6,15: fiecare
+ * pixel de înălțime îi cere șase de lățime. În bara de 1320px, meniul cu
+ * butonul lua 722, emblema AFAS cu despărțitorul ei încă 74, iar sigla 480 —
+ * rămâneau 20 de pixeli liberi. De aceea creșterile de până acum se opreau: de
+ * la vreo 80px în sus sigla se lipea de „ACASĂ", iar mai departe se turtea
+ * singură, fiindcă „contain" o încadra pe lățime și îi cobora înălțimea reală.
+ *
+ * Așa că lățimea a fost cea căutată, din două locuri:
+ *
+ *  1. Bara antetului ține acum până la 1400px, nu 1320 ca restul paginii. Sunt
+ *     40 de pixeli în plus de fiecare parte, atât cât să nu se rupă legătura
+ *     vizuală cu textul de dedesubt. Sub 1432px lățime de ecran bara se strânge
+ *     singură („100% - 2rem"), ca să rămână o margine până la marginea ferestrei.
+ *  2. Cei 10 pixeli de margine pe care Bootstrap îi pune deasupra și dedesubtul
+ *     legăturii cu sigla. Nu se vedeau, dar înălțau antetul; scoși, îi ia sigla.
+ *
+ * Rezultatul: sigla urcă de la 78 la 88 de pixeli (cu 13% mai mare), iar
+ * antetul rămâne la fix aceiași 129 de pixeli sus și 93 după derulare —
+ * 88 + 2×20 din marginile barei + 1 al liniei de jos, respectiv 52 + 40 + 1.
+ */
+@media (min-width: 1400px) {
+  .navbar > .container {
+    max-width: min(100% - 2rem, 1400px);
+  }
+
+  .navbar-brand {
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+
+  .navbar-brand img { height: 88px; }
+  .antet--micsorat .navbar-brand img { height: 52px; }
+
+  /* Aerul dintre cele două sigle, strâns cât să încapă creșterea. */
+  .antet-sigle { gap: .625rem; }
+  .antet-sigle__partener { padding-left: .625rem; }
+}
+
+/* Emblema AFAS: mărimea de până acum, fără plafon care s-o încadreze. */
+.antet-sigle__partener img {
+  height: 58px;
+}
+
+.antet--micsorat .antet-sigle__partener img {
+  height: 42px;
+}
+
+@media (max-width: 767.98px) {
+  .navbar-brand img { height: 46px; }
+  .antet--micsorat .navbar-brand img { height: 38px; }
+  .antet-sigle__partener img { height: 44px; }
+  .antet--micsorat .antet-sigle__partener img { height: 36px; }
+}
+
+@media (max-width: 575.98px) {
+  .antet-sigle {
+    gap: .625rem;
+  }
+
+  .antet-sigle__partener {
+    padding-left: .625rem;
+  }
+
+  .navbar-brand img { height: 38px; }
+  .antet--micsorat .navbar-brand img { height: 32px; }
+  .antet-sigle__partener img { height: 36px; }
+  .antet--micsorat .antet-sigle__partener img { height: 30px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .antet-sigle img { transition: none; }
+}
+
+/*
+ * Banda de comunicare a proiectului.
+ *
+ * Modelul trimis de client scrie textul cu majuscule, îngroșat și subliniat, pe
+ * două rânduri. Păstrăm forma, pe fundalul de brand, cu text alb: 9,49:1.
+ *
+ * Sublinierea rămâne, fiindcă banda este o legătură: fără ea, singurul semn că
+ * se poate apăsa ar fi cursorul, care pe telefon nu există.
+ */
+#banner-comunicare .banner-comunicare__legatura {
+  color: var(--on-fill-brand);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+#banner-comunicare .banner-comunicare__legatura:hover,
+#banner-comunicare .banner-comunicare__legatura:focus-visible {
+  background: var(--fill-brand-hover);
+}
+
+#banner-comunicare .banner-comunicare__rand {
+  display: block;
+  font-weight: 700;
+  font-size: clamp(.75rem, .6rem + .35vw, .9375rem);
+  line-height: 1.35;
+  text-transform: uppercase;
+  letter-spacing: .01em;
+  text-wrap: balance;
+}
+
+/* Al doilea rând este subtitlul: rămâne citibil, dar nu concurează cu primul. */
+#banner-comunicare .banner-comunicare__rand + .banner-comunicare__rand {
+  margin-top: .15rem;
+  font-size: clamp(.7rem, .58rem + .28vw, .875rem);
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   Banda cu anunțul de recrutare
+
+   A doua obligație de informare a proiectului, sub prima. Ca să nu se bată
+   cap în cap, are altă greutate: prima este albastru plin cu text alb și
+   majuscule, a doua un fundal deschis cu text închis, scris normal. Ochiul
+   le ia atunci în ordine.
+   ══════════════════════════════════════════════════════════════════ */
+
+#banner-recrutare {
+  background: var(--brand-050);
+  border-bottom: 1px solid var(--line);
+}
+
+/*
+ * Toată banda este o singură legătură, ca ținta de atingere să fie mare — la
+ * fel ca la banda de deasupra. „flex" ține eticheta și textul pe același rând
+ * și le centrează pe verticală când textul se rupe pe două rânduri.
+ */
+#banner-recrutare .banner-recrutare__legatura {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .625rem;
+  padding: .5rem .75rem;
+  color: var(--ink);
+  text-decoration: none;
+}
+
+#banner-recrutare .banner-recrutare__legatura:hover,
+#banner-recrutare .banner-recrutare__legatura:focus-visible {
+  background: var(--brand-100);
+}
+
+#banner-recrutare .banner-recrutare__legatura:hover .banner-recrutare__text,
+#banner-recrutare .banner-recrutare__legatura:focus-visible .banner-recrutare__text {
+  text-decoration-color: currentColor;
+}
+
+/*
+ * Eticheta „PDF". Spune din ce fel de fișier este vorba înainte de apăsare,
+ * ca nimeni să nu se trezească cu o descărcare la care nu se aștepta. Este
+ * marcată ca decor: aceeași informație o spune și textul alternativ al
+ * legăturii, iar o cititoare de ecran n-are de ce s-o audă de două ori.
+ */
+#banner-recrutare .banner-recrutare__eticheta {
+  flex: none;
+  padding: .125rem .375rem;
+  border-radius: 4px;
+  background: var(--fill-brand);
+  color: var(--on-fill-brand);
+  font-size: .625rem;
+  font-weight: 700;
+  letter-spacing: .06em;
+  line-height: 1.5;
+}
+
+/*
+ * Textul. Subliniat discret, ca să se vadă că e legătură și fără mouse, dar
+ * nu cu majuscule ca banda de deasupra: două rânduri de majuscule unul sub
+ * altul se citesc greu și ar face antetul să pară un afiș.
+ */
+#banner-recrutare .banner-recrutare__text {
+  font-weight: 600;
+  font-size: clamp(.75rem, .66rem + .22vw, .875rem);
+  line-height: 1.35;
+  text-align: center;
+  text-wrap: balance;
+  text-decoration: underline;
+  text-decoration-color: rgba(0, 0, 0, .25);
+  text-underline-offset: 2px;
+}
+
+/* Pe telefon eticheta mănâncă din lățimea textului fără să spună mai mult. */
+@media (max-width: 575.98px) {
+  #banner-recrutare .banner-recrutare__eticheta {
+    display: none;
+  }
+}
